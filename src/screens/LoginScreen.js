@@ -168,9 +168,9 @@ const LoginScreen = ({ navigation }) => {
 
         <CustomButton label={verification ? 'Verify OTP' : 'Get OTP'} onPress={() => { verification ? confirmCode() : signInWithPhoneNumber(); }} />
 
-        <Text style={{ textAlign: 'center', color: '#666', marginBottom: 30 }}>
+        {/* <Text style={{ textAlign: 'center', color: '#666', marginBottom: 30 }}>
           Or, login with ...
-        </Text>
+        </Text> */}
 
         <View
           style={{
