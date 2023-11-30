@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -12,17 +12,20 @@ import Carousel from 'react-native-snap-carousel';
 import Feather from 'react-native-vector-icons/Feather';
 
 import BannerSlider from '../components/BannerSlider';
-import {windowWidth} from '../utils/Dimensions';
+import { windowWidth } from '../utils/Dimensions';
 
-import {freeGames, paidGames, sliderData} from '../model/data';
+import { freeGames, paidGames, sliderData } from '../model/data';
 import CustomSwitch from '../components/CustomSwitch';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import ListItem from '../components/ListItem';
+import { AuthContext } from '../context/AuthContext';
 
-export default function HomeScreen({navigation}) {
+export default function HomeScreen({ navigation }) {
+  const {userToken} = useContext(AuthContext);
   const [gamesTab, setGamesTab] = useState(1);
   const carouselRef = useRef(null);
 
-  const renderBanner = ({item, index}) => {
+  const renderBanner = ({ item, index }) => {
     return <BannerSlider data={item} />;
   };
 
@@ -31,27 +34,42 @@ export default function HomeScreen({navigation}) {
   };
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: '#fff'}}>
-      <ScrollView style={{padding: 20}}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+      <ScrollView style={{ padding: 20 }}>
         <View
           style={{
             flexDirection: 'row',
             justifyContent: 'space-between',
             marginBottom: 20,
           }}>
-          <Text style={{fontSize: 18, fontFamily: 'Roboto-Medium'}}>
-            Hello John Doe
-          </Text>
           <TouchableOpacity onPress={() => navigation.openDrawer()}>
-            <ImageBackground
-              source={require('../assets/images/user-profile.jpg')}
-              style={{width: 35, height: 35}}
-              imageStyle={{borderRadius: 25}}
+            <Ionicons
+              name="menu"
+              size={30}
             />
+          </TouchableOpacity>
+          <Text style={{ fontSize: 20, fontFamily: 'Roboto-Medium', marginTop: 1 }}>
+            CricketBuzzer
+          </Text>
+          <TouchableOpacity onPress={() => navigation.navigate('Wallet Statement')}>
+            <View
+              style={{
+                // marginVertical: 15,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}>
+              <Ionicons
+                name="wallet"
+                size={30}
+              />
+              <Text style={{ fontSize: 18, fontFamily: 'Roboto-Medium', textAlign: 'center', margin: 5 }}>
+                {userToken?.coin ? userToken?.coin : 0}
+              </Text>
+            </View>
           </TouchableOpacity>
         </View>
 
-        <View
+        {/* <View
           style={{
             flexDirection: 'row',
             borderColor: '#C6C6C6',
@@ -68,9 +86,9 @@ export default function HomeScreen({navigation}) {
             style={{marginRight: 5}}
           />
           <TextInput placeholder="Search" />
-        </View>
+        </View> */}
 
-        <View
+        {/* <View
           style={{
             marginVertical: 15,
             flexDirection: 'row',
@@ -82,7 +100,7 @@ export default function HomeScreen({navigation}) {
           <TouchableOpacity onPress={() => {}}>
             <Text style={{color: '#0aada8'}}>See all</Text>
           </TouchableOpacity>
-        </View>
+        </View> */}
 
         <Carousel
           ref={carouselRef}
@@ -95,32 +113,60 @@ export default function HomeScreen({navigation}) {
           autoplayInterval={3000}
         />
 
-        <View style={{marginVertical: 20}}>
-          <CustomSwitch
+        <View style={{
+          marginVertical: 20, flexDirection: 'row',
+          justifyContent: 'space-between',
+        }}>
+          <TouchableOpacity onPress={() => { }} style={{
+            backgroundColor: '#6a0028',
+            padding: 10,
+            width: 100,
+            borderRadius: 10,
+          }}>
+            <Text style={{
+              color: '#fff',
+              textAlign: 'center',
+              fontFamily: 'Roboto-Medium',
+              fontSize: 14,
+            }}>Add Points</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => { }} style={{
+            backgroundColor: '#6a0028',
+            padding: 5,
+            width: 100,
+            borderRadius: 10,
+          }}>
+            <Text style={{
+              color: '#fff',
+              textAlign: 'center',
+              fontFamily: 'Roboto-Medium',
+              fontSize: 14,
+            }}>Withdraw Money</Text>
+          </TouchableOpacity>
+          {/* <CustomSwitch
             selectionMode={1}
             option1="Free to play"
             option2="Paid games"
             onSelectSwitch={onSelectSwitch}
-          />
+          /> */}
         </View>
 
-        {gamesTab === 1 &&
-          freeGames.map(item => (
-            <ListItem
-              key={item.id}
-              photo={item.poster}
-              title={item.title}
-              subTitle={item.subtitle}
-              isFree={item.isFree}
-              onPress={() =>
-                navigation.navigate('GameDetails', {
-                  title: item.title,
-                  id: item.id,
-                })
-              }
-            />
-          ))}
-        {gamesTab === 2 &&
+        {freeGames.map(item => (
+          <ListItem
+            key={item.id}
+            photo={item.poster}
+            title={item.title}
+            subTitle={item.subtitle}
+            isFree={item.isFree}
+            onPress={() =>
+              navigation.navigate('GameDetails', {
+                title: item.title,
+                id: item.id,
+              })
+            }
+          />
+        ))}
+        {/* {gamesTab === 2 &&
           paidGames.map(item => (
             <ListItem
               key={item.id}
@@ -136,7 +182,7 @@ export default function HomeScreen({navigation}) {
                 })
               }
             />
-          ))}
+          ))} */}
       </ScrollView>
     </SafeAreaView>
   );

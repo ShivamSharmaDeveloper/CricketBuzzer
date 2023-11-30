@@ -17,7 +17,7 @@ import { AuthContext } from '../context/AuthContext';
 // import auth from '@react-native-firebase/auth';
 
 const CustomDrawer = props => {
-  const { logout } = useContext(AuthContext);
+  const { logout, userToken } = useContext(AuthContext);
   // const logoutUser = useCallback(() => {
   //   auth().signOut();
   //   logout();
@@ -41,7 +41,7 @@ const CustomDrawer = props => {
               fontFamily: 'Roboto-Medium',
               marginBottom: 5,
             }}>
-            John Doe
+            {userToken?.name}
           </Text>
           <View style={{ flexDirection: 'row' }}>
             <Text
@@ -50,7 +50,7 @@ const CustomDrawer = props => {
                 fontFamily: 'Roboto-Regular',
                 marginRight: 5,
               }}>
-              280 Coins
+              {userToken?.coins ? userToken?.coins : 0} Coins
             </Text>
             <FontAwesome5 name="coins" size={14} color="#fff" />
           </View>

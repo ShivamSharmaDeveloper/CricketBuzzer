@@ -4,7 +4,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
 
 import HomeScreen from '../screens/HomeScreen';
-import CartScreen from '../screens/CartScreen';
+import CartScreen from '../screens/SupportScreen';
 import FavoriteScreen from '../screens/FavoriteScreen';
 import GameDetailsScreen from '../screens/GameDetailsScreen';
 
@@ -88,7 +88,7 @@ const getTabBarVisibility = route => {
   if (routeName == 'GameDetails') {
     return 'none';
   }
-  return 'flex';
+  return 'none';
 };
 
 export default TabNavigator;

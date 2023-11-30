@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -20,12 +20,75 @@ import GoogleSVG from '../assets/images/misc/google.svg';
 import FacebookSVG from '../assets/images/misc/facebook.svg';
 import TwitterSVG from '../assets/images/misc/twitter.svg';
 import CustomButton from '../components/CustomButton';
+import auth from '@react-native-firebase/auth';
+import { AuthContext } from '../context/AuthContext';
+import firestore from '@react-native-firebase/firestore';
 
 const RegisterScreen = ({navigation}) => {
-  const [date, setDate] = useState(new Date());
+  const { login } = useContext(AuthContext);
+  // const [date, setDate] = useState(new Date());
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [fullName, setFullName] = useState('');
+  const [emailId, setEmailId] = useState('');
+  const [showOtp, setShowOtp] = useState(false);
+  const [verification, setVerification] = useState(null);
+  const [otpValue, setOtpValue] = useState('');
   const [open, setOpen] = useState(false);
   const [dobLabel, setDobLabel] = useState('Date of Birth');
 
+  function onAuthStateChanged(user) {
+    if (user) {
+      console.log(user, "user");
+      // login(user);
+    }
+  }
+
+  useEffect(() => {
+    // GoogleSignin.configure({ webClientId: '163356141884-del12trf51fe64n5fqlqrqujee18uteh.apps.googleusercontent.com'});
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
+  }, []);
+
+  const handleUserLogin = (userData) => {
+    firestore()
+      .collection('Users')
+      .add({
+        name: fullName,
+        email: emailId,
+        phone: phoneNumber,
+        coins: 5,
+      })
+      .then(() => {
+        console.log('User added!');
+        firestore()
+          .collection('Users')
+          // Filter results
+          .where('phone', '==', phoneNumber)
+          .get()
+          .then(querySnapshot => {
+            console.log((querySnapshot?._docs[0]?._data), "snapshot")
+            login(querySnapshot?._docs[0]?._data);
+          });
+      });
+    // login(userData);
+  };
+  const signInWithPhoneNumber = async () => {
+    const confirmation = await auth().signInWithPhoneNumber(`+91 ${phoneNumber}`);
+    setVerification(confirmation);
+    // console.log(confirmation, 'user');
+    setShowOtp(true);
+  };
+  const confirmCode = async () => {
+    try {
+      const confirm = await verification.confirm(otpValue);
+      // console.log(confirm, 'verified');
+      handleUserLogin(confirm);
+      // setShowOtp(false);
+      // console.log('success');
+    } catch (error) {
+      console.log('Invalid code.');
+    }
+  };
   return (
     <SafeAreaView style={{flex: 1, justifyContent: 'center'}}>
       <ScrollView
@@ -50,53 +113,11 @@ const RegisterScreen = ({navigation}) => {
           Register
         </Text>
 
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            marginBottom: 30,
-          }}>
-          <TouchableOpacity
-            onPress={() => {}}
-            style={{
-              borderColor: '#ddd',
-              borderWidth: 2,
-              borderRadius: 10,
-              paddingHorizontal: 30,
-              paddingVertical: 10,
-            }}>
-            <GoogleSVG height={24} width={24} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {}}
-            style={{
-              borderColor: '#ddd',
-              borderWidth: 2,
-              borderRadius: 10,
-              paddingHorizontal: 30,
-              paddingVertical: 10,
-            }}>
-            <FacebookSVG height={24} width={24} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {}}
-            style={{
-              borderColor: '#ddd',
-              borderWidth: 2,
-              borderRadius: 10,
-              paddingHorizontal: 30,
-              paddingVertical: 10,
-            }}>
-            <TwitterSVG height={24} width={24} />
-          </TouchableOpacity>
-        </View>
-
-        <Text style={{textAlign: 'center', color: '#666', marginBottom: 30}}>
-          Or, register with email ...
-        </Text>
-
         <InputField
           label={'Full Name'}
+          onChangeText={setFullName}
+          value={fullName}
+          maxLength={25}
           icon={
             <Ionicons
               name="person-outline"
@@ -109,6 +130,8 @@ const RegisterScreen = ({navigation}) => {
 
         <InputField
           label={'Email ID'}
+          onChangeText={setEmailId}
+          value={emailId}
           icon={
             <MaterialIcons
               name="alternate-email"
@@ -121,6 +144,40 @@ const RegisterScreen = ({navigation}) => {
         />
 
         <InputField
+          label={'Phone Number'}
+          icon={
+            <MaterialIcons
+              name="phone"
+              size={20}
+              color="#666"
+              style={{ marginRight: 5 }}
+            />
+          }
+          keyboardType="phone-pad"
+          onChangeText={setPhoneNumber}
+          value={phoneNumber}
+          maxLength={10}
+        />
+        {showOtp && (
+          <InputField
+            label={'OTP'}
+            icon={
+              <Ionicons
+                name="lock-closed-outline"
+                size={20}
+                color="#666"
+                style={{ marginRight: 5 }}
+              />
+            }
+            inputType="otp"
+            onChangeText={setOtpValue}
+            value={otpValue}
+            maxLength={6}
+            keyboardType="phone-pad"
+          // fieldButtonLabel={'Forgot?'}
+          // fieldButtonFunction={() => { }}
+          />)}
+        {/* <InputField
           label={'Password'}
           icon={
             <Ionicons
@@ -144,8 +201,8 @@ const RegisterScreen = ({navigation}) => {
             />
           }
           inputType="password"
-        />
-
+        /> */}
+  {/*
         <View
           style={{
             flexDirection: 'row',
@@ -165,9 +222,9 @@ const RegisterScreen = ({navigation}) => {
               {dobLabel}
             </Text>
           </TouchableOpacity>
-        </View>
+        </View> */}
 
-        <DatePicker
+        {/* <DatePicker
           modal
           open={open}
           date={date}
@@ -182,9 +239,9 @@ const RegisterScreen = ({navigation}) => {
           onCancel={() => {
             setOpen(false);
           }}
-        />
+        /> */}
 
-        <CustomButton label={'Register'} onPress={() => {}} />
+        <CustomButton label={verification ? 'Verify OTP' : 'Get OTP'} onPress={() => { verification ? confirmCode() : signInWithPhoneNumber(); }} />
 
         <View
           style={{
@@ -193,8 +250,8 @@ const RegisterScreen = ({navigation}) => {
             marginBottom: 30,
           }}>
           <Text>Already registered?</Text>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Text style={{color: '#AD40AF', fontWeight: '700'}}> Login</Text>
+          <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+            <Text style={{ color: '#6a0028', fontWeight: '700'}}> Login</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

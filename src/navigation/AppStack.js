@@ -3,18 +3,19 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import ProfileScreen from '../screens/ProfileScreen';
-import MessagesScreen from '../screens/MessagesScreen';
-import MomentsScreen from '../screens/MomentsScreen';
-import SettingsScreen from '../screens/SettingsScreen';
 import CustomDrawer from '../components/CustomDrawer';
 import TabNavigator from './TabNavigator';
+import AddFundScreen from '../screens/AddFundScreen';
+import WalletScreen from '../screens/WalletScreen';
+import InfoScreen from '../screens/InfoScreen';
+import SupportScreen from '../screens/SupportScreen';
 
 const Drawer = createDrawerNavigator();
 
 const AuthStack = () => {
   return (
     <Drawer.Navigator drawerContent={props => <CustomDrawer {...props} />} screenOptions={{
-      headerShown: false, drawerActiveBackgroundColor: '#aa18ea',
+      headerShown: false, drawerActiveBackgroundColor: '#6a0028',
       drawerActiveTintColor: '#fff',
       drawerInactiveTintColor: '#333',
       drawerLabelStyle: {
@@ -33,19 +34,24 @@ const AuthStack = () => {
           <Ionicons name="person-outline" size={22} color={color} />
         ),
       }} />
-      <Drawer.Screen name="Messages" component={MessagesScreen} options={{
+      <Drawer.Screen name="Add Fund" component={AddFundScreen} options={{
         drawerIcon: (color) => (
-          <Ionicons name="chatbox-ellipses-outline" size={22} color={color} />
+          <Ionicons name="add-circle-outline" size={22} color={color} />
         ),
       }} />
-      <Drawer.Screen name="Moments" component={MomentsScreen} options={{
+      <Drawer.Screen name="Wallet Statement" component={WalletScreen} options={{
         drawerIcon: (color) => (
-          <Ionicons name="timer-outline" size={22} color={color} />
+          <Ionicons name="newspaper-outline" size={22} color={color} />
         ),
       }} />
-      <Drawer.Screen name="Settings" component={SettingsScreen} options={{
+      <Drawer.Screen name="Information" component={InfoScreen} options={{
         drawerIcon: (color) => (
-          <Ionicons name="settings-outline" size={22} color={color} />
+          <Ionicons name="information-circle-outline" size={22} color={color} />
+        ),
+      }} />
+      <Drawer.Screen name="Support" component={SupportScreen} options={{
+        drawerIcon: (color) => (
+          <Ionicons name="call-outline" size={22} color={color} />
         ),
       }} />
     </Drawer.Navigator>

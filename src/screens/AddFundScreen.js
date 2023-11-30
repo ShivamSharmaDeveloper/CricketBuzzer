@@ -1,12 +1,12 @@
 import React from 'react'
 import { View, Text } from 'react-native'
 
-const MessagesScreen = () => {
+const AddFundScreen = () => {
   return (
     <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
-      <Text>Messages Screen</Text>
+      <Text>Add Fund Screen</Text>
     </View>
   )
 }
 
-export default MessagesScreen
+export default AddFundScreen

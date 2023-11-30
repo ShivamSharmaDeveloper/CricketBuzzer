@@ -41,7 +41,7 @@ const OnboardingScreen = ({navigation}) => {
           flexDirection: 'row',
           justifyContent: 'space-between',
         }}
-        onPress={() => navigation.navigate('Login')}>
+        onPress={() => navigation.navigate('Register')}>
         <Text
           style={{
             color: 'white',

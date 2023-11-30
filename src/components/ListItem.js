@@ -8,7 +8,7 @@ export default function ListItem({photo, title, subTitle, isFree, price, onPress
       flexDirection:'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      marginBottom: 20,
+      marginBottom: 25,
     }}>
       <View style={{flexDirection: 'row', alignItems: 'center', flex: 1}}>
         <Image
@@ -38,7 +38,7 @@ export default function ListItem({photo, title, subTitle, isFree, price, onPress
       </View>
 
       <TouchableOpacity onPress={onPress} style={{
-        backgroundColor:'#0aada8',
+        backgroundColor:'#6a0028',
         padding:10,
         width: 100,
         borderRadius: 10,

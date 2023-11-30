@@ -18,8 +18,9 @@ import TwitterSVG from '../assets/images/misc/twitter.svg';
 import CustomButton from '../components/CustomButton';
 import InputField from '../components/InputField';
 import { AuthContext } from '../context/AuthContext';
+import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
-import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
+// import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 
 const LoginScreen = ({ navigation }) => {
   const { login } = useContext(AuthContext);
@@ -27,47 +28,60 @@ const LoginScreen = ({ navigation }) => {
   const [otpValue, setOtpValue] = useState('');
   const [verification, setVerification] = useState(null);
   const [showOtp, setShowOtp] = useState(false);
-  const [userInfo, setUserInfo] = useState(null);
+  // const [userInfo, setUserInfo] = useState(null);
 
-  // function onAuthStateChanged(user) {
-  //   if (user) {
-  //     console.log(user, "user");
-  //     // login(user);
-  //   }
-  // }
+  function onAuthStateChanged(user) {
+    if (user) {
+      console.log(user, "user");
+      // login(user);
+    }
+  }
 
   useEffect(() => {
-    GoogleSignin.configure({ webClientId: '163356141884-del12trf51fe64n5fqlqrqujee18uteh.apps.googleusercontent.com'});
-    // const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    // return subscriber; // unsubscribe on unmount
+    // GoogleSignin.configure({ webClientId: '163356141884-del12trf51fe64n5fqlqrqujee18uteh.apps.googleusercontent.com'});
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
   }, []);
 
   const handleUserLogin = (userData) => {
-    login(userData);
+    firestore()
+      .collection('Users')
+      // Filter results
+      .where('phone', '==', phoneNumber)
+      .get()
+      .then(querySnapshot => {
+        console.log((querySnapshot?._docs[0]?._data), "snapshot")
+        login(querySnapshot?._docs[0]?._data);
+      });
   };
 
-  const signIn = async () => {
-    try {
-      await GoogleSignin.hasPlayServices();
-      const userInfo = await GoogleSignin.signIn();
-      setUserInfo(userInfo);
-    } catch (error) {
-      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        // user cancelled the login flow
-      } else if (error.code === statusCodes.IN_PROGRESS) {
-        // operation (e.g. sign in) is in progress already
-      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        // play services not available or outdated
-      } else {
-        // some other error happened
-      }
-    }
-  };
+  // const signIn = async () => {
+  //   try {
+  //     await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+  //     const { idToken } = await GoogleSignin.signIn();
+  //     console.log(idToken, 'user');
+  //     setUserInfo(idToken);
+  //   } catch (error) {
+  //     if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+  //       // user cancelled the login flow
+  //       console.log(error, "SIGN_IN_CANCELLED");
+  //     } else if (error.code === statusCodes.IN_PROGRESS) {
+  //       // operation (e.g. sign in) is in progress already
+  //       console.log(error, "IN_PROGRESS");
+  //     } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+  //       // play services not available or outdated
+  //       console.log(error, "PLAY_SERVICES_NOT_AVAILABLE");
+  //     } else {
+  //       console.log(error, "error");
+  //       // some other error happened
+  //     }
+  //   }
+  // };
 
   const signInWithPhoneNumber = async () => {
     const confirmation = await auth().signInWithPhoneNumber(`+91 ${phoneNumber}`);
     setVerification(confirmation);
-    // console.log(confirmation, 'user');
+    console.log(confirmation, 'user');
     setShowOtp(true);
   };
 
@@ -93,6 +107,7 @@ const LoginScreen = ({ navigation }) => {
   // }
   // console.log(phoneNumber, 'number');
   // console.log(verification, "user");
+  // console.log(userInfo, 'userinfo');
   return (
     <SafeAreaView style={{ flex: 1, justifyContent: 'center' }}>
       <View style={{ paddingHorizontal: 25 }}>
@@ -160,53 +175,12 @@ const LoginScreen = ({ navigation }) => {
         <View
           style={{
             flexDirection: 'row',
-            justifyContent: 'space-between',
-            marginBottom: 30,
-          }}>
-          <TouchableOpacity
-            onPress={() => { signIn();}}
-            style={{
-              borderColor: '#ddd',
-              borderWidth: 2,
-              borderRadius: 10,
-              paddingHorizontal: 30,
-              paddingVertical: 10,
-            }}>
-            <GoogleSVG height={24} width={24} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => { }}
-            style={{
-              borderColor: '#ddd',
-              borderWidth: 2,
-              borderRadius: 10,
-              paddingHorizontal: 30,
-              paddingVertical: 10,
-            }}>
-            <FacebookSVG height={24} width={24} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => { }}
-            style={{
-              borderColor: '#ddd',
-              borderWidth: 2,
-              borderRadius: 10,
-              paddingHorizontal: 30,
-              paddingVertical: 10,
-            }}>
-            <TwitterSVG height={24} width={24} />
-          </TouchableOpacity>
-        </View>
-
-        <View
-          style={{
-            flexDirection: 'row',
             justifyContent: 'center',
             marginBottom: 30,
           }}>
           <Text>New to the app?</Text>
           <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-            <Text style={{ color: '#AD40AF', fontWeight: '700' }}> Register</Text>
+            <Text style={{ color: '#6a0028', fontWeight: '700' }}> Register</Text>
           </TouchableOpacity>
         </View>
       </View>
