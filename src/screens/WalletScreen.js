@@ -19,7 +19,7 @@ const WalletScreen = () => {
             // textAlign: 'center',
             fontFamily: 'Roboto-Medium',
             fontSize: 20,
-          }}>{userToken?.coin ? userToken?.coin : 0}</Text>
+          }}>{userToken?.coins ? userToken?.coins : 0}</Text>
         </View>
         <View style={{ flex: 2, flexDirection: 'column', marginLeft: 10, marginRight: 10,}}>
           <Text style={{

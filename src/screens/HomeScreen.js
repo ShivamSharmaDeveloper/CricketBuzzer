@@ -63,7 +63,7 @@ export default function HomeScreen({ navigation }) {
                 size={30}
               />
               <Text style={{ fontSize: 18, fontFamily: 'Roboto-Medium', textAlign: 'center', margin: 5 }}>
-                {userToken?.coin ? userToken?.coin : 0}
+                {userToken?.coinss ? userToken?.coinss : 0}
               </Text>
             </View>
           </TouchableOpacity>

@@ -50,7 +50,7 @@ const CustomDrawer = props => {
                 fontFamily: 'Roboto-Regular',
                 marginRight: 5,
               }}>
-              {userToken?.coins ? userToken?.coins : 0} Coins
+              {userToken?.coinss ? userToken?.coinss : 0} Coins
             </Text>
             <FontAwesome5 name="coins" size={14} color="#fff" />
           </View>
