@@ -6,6 +6,7 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [isLoading, setIsLoading] = useState(false);
+    const [isLoadingGlobal, setIsLoadingGlobal] = useState(false);
     const [userToken, setUserToken] = useState(null);
 
     useEffect(() => {
@@ -54,7 +55,7 @@ export const AuthProvider = ({ children }) => {
 
     console.log(userToken, 'token');
     return (
-        <AuthContext.Provider value={{ login, logout, isLoading, userToken }}>
+        <AuthContext.Provider value={{ login, logout, isLoading, isLoadingGlobal, setIsLoadingGlobal, userToken }}>
             {children}
         </AuthContext.Provider>
     );

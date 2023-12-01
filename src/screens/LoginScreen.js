@@ -20,10 +20,11 @@ import InputField from '../components/InputField';
 import { AuthContext } from '../context/AuthContext';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
+import Loader from '../components/Loader';
 // import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 
 const LoginScreen = ({ navigation }) => {
-  const { login } = useContext(AuthContext);
+  const { login, setIsLoadingGlobal, isLoadingGlobal } = useContext(AuthContext);
   const [phoneNumber, setPhoneNumber] = useState('');
   const [otpValue, setOtpValue] = useState('');
   const [verification, setVerification] = useState(null);
@@ -43,17 +44,29 @@ const LoginScreen = ({ navigation }) => {
     return subscriber; // unsubscribe on unmount
   }, []);
 
-  const handleUserLogin = (userData) => {
-    firestore()
-      .collection('Users')
-      // Filter results
-      .where('phone', '==', phoneNumber)
-      .get()
-      .then(querySnapshot => {
-        console.log((querySnapshot?._docs[0]?._data), "snapshot")
-        login(querySnapshot?._docs[0]?._data);
-      });
+  const handleUserLogin = async (userData) => {
+    try {
+      setIsLoadingGlobal(true); // Start global loader
+
+      const querySnapshot = await firestore()
+        .collection('Users')
+        .where('phone', '==', phoneNumber)
+        .get();
+
+      console.log(querySnapshot?._docs[0]?._data, "snapshot");
+
+      if (querySnapshot.size > 0) {
+        login(querySnapshot.docs[0].data());
+      } else {
+        console.warn('User not found.');
+      }
+    } catch (error) {
+      console.error('Error handling user login:', error);
+    } finally {
+      setIsLoadingGlobal(false); // Stop global loader
+    }
   };
+
 
   // const signIn = async () => {
   //   try {
@@ -79,10 +92,17 @@ const LoginScreen = ({ navigation }) => {
   // };
 
   const signInWithPhoneNumber = async () => {
-    const confirmation = await auth().signInWithPhoneNumber(`+91 ${phoneNumber}`);
-    setVerification(confirmation);
-    console.log(confirmation, 'user');
-    setShowOtp(true);
+    try {
+      setIsLoadingGlobal(true);
+      const confirmation = await auth().signInWithPhoneNumber(`+91 ${phoneNumber}`, true);
+      setVerification(confirmation);
+      console.log(confirmation, 'user');
+      setShowOtp(true);
+    } catch (error) {
+      console.error('Error signing in with phone number:', error);
+    } finally {
+      setIsLoadingGlobal(false);
+    }
   };
 
   const confirmCode = async () => {
@@ -90,10 +110,8 @@ const LoginScreen = ({ navigation }) => {
       const confirm = await verification.confirm(otpValue);
       console.log(confirm, 'verified');
       handleUserLogin(confirm);
-      // setShowOtp(false);
-      // console.log('success');
     } catch (error) {
-      console.log('Invalid code.');
+      console.error('Error confirming code:', error);
     }
   };
 
@@ -184,6 +202,7 @@ const LoginScreen = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       </View>
+      <Loader visible={isLoadingGlobal} />
     </SafeAreaView>
   );
 };

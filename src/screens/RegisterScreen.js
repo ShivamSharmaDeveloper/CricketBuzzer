@@ -23,9 +23,10 @@ import CustomButton from '../components/CustomButton';
 import auth from '@react-native-firebase/auth';
 import { AuthContext } from '../context/AuthContext';
 import firestore from '@react-native-firebase/firestore';
+import Loader from '../components/Loader';
 
 const RegisterScreen = ({navigation}) => {
-  const { login } = useContext(AuthContext);
+  const { login, isLoadingGlobal, setIsLoadingGlobal } = useContext(AuthContext);
   // const [date, setDate] = useState(new Date());
   const [phoneNumber, setPhoneNumber] = useState('');
   const [fullName, setFullName] = useState('');
@@ -49,44 +50,54 @@ const RegisterScreen = ({navigation}) => {
     return subscriber; // unsubscribe on unmount
   }, []);
 
-  const handleUserLogin = (userData) => {
-    firestore()
-      .collection('Users')
-      .add({
-        name: fullName,
-        email: emailId,
-        phone: phoneNumber,
-        coins: 5,
-      })
-      .then(() => {
-        console.log('User added!');
-        firestore()
-          .collection('Users')
-          // Filter results
-          .where('phone', '==', phoneNumber)
-          .get()
-          .then(querySnapshot => {
-            console.log((querySnapshot?._docs[0]?._data), "snapshot")
-            login(querySnapshot?._docs[0]?._data);
-          });
-      });
-    // login(userData);
+  const handleUserLogin = async (userData) => {
+    try {
+      setIsLoadingGlobal(true); // Start global loader
+      await firestore()
+        .collection('Users')
+        .add({
+          name: fullName,
+          email: emailId,
+          phone: phoneNumber,
+          coins: 5,
+        });
+
+      console.log('User added!');
+
+      const querySnapshot = await firestore()
+        .collection('Users')
+        .where('phone', '==', phoneNumber)
+        .get();
+
+      console.log(querySnapshot?._docs[0]?._data, "snapshot");
+      login(querySnapshot?._docs[0]?._data);
+    } catch (error) {
+      console.error('Error handling user login:', error);
+    } finally {
+      setIsLoadingGlobal(false); // Stop global loader
+    }
   };
   const signInWithPhoneNumber = async () => {
-    const confirmation = await auth().signInWithPhoneNumber(`+91 ${phoneNumber}`);
-    setVerification(confirmation);
-    // console.log(confirmation, 'user');
-    setShowOtp(true);
+    try {
+      setIsLoadingGlobal(true); // Start global loader
+      const confirmation = await auth().signInWithPhoneNumber(`+91 ${phoneNumber}`, true);
+      setVerification(confirmation);
+      setShowOtp(true);
+    } catch (error) {
+      console.error('Error signing in with phone number:', error);
+    } finally {
+      setIsLoadingGlobal(false); // Stop global loader
+    }
   };
   const confirmCode = async () => {
     try {
+      setIsLoadingGlobal(true);
       const confirm = await verification.confirm(otpValue);
-      // console.log(confirm, 'verified');
       handleUserLogin(confirm);
-      // setShowOtp(false);
-      // console.log('success');
     } catch (error) {
       console.log('Invalid code.');
+    } finally {
+      setIsLoadingGlobal(false);
     }
   };
   return (
@@ -255,6 +266,7 @@ const RegisterScreen = ({navigation}) => {
           </TouchableOpacity>
         </View>
       </ScrollView>
+      <Loader visible={isLoadingGlobal} />
     </SafeAreaView>
   );
 };
