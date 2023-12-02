@@ -40,7 +40,7 @@ const WalletScreen = () => {
         <TouchableOpacity onPress={() => {}} style={{
           backgroundColor: '#6a0028',
           padding: 15,
-          width: 120,
+          width: 140,
           height: 50,
           borderRadius: 10,
         }}>
@@ -56,7 +56,7 @@ const WalletScreen = () => {
         <TouchableOpacity onPress={() => {}} style={{
           backgroundColor: '#6a0028',
           padding: 15,
-          width: 120,
+          width: 140,
           height: 50,
           borderRadius: 10,
         }}>

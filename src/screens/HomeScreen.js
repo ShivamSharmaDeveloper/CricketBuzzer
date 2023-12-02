@@ -46,9 +46,10 @@ export default function HomeScreen({ navigation }) {
             <Ionicons
               name="menu"
               size={30}
+              color='#333'
             />
           </TouchableOpacity>
-          <Text style={{ fontSize: 20, fontFamily: 'Roboto-Medium', marginTop: 1 }}>
+          <Text style={{ fontSize: 20, fontFamily: 'Roboto-Medium', marginTop: 1, color: '#333' }}>
             CricketBuzzer
           </Text>
           <TouchableOpacity onPress={() => navigation.navigate('Wallet Statement')}>
@@ -61,8 +62,9 @@ export default function HomeScreen({ navigation }) {
               <Ionicons
                 name="wallet"
                 size={30}
+                color='#333'
               />
-              <Text style={{ fontSize: 18, fontFamily: 'Roboto-Medium', textAlign: 'center', margin: 5 }}>
+              <Text style={{ fontSize: 18, fontFamily: 'Roboto-Medium', textAlign: 'center', margin: 5, color: '#333' }}>
                 {userToken?.coins ? userToken?.coins : 0}
               </Text>
             </View>
@@ -120,7 +122,7 @@ export default function HomeScreen({ navigation }) {
           <TouchableOpacity onPress={() => { }} style={{
             backgroundColor: '#6a0028',
             padding: 10,
-            width: 100,
+            width: 130,
             borderRadius: 10,
           }}>
             <Text style={{
@@ -132,8 +134,8 @@ export default function HomeScreen({ navigation }) {
           </TouchableOpacity>
           <TouchableOpacity onPress={() => { }} style={{
             backgroundColor: '#6a0028',
-            padding: 5,
-            width: 100,
+            padding: 10,
+            width: 130,
             borderRadius: 10,
           }}>
             <Text style={{
