@@ -126,7 +126,6 @@ const LoginScreen = ({ navigation }) => {
     } catch (error) {
       console.error('Error confirming code:', error);
       setOtpError('Invalid OTP. Please try again.');
-    } finally {
       setIsLoadingGlobal(false);
     }
   };
@@ -148,7 +147,6 @@ const LoginScreen = ({ navigation }) => {
       return;
     } else {
       try {
-        setIsLoadingGlobal(true);
         // Check if the user is already registered
         const userSnapshot = await firestore()
           .collection('Users')
@@ -165,8 +163,6 @@ const LoginScreen = ({ navigation }) => {
         }
       } catch (error) {
         console.error('Error handling user registration:', error);
-      } finally {
-        setIsLoadingGlobal(false);
       }
     }
   };
@@ -206,7 +202,7 @@ const LoginScreen = ({ navigation }) => {
             keyboardType="phone-pad"
             onChangeText={(text) => {
               setPhoneNumber(text);
-              validatePhoneNumberField();
+              // validatePhoneNumberField();
             }}
             value={phoneNumber}
             maxLength={10}
@@ -229,7 +225,7 @@ const LoginScreen = ({ navigation }) => {
               inputType="otp"
               onChangeText={(text) => {
                 setOtpValue(text);
-                validateOtpField();
+                // validateOtpField();
               }}
               value={otpValue}
               maxLength={6}

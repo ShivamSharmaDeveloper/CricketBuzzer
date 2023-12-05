@@ -53,7 +53,10 @@ const RegisterScreen = ({ navigation }) => {
     if (phoneNumber.length === 10){
       setPhoneNumberError('');
     }
-  }, [phoneNumber]);
+    if (otpValue.length === 6) {
+      setOtpError('');
+    }
+  }, [phoneNumber, otpValue]);
 
   useEffect(() => {
     // GoogleSignin.configure({ webClientId: '163356141884-del12trf51fe64n5fqlqrqujee18uteh.apps.googleusercontent.com'});
@@ -109,7 +112,6 @@ const RegisterScreen = ({ navigation }) => {
     } catch (error) {
       console.log('Invalid code.', error);
       setOtpError('Invalid OTP. Please try again.');
-    } finally {
       setIsLoadingGlobal(false);
     }
   };
@@ -143,7 +145,6 @@ const RegisterScreen = ({ navigation }) => {
       return;
     } else {
       try {
-        setIsLoadingGlobal(true);
         // Check if the user is already registered
         const userSnapshot = await firestore()
           .collection('Users')
@@ -160,8 +161,6 @@ const RegisterScreen = ({ navigation }) => {
         }
       } catch (error) {
         console.error('Error handling user registration:', error);
-      } finally {
-        setIsLoadingGlobal(false);
       }
     }
   };
@@ -193,7 +192,7 @@ const RegisterScreen = ({ navigation }) => {
             label={'Full Name'}
             onChangeText={(text) => {
               setFullName(text);
-              validateFullNameField();
+              // validateFullNameField();
             }}
             value={fullName}
             maxLength={25}
@@ -213,7 +212,7 @@ const RegisterScreen = ({ navigation }) => {
             label={'Email ID'}
             onChangeText={(text) => {
               setEmailId(text);
-              validateEmailId();
+              // validateEmailId();
             }}
             value={emailId}
             icon={
@@ -242,7 +241,7 @@ const RegisterScreen = ({ navigation }) => {
             keyboardType="phone-pad"
             onChangeText={(text) => {
               setPhoneNumber(text);
-              validatePhoneNumberField();
+              // validatePhoneNumberField();
             }}
             value={phoneNumber}
             maxLength={10}
@@ -264,7 +263,7 @@ const RegisterScreen = ({ navigation }) => {
               inputType="otp"
               onChangeText={(text) => {
                 setOtpValue(text);
-                validateOtpField();
+                // validateOtpField();
               }}
               value={otpValue}
               maxLength={6}
