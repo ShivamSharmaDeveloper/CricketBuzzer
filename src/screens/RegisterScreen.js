@@ -1,4 +1,5 @@
-import React, {useState, useEffect, useContext} from 'react';
+/* eslint-disable react-native/no-inline-styles */
+import React, { useState, useEffect, useContext } from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -24,8 +25,9 @@ import auth from '@react-native-firebase/auth';
 import { AuthContext } from '../context/AuthContext';
 import firestore from '@react-native-firebase/firestore';
 import Loader from '../components/Loader';
+import { validateFullName, validateEmail, validatePhoneNumber, validateOtp } from '../components/validation';
 
-const RegisterScreen = ({navigation}) => {
+const RegisterScreen = ({ navigation }) => {
   const { login, isLoadingGlobal, setIsLoadingGlobal } = useContext(AuthContext);
   // const [date, setDate] = useState(new Date());
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -34,8 +36,12 @@ const RegisterScreen = ({navigation}) => {
   const [showOtp, setShowOtp] = useState(false);
   const [verification, setVerification] = useState(null);
   const [otpValue, setOtpValue] = useState('');
-  const [open, setOpen] = useState(false);
-  const [dobLabel, setDobLabel] = useState('Date of Birth');
+  const [otpError, setOtpError] = useState('');
+  const [fullNameError, setFullNameError] = useState('');
+  const [emailIdError, setEmailIdError] = useState('');
+  const [phoneNumberError, setPhoneNumberError] = useState('');
+  // const [open, setOpen] = useState(false);
+  // const [dobLabel, setDobLabel] = useState('Date of Birth');
 
   function onAuthStateChanged(user) {
     if (user) {
@@ -43,6 +49,11 @@ const RegisterScreen = ({navigation}) => {
       // login(user);
     }
   }
+  useEffect(() => {
+    if (phoneNumber.length === 10){
+      setPhoneNumberError('');
+    }
+  }, [phoneNumber]);
 
   useEffect(() => {
     // GoogleSignin.configure({ webClientId: '163356141884-del12trf51fe64n5fqlqrqujee18uteh.apps.googleusercontent.com'});
@@ -69,8 +80,8 @@ const RegisterScreen = ({navigation}) => {
         .where('phone', '==', phoneNumber)
         .get();
 
-      console.log(querySnapshot?._docs[0]?._data, "snapshot");
-      login(querySnapshot?._docs[0]?._data);
+      console.log(querySnapshot?.docs[0]?.data(), "snapshot");
+      login(querySnapshot?.docs[0]?.data());
     } catch (error) {
       console.error('Error handling user login:', error);
     } finally {
@@ -93,23 +104,77 @@ const RegisterScreen = ({navigation}) => {
     try {
       setIsLoadingGlobal(true);
       const confirm = await verification.confirm(otpValue);
+      setOtpError('');
       handleUserLogin(confirm);
     } catch (error) {
-      console.log('Invalid code.');
+      console.log('Invalid code.', error);
+      setOtpError('Invalid OTP. Please try again.');
     } finally {
       setIsLoadingGlobal(false);
     }
   };
+  const validateFullNameField = () => {
+    const error = validateFullName(fullName);
+    setFullNameError(error);
+    return !error;
+  };
+  // Email validation function
+  const validateEmailId = () => {
+    const emailError = validateEmail(emailId);
+    setEmailIdError(emailError);
+    return !emailError;
+  };
+  const validatePhoneNumberField = () => {
+    const error = validatePhoneNumber(phoneNumber);
+    setPhoneNumberError(error);
+    return !error;
+  };
+  const validateOtpField = () => {
+    const error = validateOtp(otpValue);
+    setOtpError(error);
+    return !error;
+  };
+  // Register function
+  const handleUserRegistration = async () => {
+    // Validate fields before proceeding
+    if (!validatePhoneNumberField() || !validateFullNameField() || !validateEmailId() || (showOtp ? !validateOtpField() : false)) {
+      console.log('test');
+      // If any validation fails, return without proceeding
+      return;
+    } else {
+      try {
+        setIsLoadingGlobal(true);
+        // Check if the user is already registered
+        const userSnapshot = await firestore()
+          .collection('Users')
+          .where('phone', '==', phoneNumber)
+          .get();
+        if (userSnapshot.empty) {
+          // User not registered
+          setPhoneNumberError('');
+          showOtp ? confirmCode() : signInWithPhoneNumber();
+        }
+        else {
+          // User is registered, proceed with login
+          setPhoneNumberError('User Already Registered, Please Login');
+        }
+      } catch (error) {
+        console.error('Error handling user registration:', error);
+      } finally {
+        setIsLoadingGlobal(false);
+      }
+    }
+  };
   return (
-    <SafeAreaView style={{flex: 1, justifyContent: 'center'}}>
+    <SafeAreaView style={{ flex: 1, justifyContent: 'center' }}>
       <ScrollView
         showsVerticalScrollIndicator={false}
-        style={{paddingHorizontal: 25}}>
-        <View style={{alignItems: 'center'}}>
+        style={{ paddingHorizontal: 25 }}>
+        <View style={{ alignItems: 'center' }}>
           <RegistrationSVG
             height={300}
             width={300}
-            style={{transform: [{rotate: '-5deg'}]}}
+            style={{ transform: [{ rotate: '-5deg' }] }}
           />
         </View>
 
@@ -123,71 +188,92 @@ const RegisterScreen = ({navigation}) => {
           }}>
           Register
         </Text>
-
-        <InputField
-          label={'Full Name'}
-          onChangeText={setFullName}
-          value={fullName}
-          maxLength={25}
-          icon={
-            <Ionicons
-              name="person-outline"
-              size={20}
-              color="#666"
-              style={{marginRight: 5}}
-            />
-          }
-        />
-
-        <InputField
-          label={'Email ID'}
-          onChangeText={setEmailId}
-          value={emailId}
-          icon={
-            <MaterialIcons
-              name="alternate-email"
-              size={20}
-              color="#666"
-              style={{marginRight: 5}}
-            />
-          }
-          keyboardType="email-address"
-        />
-
-        <InputField
-          label={'Phone Number'}
-          icon={
-            <MaterialIcons
-              name="phone"
-              size={20}
-              color="#666"
-              style={{ marginRight: 5 }}
-            />
-          }
-          keyboardType="phone-pad"
-          onChangeText={setPhoneNumber}
-          value={phoneNumber}
-          maxLength={10}
-        />
-        {showOtp && (
+        <View style={{ flex: 1, flexDirection: 'column' }}>
           <InputField
-            label={'OTP'}
+            label={'Full Name'}
+            onChangeText={(text) => {
+              setFullName(text);
+              validateFullNameField();
+            }}
+            value={fullName}
+            maxLength={25}
             icon={
               <Ionicons
-                name="lock-closed-outline"
+                name="person-outline"
                 size={20}
                 color="#666"
                 style={{ marginRight: 5 }}
               />
             }
-            inputType="otp"
-            onChangeText={setOtpValue}
-            value={otpValue}
-            maxLength={6}
+          />
+          <Text style={{ color: 'red', fontSize: 11, fontFamily: 'Roboto-Regular' }}>{fullNameError}</Text>
+        </View>
+        <View style={{ flex: 1, marginVertical: 15, flexDirection: 'column' }}>
+          <InputField
+            label={'Email ID'}
+            onChangeText={(text) => {
+              setEmailId(text);
+              validateEmailId();
+            }}
+            value={emailId}
+            icon={
+              <MaterialIcons
+                name="alternate-email"
+                size={20}
+                color="#666"
+                style={{ marginRight: 5 }}
+              />
+            }
+            keyboardType="email-address"
+          />
+          <Text style={{ color: 'red', fontSize: 11, fontFamily: 'Roboto-Regular' }}>{emailIdError}</Text>
+        </View>
+        <View style={{ flex: 1, marginBottom: 15, flexDirection: 'column' }}>
+          <InputField
+            label={'Phone Number'}
+            icon={
+              <MaterialIcons
+                name="phone"
+                size={20}
+                color="#666"
+                style={{ marginRight: 5 }}
+              />
+            }
             keyboardType="phone-pad"
-          // fieldButtonLabel={'Forgot?'}
-          // fieldButtonFunction={() => { }}
-          />)}
+            onChangeText={(text) => {
+              setPhoneNumber(text);
+              validatePhoneNumberField();
+            }}
+            value={phoneNumber}
+            maxLength={10}
+          />
+          <Text style={{ color: 'red', fontSize: 11, fontFamily: 'Roboto-Regular' }}>{phoneNumberError}</Text>
+        </View>
+        {showOtp && (
+          <View style={{ flex: 1, marginBottom: 15, flexDirection: 'column' }}>
+            <InputField
+              label={'OTP'}
+              icon={
+                <Ionicons
+                  name="lock-closed-outline"
+                  size={20}
+                  color="#666"
+                  style={{ marginRight: 5 }}
+                />
+              }
+              inputType="otp"
+              onChangeText={(text) => {
+                setOtpValue(text);
+                validateOtpField();
+              }}
+              value={otpValue}
+              maxLength={6}
+              keyboardType="phone-pad"
+            // fieldButtonLabel={'Forgot?'}
+            // fieldButtonFunction={() => { }}
+            />
+            <Text style={{ color: 'red', fontSize: 11, fontFamily: 'Roboto-Regular' }}>{otpError}</Text>
+          </View>)}
         {/* <InputField
           label={'Password'}
           icon={
@@ -213,7 +299,7 @@ const RegisterScreen = ({navigation}) => {
           }
           inputType="password"
         /> */}
-  {/*
+        {/*
         <View
           style={{
             flexDirection: 'row',
@@ -252,7 +338,7 @@ const RegisterScreen = ({navigation}) => {
           }}
         /> */}
 
-        <CustomButton label={verification ? 'Verify OTP' : 'Get OTP'} onPress={() => { verification ? confirmCode() : signInWithPhoneNumber(); }} />
+        <CustomButton label={verification ? 'Verify OTP' : 'Get OTP'} onPress={() => { handleUserRegistration();}} />
 
         <View
           style={{
@@ -260,9 +346,9 @@ const RegisterScreen = ({navigation}) => {
             justifyContent: 'center',
             marginBottom: 30,
           }}>
-          <Text>Already registered?</Text>
+          <Text style={{color: '#666'}}>Already registered?</Text>
           <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-            <Text style={{ color: '#6a0028', fontWeight: '700'}}> Login</Text>
+            <Text style={{ color: '#6a0028', fontWeight: '700' }}> Login</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

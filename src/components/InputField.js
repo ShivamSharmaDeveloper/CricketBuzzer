@@ -19,7 +19,8 @@ export default function InputField({
         borderBottomColor: '#ccc',
         borderBottomWidth: 1,
         paddingBottom: 8,
-        marginBottom: 25,
+        marginBottom: 5,
+        // backgroundColor: '#333'
       }}>
       {icon}
       {inputType == 'password' ? (
@@ -36,7 +37,8 @@ export default function InputField({
           onChangeText={onChangeText}
           value={value}
           maxLength={maxLength}
-          style={{flex: 1, paddingVertical: 0}}
+          placeholderTextColor="#666"
+          style={{flex: 1, paddingVertical: 0, color: '#666'}}
         />
       )}
       <TouchableOpacity onPress={fieldButtonFunction}>

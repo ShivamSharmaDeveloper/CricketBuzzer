@@ -25,33 +25,33 @@ const AuthStack = () => {
       },
     }}>
       <Drawer.Screen name="Home" component={TabNavigator} options={{
-        drawerIcon: ({ color }) => (
-          <Ionicons name="home-outline" size={22} color={color} />
+        drawerIcon: ({ focused }) => (
+          <Ionicons name="home-outline" size={22} color={focused ? "#fff" : "#333"} />
         ),
       }} />
       <Drawer.Screen name="Profile" component={ProfileScreen} options={{
-        drawerIcon: (color) => (
-          <Ionicons name="person-outline" size={22} color={color} />
+        drawerIcon: ({focused}) => (
+          <Ionicons name="person-outline" size={22} color={focused ? "#fff" : "#333"} />
         ),
       }} />
       <Drawer.Screen name="Add Fund" component={AddFundScreen} options={{
-        drawerIcon: (color) => (
-          <Ionicons name="add-circle-outline" size={22} color={color} />
+        drawerIcon: ({focused}) => (
+          <Ionicons name="add-circle-outline" size={22} color={focused ? "#fff" : "#333"} />
         ),
       }} />
       <Drawer.Screen name="Wallet Statement" component={WalletScreen} options={{
-        drawerIcon: (color) => (
-          <Ionicons name="newspaper-outline" size={22} color={color} />
+        drawerIcon: ({focused}) => (
+          <Ionicons name="newspaper-outline" size={22} color={focused ? "#fff" : "#333"} />
         ),
       }} />
       <Drawer.Screen name="Information" component={InfoScreen} options={{
-        drawerIcon: (color) => (
-          <Ionicons name="information-circle-outline" size={22} color={color} />
+        drawerIcon: ({focused}) => (
+          <Ionicons name="information-circle-outline" size={22} color={focused ? "#fff" : "#333"} />
         ),
       }} />
       <Drawer.Screen name="Support" component={SupportScreen} options={{
-        drawerIcon: (color) => (
-          <Ionicons name="call-outline" size={22} color={color} />
+        drawerIcon: ({focused}) => (
+          <Ionicons name="call-outline" size={22} color={focused ? "#fff" : "#333"} />
         ),
       }} />
     </Drawer.Navigator>

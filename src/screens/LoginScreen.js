@@ -21,6 +21,7 @@ import { AuthContext } from '../context/AuthContext';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import Loader from '../components/Loader';
+import { validateOtp, validatePhoneNumber } from '../components/validation';
 // import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 
 const LoginScreen = ({ navigation }) => {
@@ -29,6 +30,8 @@ const LoginScreen = ({ navigation }) => {
   const [otpValue, setOtpValue] = useState('');
   const [verification, setVerification] = useState(null);
   const [showOtp, setShowOtp] = useState(false);
+  const [otpError, setOtpError] = useState('');
+  const [phoneNumberError, setPhoneNumberError] = useState('');
   // const [userInfo, setUserInfo] = useState(null);
 
   function onAuthStateChanged(user) {
@@ -37,6 +40,14 @@ const LoginScreen = ({ navigation }) => {
       // login(user);
     }
   }
+  useEffect(() => {
+    if (phoneNumber.length === 10) {
+      setPhoneNumberError('');
+    }
+    if (otpValue.length === 6) {
+      setOtpError('');
+    }
+  }, [phoneNumber, otpValue]);
 
   useEffect(() => {
     // GoogleSignin.configure({ webClientId: '163356141884-del12trf51fe64n5fqlqrqujee18uteh.apps.googleusercontent.com'});
@@ -53,7 +64,7 @@ const LoginScreen = ({ navigation }) => {
         .where('phone', '==', phoneNumber)
         .get();
 
-      console.log(querySnapshot?._docs[0]?._data, "snapshot");
+      console.log(querySnapshot?.docs[0]?.data(), "snapshot");
 
       if (querySnapshot.size > 0) {
         login(querySnapshot.docs[0].data());
@@ -96,7 +107,7 @@ const LoginScreen = ({ navigation }) => {
       setIsLoadingGlobal(true);
       const confirmation = await auth().signInWithPhoneNumber(`+91 ${phoneNumber}`, true);
       setVerification(confirmation);
-      console.log(confirmation, 'user');
+      // console.log(confirmation, 'user');
       setShowOtp(true);
     } catch (error) {
       console.error('Error signing in with phone number:', error);
@@ -107,31 +118,65 @@ const LoginScreen = ({ navigation }) => {
 
   const confirmCode = async () => {
     try {
+      setIsLoadingGlobal(true);
       const confirm = await verification.confirm(otpValue);
-      console.log(confirm, 'verified');
+      setOtpError('');
+      // console.log(confirm, 'verified');
       handleUserLogin(confirm);
     } catch (error) {
       console.error('Error confirming code:', error);
+      setOtpError('Invalid OTP. Please try again.');
+    } finally {
+      setIsLoadingGlobal(false);
+    }
+  };
+  const validatePhoneNumberField = () => {
+    const error = validatePhoneNumber(phoneNumber);
+    setPhoneNumberError(error);
+    return !error;
+  };
+  const validateOtpField = () => {
+    const error = validateOtp(otpValue);
+    setOtpError(error);
+    return !error;
+  };
+  const handleUserRegistration = async () => {
+    // Validate fields before proceeding
+    if (!validatePhoneNumberField() || (showOtp ? !validateOtpField() : false)) {
+      console.log('test');
+      // If any validation fails, return without proceeding
+      return;
+    } else {
+      try {
+        setIsLoadingGlobal(true);
+        // Check if the user is already registered
+        const userSnapshot = await firestore()
+          .collection('Users')
+          .where('phone', '==', phoneNumber)
+          .get();
+        if (userSnapshot.empty) {
+          // User not registered
+          setPhoneNumberError('User is not registered, Please Register');
+        }
+        else {
+          setPhoneNumberError('');
+          showOtp ? confirmCode() : signInWithPhoneNumber();
+          // User is registered, proceed with login
+        }
+      } catch (error) {
+        console.error('Error handling user registration:', error);
+      } finally {
+        setIsLoadingGlobal(false);
+      }
     }
   };
 
-  // if (!verification) {
-  //   return (
-  //     <Button
-  //       title="Phone Number Sign In"
-  //       onPress={() => signInWithPhoneNumber('+91 8979471768')}
-  //     />
-  //   );
-  // }
-  // console.log(phoneNumber, 'number');
-  // console.log(verification, "user");
-  // console.log(userInfo, 'userinfo');
   return (
     <SafeAreaView style={{ flex: 1, justifyContent: 'center' }}>
       <View style={{ paddingHorizontal: 25 }}>
         <View style={{ alignItems: 'center' }}>
           <LoginSVG
-            height={300}
+            height={250}
             width={300}
             style={{ transform: [{ rotate: '-5deg' }] }}
           />
@@ -147,44 +192,56 @@ const LoginScreen = ({ navigation }) => {
           }}>
           Login
         </Text>
-
-        <InputField
-          label={'Phone Number'}
-          icon={
-            <MaterialIcons
-              name="phone"
-              size={20}
-              color="#666"
-              style={{ marginRight: 5 }}
-            />
-          }
-          keyboardType="phone-pad"
-          onChangeText={setPhoneNumber}
-          value={phoneNumber}
-          maxLength={10}
-        />
-
-        {showOtp && (
+        <View style={{ flexDirection: 'column', marginBottom: 15 }}>
           <InputField
-            label={'OTP'}
+            label={'Phone Number'}
             icon={
-              <Ionicons
-                name="lock-closed-outline"
+              <MaterialIcons
+                name="phone"
                 size={20}
                 color="#666"
                 style={{ marginRight: 5 }}
               />
             }
-            inputType="otp"
-            onChangeText={setOtpValue}
-            value={otpValue}
-            maxLength={6}
             keyboardType="phone-pad"
-          // fieldButtonLabel={'Forgot?'}
-          // fieldButtonFunction={() => { }}
-          />)}
+            onChangeText={(text) => {
+              setPhoneNumber(text);
+              validatePhoneNumberField();
+            }}
+            value={phoneNumber}
+            maxLength={10}
+          />
+          <Text style={{ color: 'red', fontSize: 11, fontFamily: 'Roboto-Regular', }}>{phoneNumberError}</Text>
+        </View>
 
-        <CustomButton label={verification ? 'Verify OTP' : 'Get OTP'} onPress={() => { verification ? confirmCode() : signInWithPhoneNumber(); }} />
+        {showOtp && (
+          <View style={{ marginBottom: 15, flexDirection: 'column', }}>
+            <InputField
+              label={'OTP'}
+              icon={
+                <Ionicons
+                  name="lock-closed-outline"
+                  size={20}
+                  color="#666"
+                  style={{ marginRight: 5 }}
+                />
+              }
+              inputType="otp"
+              onChangeText={(text) => {
+                setOtpValue(text);
+                validateOtpField();
+              }}
+              value={otpValue}
+              maxLength={6}
+              keyboardType="phone-pad"
+            // fieldButtonLabel={'Forgot?'}
+            // fieldButtonFunction={() => { }}
+            />
+            <Text style={{ color: 'red', fontSize: 11, fontFamily: 'Roboto-Regular' }}>{otpError}</Text>
+          </View>
+        )}
+
+        <CustomButton label={verification ? 'Verify OTP' : 'Get OTP'} onPress={() => { handleUserRegistration(); }} />
 
         {/* <Text style={{ textAlign: 'center', color: '#666', marginBottom: 30 }}>
           Or, login with ...
@@ -196,7 +253,7 @@ const LoginScreen = ({ navigation }) => {
             justifyContent: 'center',
             marginBottom: 30,
           }}>
-          <Text>New to the app?</Text>
+          <Text style={{ color: '#666' }}>New to the app?</Text>
           <TouchableOpacity onPress={() => navigation.navigate('Register')}>
             <Text style={{ color: '#6a0028', fontWeight: '700' }}> Register</Text>
           </TouchableOpacity>
