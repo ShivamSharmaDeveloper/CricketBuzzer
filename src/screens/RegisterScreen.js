@@ -94,7 +94,7 @@ const RegisterScreen = ({ navigation }) => {
   const signInWithPhoneNumber = async () => {
     try {
       setIsLoadingGlobal(true); // Start global loader
-      const confirmation = await auth().signInWithPhoneNumber(`+91 ${phoneNumber}`, true);
+      const confirmation = await auth().signInWithPhoneNumber(`+91 ${phoneNumber}`);
       setVerification(confirmation);
       setShowOtp(true);
     } catch (error) {

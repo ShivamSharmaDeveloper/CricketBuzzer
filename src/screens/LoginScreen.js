@@ -105,7 +105,7 @@ const LoginScreen = ({ navigation }) => {
   const signInWithPhoneNumber = async () => {
     try {
       setIsLoadingGlobal(true);
-      const confirmation = await auth().signInWithPhoneNumber(`+91 ${phoneNumber}`, true);
+      const confirmation = await auth().signInWithPhoneNumber(`+91 ${phoneNumber}`);
       setVerification(confirmation);
       // console.log(confirmation, 'user');
       setShowOtp(true);

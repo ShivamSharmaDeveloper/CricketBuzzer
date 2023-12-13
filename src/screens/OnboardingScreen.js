@@ -21,7 +21,7 @@ const OnboardingScreen = ({navigation}) => {
             fontSize: 30,
             color: '#20315f',
           }}>
-          CricketBuzzer
+          Ratan khatri matka
         </Text>
       </View>
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>

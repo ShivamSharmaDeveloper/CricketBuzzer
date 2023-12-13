@@ -50,7 +50,7 @@ export default function HomeScreen({ navigation }) {
             />
           </TouchableOpacity>
           <Text style={{ fontSize: 20, fontFamily: 'Roboto-Medium', marginTop: 1, color: '#333' }}>
-            CricketBuzzer
+            Ratan khatri matka
           </Text>
           <TouchableOpacity onPress={() => navigation.navigate('Wallet Statement')}>
             <View
@@ -160,6 +160,8 @@ export default function HomeScreen({ navigation }) {
             title={item.title}
             subTitle={item.subtitle}
             isFree={item.isFree}
+            open={item.open}
+            close={item.close}
             onPress={() =>
               navigation.navigate('GameDetails', {
                 title: item.title,
