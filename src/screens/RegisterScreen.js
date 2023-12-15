@@ -26,6 +26,7 @@ import { AuthContext } from '../context/AuthContext';
 import firestore from '@react-native-firebase/firestore';
 import Loader from '../components/Loader';
 import { validateFullName, validateEmail, validatePhoneNumber, validateOtp } from '../components/validation';
+import { checkVerification, sendSmsVerification } from '../components/twillo';
 
 const RegisterScreen = ({ navigation }) => {
   const { login, isLoadingGlobal, setIsLoadingGlobal } = useContext(AuthContext);
@@ -94,7 +95,8 @@ const RegisterScreen = ({ navigation }) => {
   const signInWithPhoneNumber = async () => {
     try {
       setIsLoadingGlobal(true); // Start global loader
-      const confirmation = await auth().signInWithPhoneNumber(`+91 ${phoneNumber}`);
+      const confirmation = await sendSmsVerification(`+91${phoneNumber}`);
+      // const confirmation = await auth().signInWithPhoneNumber(`+91 ${phoneNumber}`);
       setVerification(confirmation);
       setShowOtp(true);
     } catch (error) {
@@ -106,7 +108,8 @@ const RegisterScreen = ({ navigation }) => {
   const confirmCode = async () => {
     try {
       setIsLoadingGlobal(true);
-      const confirm = await verification.confirm(otpValue);
+      const confirm = await checkVerification(`+91${phoneNumber}`, otpValue);
+      // const confirm = await verification.confirm(otpValue);
       setOtpError('');
       handleUserLogin(confirm);
     } catch (error) {

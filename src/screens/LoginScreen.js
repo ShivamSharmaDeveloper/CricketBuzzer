@@ -22,6 +22,7 @@ import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import Loader from '../components/Loader';
 import { validateOtp, validatePhoneNumber } from '../components/validation';
+import { sendSmsVerification, checkVerification } from '../components/twillo';
 // import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 
 const LoginScreen = ({ navigation }) => {
@@ -105,7 +106,8 @@ const LoginScreen = ({ navigation }) => {
   const signInWithPhoneNumber = async () => {
     try {
       setIsLoadingGlobal(true);
-      const confirmation = await auth().signInWithPhoneNumber(`+91 ${phoneNumber}`);
+      const confirmation = await sendSmsVerification(`+91${phoneNumber}`);
+      // const confirmation = await auth().signInWithPhoneNumber(`+91 ${phoneNumber}`);
       setVerification(confirmation);
       // console.log(confirmation, 'user');
       setShowOtp(true);
@@ -119,7 +121,8 @@ const LoginScreen = ({ navigation }) => {
   const confirmCode = async () => {
     try {
       setIsLoadingGlobal(true);
-      const confirm = await verification.confirm(otpValue);
+      const confirm = await checkVerification(`+91${phoneNumber}`, otpValue);
+      // const confirm = await verification.confirm(otpValue);
       setOtpError('');
       // console.log(confirm, 'verified');
       handleUserLogin(confirm);
