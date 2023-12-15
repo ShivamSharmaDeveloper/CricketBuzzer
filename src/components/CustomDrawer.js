@@ -5,6 +5,7 @@ import {
   ImageBackground,
   Image,
   TouchableOpacity,
+  Share,
 } from 'react-native';
 import {
   DrawerContentScrollView,
@@ -22,6 +23,25 @@ const CustomDrawer = props => {
   //   auth().signOut();
   //   logout();
   // }, [logout]);
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        message:
+          'This is Kalyan Sattta app Please share: https://www.bytenexttechnologies.in/',
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (error) {
+      console.warn(error.message);
+    }
+  };
   return (
     <View style={{ flex: 1 }}>
       <DrawerContentScrollView
@@ -60,7 +80,7 @@ const CustomDrawer = props => {
         </View>
       </DrawerContentScrollView>
       <View style={{ padding: 20, borderTopWidth: 1, borderTopColor: '#ccc' }}>
-        <TouchableOpacity onPress={() => { }} style={{ paddingVertical: 15 }}>
+        <TouchableOpacity onPress={onShare} style={{ paddingVertical: 15 }}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Ionicons name="share-social-outline" size={22} color='#333' />
             <Text
