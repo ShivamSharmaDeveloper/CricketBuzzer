@@ -119,7 +119,7 @@ export default function HomeScreen({ navigation }) {
           marginVertical: 20, flexDirection: 'row',
           justifyContent: 'space-between',
         }}>
-          <TouchableOpacity onPress={() => { }} style={{
+          <TouchableOpacity onPress={() => { navigation.navigate('Add Fund');}} style={{
             backgroundColor: '#6a0028',
             padding: 10,
             width: 130,

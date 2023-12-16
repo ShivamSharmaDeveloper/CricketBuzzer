@@ -109,12 +109,17 @@ const RegisterScreen = ({ navigation }) => {
     try {
       setIsLoadingGlobal(true);
       const confirm = await checkVerification(`+91${phoneNumber}`, otpValue);
+      if(confirm){
+        setOtpError('');
+        handleUserLogin(confirm);
+      } else {
+        setOtpError('Invalid OTP. Please try again.');
+        setIsLoadingGlobal(false);
+      }
       // const confirm = await verification.confirm(otpValue);
-      setOtpError('');
-      handleUserLogin(confirm);
     } catch (error) {
       console.log('Invalid code.', error);
-      setOtpError('Invalid OTP. Please try again.');
+      setOtpError('Please try after some Time.');
       setIsLoadingGlobal(false);
     }
   };

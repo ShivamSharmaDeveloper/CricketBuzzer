@@ -2,6 +2,7 @@ import React, { createContext, useState, useEffect } from 'react';
 import auth from '@react-native-firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loader from '../components/Loader';
+import firestore from '@react-native-firebase/firestore';
 
 export const AuthContext = createContext();
 
@@ -17,7 +18,16 @@ export const AuthProvider = ({ children }) => {
                 setIsLoading(true);
                 const storedToken = await AsyncStorage.getItem('userToken');
                 if (storedToken) {
-                    setUserToken(JSON.parse(storedToken));
+                    const querySnapshot = await firestore()
+                        .collection('Users')
+                        .where('phone', '==', JSON.parse(storedToken))
+                        .get();
+                    if (querySnapshot.size > 0) {
+                        setUserToken(querySnapshot.docs[0].data());
+                    } else {
+                        console.warn('User not found.');
+                    }
+                    // setUserToken(JSON.parse(storedToken));
                 }
             } catch (error) {
                 console.error('Error retrieving user token from AsyncStorage:', error);
@@ -30,7 +40,7 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     const login = async (userData) => {
-        let user = JSON.stringify(userData);
+        let user = JSON.stringify(userData?.phone);
         try {
             setIsLoadingGlobal(true);
             await AsyncStorage.setItem('userToken', user);
