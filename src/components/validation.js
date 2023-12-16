@@ -55,3 +55,13 @@ export const validateOtp = (otp) => {
 
     return '';
 };
+
+export const validatePoints = (points) => {
+    if (!points.trim()) {
+        return 'Points are required';
+    }
+
+    // Add more custom validation rules if needed
+
+    return '';
+};

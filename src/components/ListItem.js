@@ -44,7 +44,7 @@ export default function ListItem({photo, title, subTitle, isFree, price, onPress
         borderRadius: 20,
         marginTop: 10,
         marginRight: 8
-      }}>
+      }} disabled={isFree == 'No'}>
         <Text style={{
           color: '#fff',
           textAlign: 'center',
