@@ -66,7 +66,7 @@ export const paidGames = [
 
 export const freeGames = [
   {
-    poster: require('../assets/images/Altos-Odyssey.jpeg'),
+    poster: require('../assets/images/graph.png'),
     title: 'Kalyan satta morning',
     subtitle: '299-01-669',
     isFree: 'No',
@@ -75,7 +75,7 @@ export const freeGames = [
     close: '10:30 AM',
   },
   {
-    poster: require('../assets/images/asphalt-9.jpeg'),
+    poster: require('../assets/images/graph.png'),
     title: 'SriDevi Morning',
     subtitle: '140-51-119',
     isFree: 'No',
@@ -84,7 +84,7 @@ export const freeGames = [
     close: '10:35 AM',
   },
   {
-    poster: require('../assets/images/genshin-impact.jpeg'),
+    poster: require('../assets/images/graph.png'),
     title: 'Milan Morning',
     subtitle: '889-58-170',
     isFree: 'No',
@@ -93,7 +93,7 @@ export const freeGames = [
     close: '11:10 AM',
   },
   {
-    poster: require('../assets/images/fortnite.webp'),
+    poster: require('../assets/images/graph.png'),
     title: 'kalyan morning',
     subtitle: '129-22-228',
     isFree: 'No',
@@ -102,7 +102,7 @@ export const freeGames = [
     close: '11:55 AM',
   },
   {
-    poster: require('../assets/images/pokemon-unite.jpeg'),
+    poster: require('../assets/images/graph.png'),
     title: 'Time bazar morning',
     subtitle: '128-79-126',
     isFree: 'No',
@@ -111,7 +111,7 @@ export const freeGames = [
     close: '12:10 PM',
   },
   {
-    poster: require('../assets/images/diablo-4.jpeg'),
+    poster: require('../assets/images/graph.png'),
     title: 'madhur morning',
     subtitle: '279-80-460',
     isFree: 'No',
@@ -120,7 +120,7 @@ export const freeGames = [
     close: '12:25 PM',
   },
   {
-    poster: require('../assets/images/spiderman.webp'),
+    poster: require('../assets/images/graph.png'),
     title: 'sridevi',
     subtitle: '179-05-447',
     isFree: 'No',
@@ -129,7 +129,7 @@ export const freeGames = [
     close: '12:30 PM',
   },
   {
-    poster: require('../assets/images/battlefield-2042.webp'),
+    poster: require('../assets/images/graph.png'),
     title: 'Time bazar',
     subtitle: '115-72-390',
     isFree: 'No',
@@ -138,7 +138,7 @@ export const freeGames = [
     close: '02:00 PM',
   },
   {
-    poster: require('../assets/images/miles-morales.webp'),
+    poster: require('../assets/images/graph.png'),
     title: 'madhur day',
     subtitle: '457-68-116',
     isFree: 'No',
@@ -147,7 +147,7 @@ export const freeGames = [
     close: '02:30 PM',
   },
   {
-    poster: require('../assets/images/halo-infinite.jpeg'),
+    poster: require('../assets/images/graph.png'),
     title: 'Milan day',
     subtitle: '456-49-225',
     isFree: 'No',
@@ -156,7 +156,7 @@ export const freeGames = [
     close: '05:00 PM',
   },
   {
-    poster: require('../assets/images/FarCry6.png'),
+    poster: require('../assets/images/graph.png'),
     title: 'rajdhani day',
     subtitle: '599-39-450',
     isFree: 'No',
@@ -165,7 +165,7 @@ export const freeGames = [
     close: '04:45 PM',
   },
   {
-    poster: require('../assets/images/god-of-war.jpeg'),
+    poster: require('../assets/images/graph.png'),
     title: 'supreme day',
     subtitle: '339-56-899',
     isFree: 'No',
@@ -174,7 +174,7 @@ export const freeGames = [
     close: '05:25 PM',
   },
   {
-    poster: require('../assets/images/god-of-war.jpeg'),
+    poster: require('../assets/images/graph.png'),
     title: 'Kalyan',
     subtitle: '450-96-349',
     isFree: 'No',
@@ -183,7 +183,7 @@ export const freeGames = [
     close: '05:45 PM',
   },
   {
-    poster: require('../assets/images/god-of-war.jpeg'),
+    poster: require('../assets/images/graph.png'),
     title: 'sridevi night',
     subtitle: '***-**-***',
     isFree: 'Yes',
@@ -192,7 +192,7 @@ export const freeGames = [
     close: '08:00 PM',
   },
   {
-    poster: require('../assets/images/god-of-war.jpeg'),
+    poster: require('../assets/images/graph.png'),
     title: 'mahdur night',
     subtitle: '***-**-***',
     isFree: 'Yes',
@@ -201,7 +201,7 @@ export const freeGames = [
     close: '10:15 PM',
   },
   {
-    poster: require('../assets/images/god-of-war.jpeg'),
+    poster: require('../assets/images/graph.png'),
     title: 'supreme night',
     subtitle: '***-**-***',
     isFree: 'Yes',
@@ -210,7 +210,7 @@ export const freeGames = [
     close: '10:30 PM',
   },
   {
-    poster: require('../assets/images/god-of-war.jpeg'),
+    poster: require('../assets/images/graph.png'),
     title: 'milan night',
     subtitle: '***-**-***',
     isFree: 'Yes',
@@ -219,7 +219,7 @@ export const freeGames = [
     close: '10:45 PM',
   },
   {
-    poster: require('../assets/images/god-of-war.jpeg'),
+    poster: require('../assets/images/graph.png'),
     title: 'kalyan night',
     subtitle: '***-**-***',
     isFree: 'Yes',
@@ -228,7 +228,7 @@ export const freeGames = [
     close: '11:10 PM',
   },
   {
-    poster: require('../assets/images/god-of-war.jpeg'),
+    poster: require('../assets/images/graph.png'),
     title: 'rajdhani night',
     subtitle: '***-**-***',
     isFree: 'Yes',
@@ -237,7 +237,7 @@ export const freeGames = [
     close: '11:20 PM',
   },
   {
-    poster: require('../assets/images/god-of-war.jpeg'),
+    poster: require('../assets/images/graph.png'),
     title: 'kalyan satta night',
     subtitle: '***-**-***',
     isFree: 'Yes',
@@ -246,7 +246,7 @@ export const freeGames = [
     close: '10:30 PM',
   },
   {
-    poster: require('../assets/images/god-of-war.jpeg'),
+    poster: require('../assets/images/graph.png'),
     title: 'main bazar',
     subtitle: '***-**-***',
     isFree: 'Yes',
