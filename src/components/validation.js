@@ -65,3 +65,23 @@ export const validatePoints = (points) => {
 
     return '';
 };
+
+export const validateAmount = (amount) => {
+    if (!amount.trim()) {
+        return 'Amount is required';
+    }
+
+    // Add more custom validation rules if needed
+
+    return '';
+};
+
+export const validateDigit = (digit) => {
+    if (!digit.trim()) {
+        return 'Amount is required';
+    }
+
+    // Add more custom validation rules if needed
+
+    return '';
+};

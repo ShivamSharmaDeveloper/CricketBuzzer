@@ -163,7 +163,7 @@ export default function HomeScreen({ navigation }) {
             open={item.open}
             close={item.close}
             onPress={() =>
-              navigation.navigate('GameDetails', {
+              navigation.navigate('Game', {
                 title: item.title,
                 id: item.id,
               })
