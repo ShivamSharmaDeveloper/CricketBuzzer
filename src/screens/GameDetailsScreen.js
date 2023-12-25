@@ -1,33 +1,67 @@
 import React from 'react'
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, Image, SafeAreaView } from 'react-native';
+import singleDigit from '../assets/images/singleDigit.png';
+import singlePanna from '../assets/images/singlePanna.png';
+import doublePanna from '../assets/images/doublePanna.png';
+import triplePanna from '../assets/images/triplePanna.png';
 
-const GameDetailsScreen = ({navigation, route}) => {
+const GameDetailsScreen = ({ navigation, route }) => {
   return (
-    <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
-      <Text>Game Details Screen</Text>
-      <Text>{route.params?.title}</Text>
-      <TouchableOpacity onPress={() => {
-        navigation.navigate('Single Digit', {
-          title: route.params?.title,
-          id: route.params?.id,
-        }); }}><Text style={{color: '#666', marginTop: 20, borderColor: '#666', borderWidth: 1}}>Single Digit</Text></TouchableOpacity>
-      <TouchableOpacity onPress={() => {
-        navigation.navigate('Single Panna', {
-          title: route.params?.title,
-          id: route.params?.id,
-        }); }}><Text style={{color: '#666', marginTop: 20, borderColor: '#666', borderWidth: 1}}>Single Panna</Text></TouchableOpacity>
-      <TouchableOpacity onPress={() => {
-        navigation.navigate('Double Panna', {
-          title: route.params?.title,
-          id: route.params?.id,
-        }); }}><Text style={{color: '#666', marginTop: 20, borderColor: '#666', borderWidth: 1}}>Double Panna</Text></TouchableOpacity>
-      <TouchableOpacity onPress={() => {
-        navigation.navigate('Triple Panna', {
-          title: route.params?.title,
-          id: route.params?.id,
-        }); }}><Text style={{color: '#666', marginTop: 20, borderColor: '#666', borderWidth: 1}}>Triple Panna</Text></TouchableOpacity>
+    <SafeAreaView style={{flex: 1}}>
+    <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center' }}>
+      <View style={{ marginTop: 20 }}>
+        <TouchableOpacity onPress={() => {
+          navigation.navigate('Single Digit', {
+            title: route.params?.title,
+            id: route.params?.id,
+          });
+        }}>
+          <Image
+            source={singleDigit}
+            style={{ width: 150, height: 150, borderRadius: 10, }}
+          />
+        </TouchableOpacity>
+      </View>
+      <View style={{ flexDirection: 'row', gap: 30 }}>
+        <TouchableOpacity onPress={() => {
+          navigation.navigate('Single Panna', {
+            title: route.params?.title,
+            id: route.params?.id,
+          });
+        }}>
+          <Image
+            source={singlePanna}
+            style={{ width: 150, height: 150, borderRadius: 10, }}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => {
+          navigation.navigate('Double Panna', {
+            title: route.params?.title,
+            id: route.params?.id,
+          });
+        }}>
+          <Image
+            source={doublePanna}
+            style={{ width: 150, height: 150, borderRadius: 10, }}
+          />
+        </TouchableOpacity>
+      </View>
+      <View>
+        <TouchableOpacity onPress={() => {
+          navigation.navigate('Triple Panna', {
+            title: route.params?.title,
+            id: route.params?.id,
+          });
+        }}>
+          <Image
+            source={triplePanna}
+            style={{ width: 150, height: 150, borderRadius: 10, }}
+          />
+        </TouchableOpacity>
+      </View>
     </View>
-  )
-}
+    </SafeAreaView>
+  );
+};
 
-export default GameDetailsScreen
+export default GameDetailsScreen;

@@ -54,9 +54,13 @@ const HomeStack = () => {
       <Stack.Screen
         name="Game"
         component={GameDetailsScreen}
-        // options={({route}) => ({
-        //   title: route.params?.title,
-        // })}
+        options={({route}) => ({
+          headerStyle: {
+            backgroundColor: '#6a0028',
+          },
+          headerTintColor: '#fff',
+          id: route.params?.id,
+        })}
       />
       <Stack.Screen
         name="Single Digit"
