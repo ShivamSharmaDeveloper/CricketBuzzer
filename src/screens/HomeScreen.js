@@ -132,7 +132,7 @@ export default function HomeScreen({ navigation }) {
               fontSize: 14,
             }}>Add Points</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => { }} style={{
+          <TouchableOpacity onPress={() => { navigation.navigate('Wallet Fund'); }} style={{
             backgroundColor: '#6a0028',
             padding: 10,
             width: 130,
