@@ -15,7 +15,7 @@ export const sendSmsVerification = async (phoneNumber) => {
             body: data,
         });
         const json = response.json();
-        return json.success;
+        return json;
     } catch (error) {
         console.error(error);
         return false;
@@ -38,7 +38,7 @@ export const checkVerification = async (phoneNumber, code) => {
         });
 
         const json = response.json();
-        return json.success;
+        return json;
     } catch (error) {
         console.error(error);
         return false;
