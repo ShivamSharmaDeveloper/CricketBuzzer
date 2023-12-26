@@ -1,6 +1,7 @@
 import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Mcicons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import ProfileScreen from '../screens/ProfileScreen';
 import CustomDrawer from '../components/CustomDrawer';
@@ -9,6 +10,7 @@ import AddFundScreen from '../screens/AddFundScreen';
 import WalletScreen from '../screens/WalletScreen';
 import InfoScreen from '../screens/InfoScreen';
 import SupportScreen from '../screens/SupportScreen';
+import WithdrawFundScreen from '../screens/WithdrawFundScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -42,6 +44,11 @@ const AuthStack = () => {
       <Drawer.Screen name="Wallet Statement" component={WalletScreen} options={{
         drawerIcon: ({focused}) => (
           <Ionicons name="newspaper-outline" size={22} color={focused ? "#fff" : "#333"} />
+        ),
+      }} />
+      <Drawer.Screen name="Wallet Fund" component={WithdrawFundScreen} options={{
+        drawerIcon: ({focused}) => (
+          <Mcicons name="bank-outline" size={22} color={focused ? "#fff" : "#333"} />
         ),
       }} />
       <Drawer.Screen name="Information" component={InfoScreen} options={{

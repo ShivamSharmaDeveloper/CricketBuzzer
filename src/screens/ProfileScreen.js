@@ -46,7 +46,7 @@ const ProfileScreen = ({ navigation }) => {
                   // keyboardType={'phone-pad'}
                   // onChangeText={(text) => { setPoints(text); }}
                   value={userToken?.name}
-                  maxLength={5}
+                  // maxLength={25}
                   placeholderTextColor="#666"
                   style={{ flex: 1, paddingVertical: 2, color: '#666', fontSize: 16, paddingHorizontal: 15, paddingTop: 5 }}
                   editable={false}
@@ -73,7 +73,7 @@ const ProfileScreen = ({ navigation }) => {
                   keyboardType={'email-address'}
                   // onChangeText={(text) => { setPoints(text); }}
                   value={userToken?.email}
-                  maxLength={5}
+                  // maxLength={5}
                   placeholderTextColor="#666"
                   style={{ flex: 1, paddingVertical: 2, color: '#666', fontSize: 16, paddingHorizontal: 15, paddingTop: 5 }}
                   editable={false}
@@ -100,7 +100,7 @@ const ProfileScreen = ({ navigation }) => {
                   // keyboardType={'phone-pad'}
                   // onChangeText={(text) => { setPoints(text); }}
                   value={userToken?.phone}
-                  maxLength={5}
+                  // maxLength={5}
                   placeholderTextColor="#666"
                   style={{ flex: 1, paddingVertical: 2, color: '#666', fontSize: 16, paddingHorizontal: 15, paddingTop: 5 }}
                   editable={false}
