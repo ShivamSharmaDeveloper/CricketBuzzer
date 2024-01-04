@@ -16,7 +16,7 @@ const WalletScreen = ({ navigation }) => {
           style={{ margin: 15 }}
           onPress={() => { navigation.navigate('Home'); }}
         />
-        <Text style={{ fontSize: 21, color: '#333', marginBottom: 10, fontWeight: 600, margin: 15 }}>Support</Text>
+        <Text style={{ fontSize: 21, color: '#333', marginBottom: 10, fontWeight: 600, margin: 15 }}>Wallet Statement</Text>
       </View>
       <View style={{ flex: 1, marginTop: 20, marginLeft: 10, marginRight: 10, backgroundColor: '#D9D9D9', maxHeight: windowHeight - 600 }}>
         <View style={{ flex: 1, justifyContent: 'space-between', flexDirection: 'row', marginLeft: 10, marginTop: 20, marginRight: 10 }}>
