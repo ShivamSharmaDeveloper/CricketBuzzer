@@ -90,3 +90,13 @@ export const validateDigit = (digit) => {
 
     return '';
 };
+
+export const validateRiquired = (value) => {
+    if (!value.trim()) {
+        return 'This is required';
+    }
+
+    // Add more custom validation rules if needed
+
+    return '';
+};

@@ -10,7 +10,7 @@ import AddFundScreen from '../screens/AddFundScreen';
 import WalletScreen from '../screens/WalletScreen';
 import InfoScreen from '../screens/InfoScreen';
 import SupportScreen from '../screens/SupportScreen';
-import WithdrawFundScreen from '../screens/WithdrawFundScreen';
+import WalletFundNavigation from './WalletFundNavigation';
 
 const Drawer = createDrawerNavigator();
 
@@ -46,7 +46,7 @@ const AuthStack = () => {
           <Ionicons name="newspaper-outline" size={22} color={focused ? "#fff" : "#333"} />
         ),
       }} />
-      <Drawer.Screen name="Wallet Fund" component={WithdrawFundScreen} options={{
+      <Drawer.Screen name="Wallet Fund" component={WalletFundNavigation} options={{
         drawerIcon: ({focused}) => (
           <Mcicons name="bank-outline" size={22} color={focused ? "#fff" : "#333"} />
         ),

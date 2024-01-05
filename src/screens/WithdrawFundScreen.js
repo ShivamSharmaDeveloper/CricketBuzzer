@@ -21,18 +21,19 @@ const WithdrawFundScreen = ({ navigation }) => {
   const [amountError, setAmountError] = useState('');
 
   const validateAmountField = () => {
-    const error = validateAmount(amount);
+    const error = validateAmount(amount, userToken?.coins);
     setAmountError(error);
     return !error;
   };
 
   const handleProceed = () => {
     // Validate fields before proceeding
-    if (!validateAmountField()) {
+    if (!validateAmountField() || value.length === 0) {
+      console.log('save');
       // If any validation fails, return without proceeding
       return;
     } else {
-
+      console.log(value, 'running');
     }
   };
 
@@ -55,7 +56,7 @@ const WithdrawFundScreen = ({ navigation }) => {
         <Text style={{ fontSize: 18, fontFamily: 'Roboto-Bold', color: '#333' }}>Payment Method</Text>
         <View style={{ flexDirection: 'row', gap: 10 }}>
           <TouchableOpacity onPress={() => {
-            navigation.navigate('Single Panna', {
+            navigation.navigate('Bank Details', {
               // title: route.params?.title,
               // id: route.params?.id,
             });
@@ -70,7 +71,7 @@ const WithdrawFundScreen = ({ navigation }) => {
             <Text style={{ fontSize: 14, color: '#333', fontFamily: 'Roboto-Bold' }}>Bank</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => {
-            navigation.navigate('Single Panna', {
+            navigation.navigate('Upi', {
               // title: route.params?.title,
               // id: route.params?.id,
             });
@@ -85,7 +86,7 @@ const WithdrawFundScreen = ({ navigation }) => {
             <Text style={{ fontSize: 14, color: '#333', fontFamily: 'Roboto-Bold' }}>PhonePe</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => {
-            navigation.navigate('Single Panna', {
+            navigation.navigate('Upi', {
               // title: route.params?.title,
               // id: route.params?.id,
             });
@@ -100,7 +101,7 @@ const WithdrawFundScreen = ({ navigation }) => {
             <Text style={{ fontSize: 14, color: '#333', fontFamily: 'Roboto-Bold' }}>Google Pay</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => {
-            navigation.navigate('Single Panna', {
+            navigation.navigate('Upi', {
               // title: route.params?.title,
               // id: route.params?.id,
             });
@@ -132,7 +133,7 @@ const WithdrawFundScreen = ({ navigation }) => {
           itemTextStyle={{ color: "#333" }}
         />
         <View style={{ flexDirection: 'row', gap: 10 }}>
-          <View style={{ flexDirection: 'column', gap: 5 }}>
+          <View style={{ flexDirection: 'column', gap: 5, flexWrap: 'wrap', width: windowWidth - 200, }}>
             <View
               style={{
                 flexDirection: 'row',
@@ -157,7 +158,7 @@ const WithdrawFundScreen = ({ navigation }) => {
               // editable={false}
               />
             </View>
-            <Text style={{ color: 'red', fontSize: 12, fontFamily: 'Roboto-Regular', marginLeft: 10 }}>{amountError}</Text>
+            <Text style={{ color: 'red', fontSize: 12, fontFamily: 'Roboto-Regular', marginLeft: 10, flexWrap: 'wrap', width: windowWidth - 210, }}>{amountError}</Text>
           </View>
           <TouchableOpacity
             onPress={() => { handleProceed(); }}
