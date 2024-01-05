@@ -61,6 +61,12 @@ export const validatePoints = (points) => {
         return 'Points are required';
     }
 
+    if (Number(points) < 100) {
+        return 'Minimum Points can be added is 100';
+    } else if (Number(points) === 100) {
+        return '';
+    }
+
     // Add more custom validation rules if needed
 
     return '';
