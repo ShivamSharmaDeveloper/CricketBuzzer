@@ -1,11 +1,13 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { SafeAreaView, Text, TouchableOpacity, View } from 'react-native'
 import { windowHeight, windowWidth } from '../../utils/Dimensions'
 import { TextInput } from 'react-native-gesture-handler'
 import RadioButtonGroup from '../../components/RadioBottonGroup'
 import { validateAmount, validateDigit } from '../../components/validation'
+import { AuthContext } from '../../context/AuthContext'
 
 const SingleDigitScreen = () => {
+    const { userToken } = useContext(AuthContext);
     const [selectedOption, setSelectedOption] = useState('Open');
     const [digits, setDigits] = useState('');
     const [digitError, setDigitError] = useState('');
@@ -32,7 +34,7 @@ const SingleDigitScreen = () => {
     };
     const formatedDate = formatDate();
     const validateAmountField = () => {
-        const error = validateAmount(amount);
+        const error = validateAmount(amount, userToken?.coins);
         setAmountError(error);
         return !error;
     };

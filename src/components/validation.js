@@ -66,11 +66,16 @@ export const validatePoints = (points) => {
     return '';
 };
 
-export const validateAmount = (amount) => {
+export const validateAmount = (amount, fund) => {
     if (!amount.trim()) {
         return 'Amount is required';
     }
 
+    if (amount > fund) {
+        return 'Amount must not be greater than wallet fund.';
+    } else if (amount == fund) {
+        return '';
+    }
     // Add more custom validation rules if needed
 
     return '';
@@ -78,7 +83,7 @@ export const validateAmount = (amount) => {
 
 export const validateDigit = (digit) => {
     if (!digit.trim()) {
-        return 'Amount is required';
+        return 'Digit is required';
     }
 
     // Add more custom validation rules if needed
