@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { windowWidth } from '../../utils/Dimensions';
 import { validateRiquired } from '../../components/validation';
+import { responsiveFontSize, responsiveWidth } from 'react-native-responsive-dimensions';
 
 const Bank = () => {
     const [accNumber, setAccNumber] = useState('');
@@ -88,10 +89,10 @@ const Bank = () => {
 
     return (
         <SafeAreaView style={{ justifyContent: 'center' }}>
-            <View style={{ flexDirection: 'column', margin: 30, gap: 20, }}>
-                <View style={{ flexDirection: 'column', gap: 2 }}>
-                    <View style={{ flexDirection: 'column', gap: 5, flexWrap: 'wrap', width: windowWidth - 60 }}>
-                        <Text style={{ fontFamily: 'Roboto-Bold', fontSize: 16, color: "#333", marginLeft: 5 }}>Account Holder Name</Text>
+            <View style={{ flexDirection: 'column', margin: responsiveWidth(8), gap: responsiveWidth(5), }}>
+                <View style={{ flexDirection: 'column', gap: responsiveWidth(0.5) }}>
+                    <View style={{ flexDirection: 'column', gap: responsiveWidth(1.5), flexWrap: 'wrap', width: responsiveWidth(82) }}>
+                        <Text style={{ fontFamily: 'Roboto-Bold', fontSize: responsiveFontSize(2.2), color: "#333", marginLeft: responsiveWidth(1.5) }}>Account Holder Name</Text>
                         <View
                             style={{
                                 flexDirection: 'row',
@@ -99,10 +100,10 @@ const Bank = () => {
                                 borderColor: '#ccc',
                                 // borderBottomWidth: 1,
                                 borderWidth: 1,
-                                paddingBottom: 8,
+                                paddingBottom: responsiveWidth(2.2),
                                 // marginBottom: 4,
                                 alignItems: 'center',
-                                width: windowWidth - 65,
+                                width: responsiveWidth(82),
                                 backgroundColor: '#fff',
                                 border: 10,
                             }}>
@@ -113,14 +114,14 @@ const Bank = () => {
                                 value={accName}
                                 maxLength={25}
                                 placeholderTextColor="#666"
-                                style={{ flex: 1, paddingVertical: 2, color: '#666', fontSize: 15, paddingHorizontal: 15, paddingTop: 8, fontFamily: 'Roboto-Bold' }}
+                                style={{ flex: responsiveWidth(1), paddingVertical: responsiveWidth(0.5), color: '#666', fontSize: responsiveFontSize(2), paddingHorizontal: responsiveWidth(4.1), paddingTop: responsiveWidth(2.2), fontFamily: 'Roboto-Bold' }}
                             // editable={false}
                             />
                         </View>
-                        <Text style={{ color: 'red', fontSize: 12, fontFamily: 'Roboto-Regular', marginLeft: 10, flexWrap: 'wrap', width: windowWidth - 210, }}>{accNameError}</Text>
+                        <Text style={{ color: 'red', fontSize: responsiveFontSize(1.7), fontFamily: 'Roboto-Regular', marginLeft: responsiveWidth(3), flexWrap: 'wrap', width: responsiveWidth(45), }}>{accNameError}</Text>
                     </View>
-                    <View style={{ flexDirection: 'column', gap: 5, flexWrap: 'wrap', width: windowWidth - 60 }}>
-                        <Text style={{ fontFamily: 'Roboto-Bold', fontSize: 16, color: "#333", marginLeft: 5 }}>Account Number</Text>
+                    <View style={{ flexDirection: 'column', gap: responsiveWidth(1.5), flexWrap: 'wrap', width: responsiveWidth(82) }}>
+                        <Text style={{ fontFamily: 'Roboto-Bold', fontSize: responsiveFontSize(2.2), color: "#333", marginLeft: responsiveWidth(1.5) }}>Account Number</Text>
                         <View
                             style={{
                                 flexDirection: 'row',
@@ -128,10 +129,10 @@ const Bank = () => {
                                 borderColor: '#ccc',
                                 // borderBottomWidth: 1,
                                 borderWidth: 1,
-                                paddingBottom: 8,
+                                paddingBottom: responsiveWidth(2.2),
                                 // marginBottom: 4,
                                 alignItems: 'center',
-                                width: windowWidth - 65,
+                                width: responsiveWidth(82),
                                 backgroundColor: '#fff',
                                 border: 10,
                             }}>
@@ -142,14 +143,14 @@ const Bank = () => {
                                 value={accNumber}
                                 maxLength={16}
                                 placeholderTextColor="#666"
-                                style={{ flex: 1, paddingVertical: 2, color: '#666', fontSize: 15, paddingHorizontal: 15, paddingTop: 8, fontFamily: 'Roboto-Bold' }}
+                                style={{ flex: responsiveWidth(1), paddingVertical: responsiveWidth(0.5), color: '#666', fontSize: responsiveFontSize(2), paddingHorizontal: responsiveWidth(4.1), paddingTop: responsiveWidth(2.2), fontFamily: 'Roboto-Bold' }}
                             // editable={false}
                             />
                         </View>
-                        <Text style={{ color: 'red', fontSize: 12, fontFamily: 'Roboto-Regular', marginLeft: 10, flexWrap: 'wrap', width: windowWidth - 210, }}>{accNumberError}</Text>
+                        <Text style={{ color: 'red', fontSize: responsiveFontSize(1.7), fontFamily: 'Roboto-Regular', marginLeft: responsiveWidth(3), flexWrap: 'wrap', width: responsiveWidth(45), }}>{accNumberError}</Text>
                     </View>
-                    <View style={{ flexDirection: 'column', gap: 5, flexWrap: 'wrap', width: windowWidth - 60 }}>
-                        <Text style={{ fontFamily: 'Roboto-Bold', fontSize: 16, color: "#333", marginLeft: 5 }}>Confirm Account Number</Text>
+                    <View style={{ flexDirection: 'column', gap: responsiveWidth(1.5), flexWrap: 'wrap', width: responsiveWidth(82) }}>
+                        <Text style={{ fontFamily: 'Roboto-Bold', fontSize: responsiveFontSize(2.2), color: "#333", marginLeft: responsiveWidth(1.5) }}>Confirm Account Number</Text>
                         <View
                             style={{
                                 flexDirection: 'row',
@@ -157,10 +158,10 @@ const Bank = () => {
                                 borderColor: '#ccc',
                                 // borderBottomWidth: 1,
                                 borderWidth: 1,
-                                paddingBottom: 8,
+                                paddingBottom: responsiveWidth(2.2),
                                 // marginBottom: 4,
                                 alignItems: 'center',
-                                width: windowWidth - 65,
+                                width: responsiveWidth(82),
                                 backgroundColor: '#fff',
                                 border: 10,
                             }}>
@@ -171,14 +172,14 @@ const Bank = () => {
                                 value={accConfNumber}
                                 maxLength={16}
                                 placeholderTextColor="#666"
-                                style={{ flex: 1, paddingVertical: 2, color: '#666', fontSize: 15, paddingHorizontal: 15, paddingTop: 8, fontFamily: 'Roboto-Bold' }}
+                                style={{ flex: responsiveWidth(1), paddingVertical: responsiveWidth(0.5), color: '#666', fontSize: responsiveFontSize(2), paddingHorizontal: responsiveWidth(4.1), paddingTop: responsiveWidth(2.2), fontFamily: 'Roboto-Bold' }}
                             // editable={false}
                             />
                         </View>
-                        <Text style={{ color: 'red', fontSize: 12, fontFamily: 'Roboto-Regular', marginLeft: 10, flexWrap: 'wrap', width: windowWidth - 210, }}>{accConfNumberError}</Text>
+                        <Text style={{ color: 'red', fontSize: responsiveFontSize(1.7), fontFamily: 'Roboto-Regular', marginLeft: responsiveWidth(3), flexWrap: 'wrap', width: responsiveWidth(45), }}>{accConfNumberError}</Text>
                     </View>
-                    <View style={{ flexDirection: 'column', gap: 5, flexWrap: 'wrap', width: windowWidth - 60 }}>
-                        <Text style={{ fontFamily: 'Roboto-Bold', fontSize: 16, color: "#333", marginLeft: 5 }}>IFSC Code</Text>
+                    <View style={{ flexDirection: 'column', gap: responsiveWidth(1.5), flexWrap: 'wrap', width: responsiveWidth(82) }}>
+                        <Text style={{ fontFamily: 'Roboto-Bold', fontSize: responsiveFontSize(2.2), color: "#333", marginLeft: responsiveWidth(1.5) }}>IFSC Code</Text>
                         <View
                             style={{
                                 flexDirection: 'row',
@@ -186,10 +187,10 @@ const Bank = () => {
                                 borderColor: '#ccc',
                                 // borderBottomWidth: 1,
                                 borderWidth: 1,
-                                paddingBottom: 8,
+                                paddingBottom: responsiveWidth(2.2),
                                 // marginBottom: 4,
                                 alignItems: 'center',
-                                width: windowWidth - 65,
+                                width: responsiveWidth(82),
                                 backgroundColor: '#fff',
                                 border: 10,
                             }}>
@@ -200,14 +201,14 @@ const Bank = () => {
                                 value={ifscCode}
                                 maxLength={11}
                                 placeholderTextColor="#666"
-                                style={{ flex: 1, paddingVertical: 2, color: '#666', fontSize: 15, paddingHorizontal: 15, paddingTop: 8, fontFamily: 'Roboto-Bold' }}
+                                style={{ flex: responsiveWidth(1), paddingVertical: responsiveWidth(0.5), color: '#666', fontSize: responsiveFontSize(2), paddingHorizontal: responsiveWidth(4.1), paddingTop: responsiveWidth(2.2), fontFamily: 'Roboto-Bold' }}
                             // editable={false}
                             />
                         </View>
-                        <Text style={{ color: 'red', fontSize: 12, fontFamily: 'Roboto-Regular', marginLeft: 10, flexWrap: 'wrap', width: windowWidth - 210, }}>{ifscCodeError}</Text>
+                        <Text style={{ color: 'red', fontSize: responsiveFontSize(1.7), fontFamily: 'Roboto-Regular', marginLeft: responsiveWidth(3), flexWrap: 'wrap', width: responsiveWidth(45), }}>{ifscCodeError}</Text>
                     </View>
-                    <View style={{ flexDirection: 'column', gap: 5, flexWrap: 'wrap', width: windowWidth - 60 }}>
-                        <Text style={{ fontFamily: 'Roboto-Bold', fontSize: 16, color: "#333", marginLeft: 5 }}>Bank Name</Text>
+                    <View style={{ flexDirection: 'column', gap: responsiveWidth(1.5), flexWrap: 'wrap', width: responsiveWidth(82) }}>
+                        <Text style={{ fontFamily: 'Roboto-Bold', fontSize: responsiveFontSize(2.2), color: "#333", marginLeft: responsiveWidth(1.5) }}>Bank Name</Text>
                         <View
                             style={{
                                 flexDirection: 'row',
@@ -215,10 +216,10 @@ const Bank = () => {
                                 borderColor: '#ccc',
                                 // borderBottomWidth: 1,
                                 borderWidth: 1,
-                                paddingBottom: 8,
+                                paddingBottom: responsiveWidth(2.2),
                                 // marginBottom: 4,
                                 alignItems: 'center',
-                                width: windowWidth - 65,
+                                width: responsiveWidth(82),
                                 backgroundColor: '#fff',
                                 border: 10,
                             }}>
@@ -229,14 +230,14 @@ const Bank = () => {
                                 value={bankName}
                                 maxLength={25}
                                 placeholderTextColor="#666"
-                                style={{ flex: 1, paddingVertical: 2, color: '#666', fontSize: 15, paddingHorizontal: 15, paddingTop: 8, fontFamily: 'Roboto-Bold' }}
+                                style={{ flex: responsiveWidth(1), paddingVertical: responsiveWidth(0.5), color: '#666', fontSize: responsiveFontSize(2), paddingHorizontal: responsiveWidth(4.1), paddingTop: responsiveWidth(2.2), fontFamily: 'Roboto-Bold' }}
                             // editable={false}
                             />
                         </View>
-                        <Text style={{ color: 'red', fontSize: 12, fontFamily: 'Roboto-Regular', marginLeft: 10, flexWrap: 'wrap', width: windowWidth - 210, }}>{bankNameError}</Text>
+                        <Text style={{ color: 'red', fontSize: responsiveFontSize(1.7), fontFamily: 'Roboto-Regular', marginLeft: responsiveWidth(3), flexWrap: 'wrap', width: responsiveWidth(45), }}>{bankNameError}</Text>
                     </View>
-                    <View style={{ flexDirection: 'column', gap: 5, flexWrap: 'wrap', width: windowWidth - 60 }}>
-                        <Text style={{ fontFamily: 'Roboto-Bold', fontSize: 16, color: "#333", marginLeft: 5 }}>Branch Address</Text>
+                    <View style={{ flexDirection: 'column', gap: responsiveWidth(1.5), flexWrap: 'wrap', width: responsiveWidth(82) }}>
+                        <Text style={{ fontFamily: 'Roboto-Bold', fontSize: responsiveFontSize(2.2), color: "#333", marginLeft: responsiveWidth(1.5) }}>Branch Address</Text>
                         <View
                             style={{
                                 flexDirection: 'row',
@@ -244,10 +245,10 @@ const Bank = () => {
                                 borderColor: '#ccc',
                                 // borderBottomWidth: 1,
                                 borderWidth: 1,
-                                paddingBottom: 8,
+                                paddingBottom: responsiveWidth(2.2),
                                 // marginBottom: 4,
                                 alignItems: 'center',
-                                width: windowWidth - 65,
+                                width: responsiveWidth(82),
                                 backgroundColor: '#fff',
                                 border: 10,
                             }}>
@@ -258,27 +259,27 @@ const Bank = () => {
                                 value={Branch}
                                 maxLength={25}
                                 placeholderTextColor="#666"
-                                style={{ flex: 1, paddingVertical: 2, color: '#666', fontSize: 15, paddingHorizontal: 15, paddingTop: 8, fontFamily: 'Roboto-Bold' }}
+                                style={{ flex: responsiveWidth(1), paddingVertical: responsiveWidth(0.5), color: '#666', fontSize: responsiveFontSize(2), paddingHorizontal: responsiveWidth(4.1), paddingTop: responsiveWidth(2.2), fontFamily: 'Roboto-Bold' }}
                             // editable={false}
                             />
                         </View>
-                        <Text style={{ color: 'red', fontSize: 12, fontFamily: 'Roboto-Regular', marginLeft: 10, flexWrap: 'wrap', width: windowWidth - 210, }}>{BranchError}</Text>
+                        <Text style={{ color: 'red', fontSize: responsiveFontSize(1.7), fontFamily: 'Roboto-Regular', marginLeft: responsiveWidth(3), flexWrap: 'wrap', width: responsiveWidth(45), }}>{BranchError}</Text>
                     </View>
                     <View style={{ alignItems: 'flex-end' }}>
                         <TouchableOpacity
                             onPress={() => { handleProceed(); }}
                             style={{
                                 backgroundColor: '#6a0028',
-                                padding: 15,
+                                padding: responsiveWidth(4.1),
                                 borderRadius: 50,
-                                marginBottom: 30,
-                                width: 300,
+                                marginBottom: responsiveWidth(8),
+                                width: responsiveWidth(85),
                             }}>
                             <Text
                                 style={{
                                     textAlign: 'center',
                                     fontWeight: '700',
-                                    fontSize: 14,
+                                    fontSize: responsiveFontSize(1.9),
                                     color: '#fff',
                                     textTransform: 'uppercase',
                                 }}>

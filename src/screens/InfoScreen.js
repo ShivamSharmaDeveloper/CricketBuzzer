@@ -3,44 +3,45 @@ import { View, Text, SafeAreaView, Image } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { windowHeight, windowWidth } from '../utils/Dimensions';
 import logo from '../assets/images/logo.png';
+import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 
 const InfoScreen = ({ navigation }) => {
   return (
-    <SafeAreaView style={{ flex: 1, justifyContent: 'center' }}>
-      <View style={{ backgroundColor: '#fff', height: windowHeight - 705, width: windowWidth, flexDirection: 'row' }}>
+    <SafeAreaView style={{ flex: responsiveWidth(1), justifyContent: 'center' }}>
+      <View style={{ backgroundColor: '#fff', height: responsiveHeight(7.5), width: responsiveWidth(windowWidth), flexDirection: 'row' }}>
         <MaterialIcons
           name="arrow-back"
-          size={25}
+          size={responsiveWidth(7)}
           color="#333"
-          style={{ margin: 15 }}
+          style={{ margin: responsiveWidth(4.1) }}
           onPress={() => { navigation.navigate('Home'); }}
         />
-        <Text style={{ fontSize: 21, color: '#333', marginBottom: 10, fontWeight: 600, margin: 15 }}>Information</Text>
+        <Text style={{ fontSize: responsiveFontSize(2.8), color: '#333', marginBottom: responsiveWidth(3), fontWeight: 600, margin: responsiveWidth(4.1) }}>Information</Text>
       </View>
-      <View style={{ flex: 1, alignItems: 'center', gap: 20, marginTop: 20 }}>
+      <View style={{ flex: responsiveWidth(1), alignItems: 'center', gap: responsiveWidth(5), marginTop: responsiveWidth(5) }}>
         <Image
           source={logo}
-          style={{ width: 100, height: 100, borderRadius: 10, }}
+          style={{ width: responsiveWidth(28), height: responsiveHeight(12.5), borderRadius: 10, }}
         />
-        <View style={{ backgroundColor: '#fff', width: windowWidth - 50, borderRadius: 5 }}>
-          <View style={{ padding: 20, paddingBottom: 50, width: windowWidth - 60, }}>
-            <Text style={{ color: '#333', fontSize: 15, fontFamily: 'Roboto-Bold'}}>Welcome To Kalyan Satta Online Matka Play App
+        <View style={{ backgroundColor: '#fff', width: responsiveWidth(86), borderRadius: 5 }}>
+          <View style={{ padding: responsiveWidth(5), paddingBottom: responsiveWidth(14), width: responsiveWidth(85), }}>
+            <Text style={{ color: '#333', fontSize: responsiveFontSize(2), fontFamily: 'Roboto-Bold'}}>Welcome To Kalyan Satta Online Matka Play App
               </Text>
-            <Text style={{ color: '#333', fontSize: 15, fontFamily: 'Roboto-Bold', marginTop: 20}}>Download Our Application Form Google Play Store Or Form Official Website........
+            <Text style={{ color: '#333', fontSize: responsiveFontSize(2), fontFamily: 'Roboto-Bold', marginTop: responsiveWidth(5)}}>Download Our Application Form Google Play Store Or Form Official Website........
               </Text>
-            <Text style={{ color: '#333', fontSize: 15, fontFamily: 'Roboto-Bold', marginTop: 20}}>Register With Your Mobile Number, Email Id, User Name, Our Platform.......
+            <Text style={{ color: '#333', fontSize: responsiveFontSize(2), fontFamily: 'Roboto-Bold', marginTop: responsiveWidth(5)}}>Register With Your Mobile Number, Email Id, User Name, Our Platform.......
               </Text>
-            <Text style={{ color: '#333', fontSize: 15, fontFamily: 'Roboto-Bold', marginTop: 20}}>Select The Game Type, Select Your Favourite Number And Start To Play Game
+            <Text style={{ color: '#333', fontSize: responsiveFontSize(2), fontFamily: 'Roboto-Bold', marginTop: responsiveWidth(5)}}>Select The Game Type, Select Your Favourite Number And Start To Play Game
               </Text>
-            <Text style={{ color: '#333', fontSize: 15, fontFamily: 'Roboto-Bold', marginTop: 20}}>Get A Chance To Win 10 Lac Points
+            <Text style={{ color: '#333', fontSize: responsiveFontSize(2), fontFamily: 'Roboto-Bold', marginTop: responsiveWidth(5)}}>Get A Chance To Win 10 Lac Points
               </Text>
-            <Text style={{ color: '#333', fontSize: 15, fontFamily: 'Roboto-Bold', marginTop: 20}}>Rules And Regulations
+            <Text style={{ color: '#333', fontSize: responsiveFontSize(2), fontFamily: 'Roboto-Bold', marginTop: responsiveWidth(5)}}>Rules And Regulations
               </Text>
-            <Text style={{ color: '#333', fontSize: 15, fontFamily: 'Roboto-Bold', marginTop: 20}}>-Minimum Deposit 100 Rs....
+            <Text style={{ color: '#333', fontSize: responsiveFontSize(2), fontFamily: 'Roboto-Bold', marginTop: responsiveWidth(5)}}>-Minimum Deposit 100 Rs....
               </Text>
-            <Text style={{ color: '#333', fontSize: 15, fontFamily: 'Roboto-Bold', }}>-Minimum Withdrawal 1000 Rs.
+            <Text style={{ color: '#333', fontSize: responsiveFontSize(2), fontFamily: 'Roboto-Bold', }}>-Minimum Withdrawal 1000 Rs.
               </Text>
-            <Text style={{ color: '#333', fontSize: 15, fontFamily: 'Roboto-Bold', }}>- Diposit Karne Se Pehle Admin Se Contact Jarur Kare
+            <Text style={{ color: '#333', fontSize: responsiveFontSize(2), fontFamily: 'Roboto-Bold', }}>- Diposit Karne Se Pehle Admin Se Contact Jarur Kare
               </Text>
           </View>
         </View>

@@ -19,6 +19,11 @@ import CustomSwitch from '../components/CustomSwitch';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import ListItem from '../components/ListItem';
 import { AuthContext } from '../context/AuthContext';
+import {
+  responsiveHeight,
+  responsiveWidth,
+  responsiveFontSize
+} from "react-native-responsive-dimensions";
 
 export default function HomeScreen({ navigation }) {
   const {userToken} = useContext(AuthContext);
@@ -35,21 +40,21 @@ export default function HomeScreen({ navigation }) {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
-      <ScrollView style={{ padding: 20 }}>
+      <ScrollView style={{ padding: responsiveWidth(5.5) }}>
         <View
           style={{
             flexDirection: 'row',
             justifyContent: 'space-between',
-            marginBottom: 20,
+            marginBottom: responsiveWidth(5.5),
           }}>
           <TouchableOpacity onPress={() => navigation.openDrawer()}>
             <Ionicons
               name="menu"
-              size={30}
+              size={responsiveWidth(8.5)}
               color='#333'
             />
           </TouchableOpacity>
-          <Text style={{ fontSize: 20, fontFamily: 'Roboto-Medium', marginTop: 1, color: '#333' }}>
+          <Text style={{ fontSize: responsiveFontSize(2.7), fontFamily: 'Roboto-Medium', marginTop: responsiveWidth(0.5), color: '#333' }}>
             Ratan khatri matka
           </Text>
           <TouchableOpacity onPress={() => navigation.navigate('Wallet Statement')}>
@@ -61,10 +66,10 @@ export default function HomeScreen({ navigation }) {
               }}>
               <Ionicons
                 name="wallet"
-                size={30}
+                size={responsiveWidth(8.5)}
                 color='#333'
               />
-              <Text style={{ fontSize: 18, fontFamily: 'Roboto-Medium', textAlign: 'center', margin: 5, color: '#333' }}>
+              <Text style={{ fontSize: responsiveFontSize(2.5), fontFamily: 'Roboto-Medium', textAlign: 'center', margin: responsiveWidth(1), color: '#333' }}>
                 {userToken?.coins ? userToken?.coins : 0}
               </Text>
             </View>
@@ -108,41 +113,41 @@ export default function HomeScreen({ navigation }) {
           ref={carouselRef}
           data={sliderData}
           renderItem={renderBanner}
-          sliderWidth={windowWidth - 40}
-          itemWidth={300}
+          sliderWidth={responsiveWidth(90)}
+          itemWidth={responsiveWidth(85)}
           loop={true}
           autoplay={true}
           autoplayInterval={3000}
         />
 
         <View style={{
-          marginVertical: 20, flexDirection: 'row',
+          marginVertical: responsiveWidth(5.5), flexDirection: 'row',
           justifyContent: 'space-between',
         }}>
           <TouchableOpacity onPress={() => { navigation.navigate('Add Fund');}} style={{
             backgroundColor: '#6a0028',
-            padding: 10,
-            width: 130,
-            borderRadius: 10,
+            padding: responsiveWidth(3),
+            width: responsiveWidth(36),
+            borderRadius: responsiveWidth(3),
           }}>
             <Text style={{
               color: '#fff',
               textAlign: 'center',
               fontFamily: 'Roboto-Medium',
-              fontSize: 14,
+              fontSize: responsiveFontSize(2),
             }}>Add Points</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => { navigation.navigate('Wallet Fund'); }} style={{
+          <TouchableOpacity onPress={() => { navigation.navigate('Withdraw Fund'); }} style={{
             backgroundColor: '#6a0028',
-            padding: 10,
-            width: 130,
-            borderRadius: 10,
+            padding: responsiveWidth(3),
+            width: responsiveWidth(36),
+            borderRadius: responsiveWidth(3),
           }}>
             <Text style={{
               color: '#fff',
               textAlign: 'center',
               fontFamily: 'Roboto-Medium',
-              fontSize: 14,
+              fontSize: responsiveFontSize(2),
             }}>Withdraw Money</Text>
           </TouchableOpacity>
           {/* <CustomSwitch
@@ -156,7 +161,7 @@ export default function HomeScreen({ navigation }) {
         {freeGames.map(item => (
           <ListItem
             key={item.id}
-            photo={item.poster}
+            // photo={item.poster}
             title={item.title}
             subTitle={item.subtitle}
             isFree={item.isFree}

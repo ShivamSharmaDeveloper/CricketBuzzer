@@ -1,15 +1,15 @@
 export const sliderData = [
   {
     title: 'First Game',
-    image: require('../assets/images/homescreen/game-1.jpeg'),
+    image: require('../assets/images/homescreen/slider1.jpg'),
   },
   {
     title: 'Second Game',
-    image: require('../assets/images/homescreen/game-2.jpeg'),
+    image: require('../assets/images/homescreen/slider2.jpg'),
   },
   {
     title: 'Third Game',
-    image: require('../assets/images/homescreen/game-3.png'),
+    image: require('../assets/images/homescreen/slider3.jpg'),
   },
 ];
 

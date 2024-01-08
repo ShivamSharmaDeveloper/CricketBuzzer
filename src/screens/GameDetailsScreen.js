@@ -4,12 +4,13 @@ import singleDigit from '../assets/images/singleDigit.png';
 import singlePanna from '../assets/images/singlePanna.png';
 import doublePanna from '../assets/images/doublePanna.png';
 import triplePanna from '../assets/images/triplePanna.png';
+import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 
 const GameDetailsScreen = ({ navigation, route }) => {
   return (
-    <SafeAreaView style={{flex: 1}}>
-    <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center' }}>
-      <View style={{ marginTop: 20 }}>
+    <SafeAreaView style={{flex: responsiveWidth(1)}}>
+    <View style={{ flex: responsiveWidth(1), justifyContent: 'flex-start', alignItems: 'center' }}>
+      <View style={{ marginTop: responsiveWidth(5.5) }}>
         <TouchableOpacity onPress={() => {
           navigation.navigate('Single Digit', {
             title: route.params?.title,
@@ -18,11 +19,11 @@ const GameDetailsScreen = ({ navigation, route }) => {
         }}>
           <Image
             source={singleDigit}
-            style={{ width: 150, height: 150, borderRadius: 10, }}
+            style={{ width: responsiveWidth(42), height: responsiveHeight(20), borderRadius: 10, }}
           />
         </TouchableOpacity>
       </View>
-      <View style={{ flexDirection: 'row', gap: 30 }}>
+      <View style={{ flexDirection: 'row', gap: responsiveWidth(8.1) }}>
         <TouchableOpacity onPress={() => {
           navigation.navigate('Single Panna', {
             title: route.params?.title,
@@ -31,7 +32,7 @@ const GameDetailsScreen = ({ navigation, route }) => {
         }}>
           <Image
             source={singlePanna}
-            style={{ width: 150, height: 150, borderRadius: 10, }}
+            style={{ width: responsiveWidth(42), height: responsiveHeight(20), borderRadius: 10, }}
           />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => {
@@ -42,7 +43,7 @@ const GameDetailsScreen = ({ navigation, route }) => {
         }}>
           <Image
             source={doublePanna}
-            style={{ width: 150, height: 150, borderRadius: 10, }}
+            style={{ width: responsiveWidth(42), height: responsiveHeight(20), borderRadius: 10, }}
           />
         </TouchableOpacity>
       </View>
@@ -55,7 +56,7 @@ const GameDetailsScreen = ({ navigation, route }) => {
         }}>
           <Image
             source={triplePanna}
-            style={{ width: 150, height: 150, borderRadius: 10, }}
+            style={{ width: responsiveWidth(42), height: responsiveHeight(20), borderRadius: 10, }}
           />
         </TouchableOpacity>
       </View>

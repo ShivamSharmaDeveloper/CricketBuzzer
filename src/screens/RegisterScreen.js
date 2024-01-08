@@ -27,6 +27,7 @@ import firestore from '@react-native-firebase/firestore';
 import Loader from '../components/Loader';
 import { validateFullName, validateEmail, validatePhoneNumber, validateOtp } from '../components/validation';
 import { checkVerification, sendSmsVerification } from '../components/twillo';
+import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 
 const RegisterScreen = ({ navigation }) => {
   const { login, isLoadingGlobal, setIsLoadingGlobal } = useContext(AuthContext);
@@ -62,6 +63,7 @@ const RegisterScreen = ({ navigation }) => {
   useEffect(() => {
     // GoogleSignin.configure({ webClientId: '163356141884-del12trf51fe64n5fqlqrqujee18uteh.apps.googleusercontent.com'});
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    console.log('running')
     return subscriber; // unsubscribe on unmount
   }, []);
 
@@ -173,14 +175,14 @@ const RegisterScreen = ({ navigation }) => {
     }
   };
   return (
-    <SafeAreaView style={{ flex: 1, justifyContent: 'center' }}>
+    <SafeAreaView style={{ flex: responsiveWidth(1), justifyContent: 'center' }}>
       <ScrollView
         showsVerticalScrollIndicator={false}
-        style={{ paddingHorizontal: 25 }}>
+        style={{ paddingHorizontal: responsiveWidth(7) }}>
         <View style={{ alignItems: 'center' }}>
           <RegistrationSVG
-            height={300}
-            width={300}
+            height={responsiveHeight(33)}
+            width={responsiveWidth(88)}
             style={{ transform: [{ rotate: '-5deg' }] }}
           />
         </View>
@@ -188,14 +190,14 @@ const RegisterScreen = ({ navigation }) => {
         <Text
           style={{
             fontFamily: 'Roboto-Medium',
-            fontSize: 28,
+            fontSize: responsiveFontSize(3.8),
             fontWeight: '500',
             color: '#333',
-            marginBottom: 30,
+            marginBottom: responsiveWidth(8),
           }}>
           Register
         </Text>
-        <View style={{ flex: 1, flexDirection: 'column' }}>
+        <View style={{ flex: responsiveWidth(1), flexDirection: 'column' }}>
           <InputField
             label={'Full Name'}
             onChangeText={(text) => {
@@ -207,15 +209,15 @@ const RegisterScreen = ({ navigation }) => {
             icon={
               <Ionicons
                 name="person-outline"
-                size={20}
+                size={responsiveWidth(6)}
                 color="#666"
-                style={{ marginRight: 5 }}
+                style={{ marginRight: responsiveWidth(1.5) }}
               />
             }
           />
-          <Text style={{ color: 'red', fontSize: 11, fontFamily: 'Roboto-Regular' }}>{fullNameError}</Text>
+          <Text style={{ color: 'red', fontSize: responsiveFontSize(1.5), fontFamily: 'Roboto-Regular' }}>{fullNameError}</Text>
         </View>
-        <View style={{ flex: 1, marginVertical: 15, flexDirection: 'column' }}>
+        <View style={{ flex: responsiveWidth(1), marginVertical: responsiveWidth(4.2), flexDirection: 'column' }}>
           <InputField
             label={'Email ID'}
             onChangeText={(text) => {
@@ -226,24 +228,24 @@ const RegisterScreen = ({ navigation }) => {
             icon={
               <MaterialIcons
                 name="alternate-email"
-                size={20}
+                size={responsiveWidth(6)}
                 color="#666"
-                style={{ marginRight: 5 }}
+                style={{ marginRight: responsiveWidth(1.5) }}
               />
             }
             keyboardType="email-address"
           />
-          <Text style={{ color: 'red', fontSize: 11, fontFamily: 'Roboto-Regular' }}>{emailIdError}</Text>
+          <Text style={{ color: 'red', fontSize: responsiveFontSize(1.5), fontFamily: 'Roboto-Regular' }}>{emailIdError}</Text>
         </View>
-        <View style={{ flex: 1, marginBottom: 15, flexDirection: 'column' }}>
+        <View style={{ flex: responsiveWidth(1), marginBottom: responsiveWidth(4.2), flexDirection: 'column' }}>
           <InputField
             label={'Phone Number'}
             icon={
               <MaterialIcons
                 name="phone"
-                size={20}
+                size={responsiveWidth(6)}
                 color="#666"
-                style={{ marginRight: 5 }}
+                style={{ marginRight: responsiveWidth(1.5) }}
               />
             }
             keyboardType="phone-pad"
@@ -254,18 +256,18 @@ const RegisterScreen = ({ navigation }) => {
             value={phoneNumber}
             maxLength={10}
           />
-          <Text style={{ color: 'red', fontSize: 11, fontFamily: 'Roboto-Regular' }}>{phoneNumberError}</Text>
+          <Text style={{ color: 'red', fontSize: responsiveFontSize(1.5), fontFamily: 'Roboto-Regular' }}>{phoneNumberError}</Text>
         </View>
         {showOtp && (
-          <View style={{ flex: 1, marginBottom: 15, flexDirection: 'column' }}>
+          <View style={{ flex: responsiveWidth(1), marginBottom: responsiveWidth(4.2), flexDirection: 'column' }}>
             <InputField
               label={'OTP'}
               icon={
                 <Ionicons
                   name="lock-closed-outline"
-                  size={20}
+                  size={responsiveWidth(6)}
                   color="#666"
-                  style={{ marginRight: 5 }}
+                  style={{ marginRight: responsiveWidth(1.5) }}
                 />
               }
               inputType="otp"
@@ -279,7 +281,7 @@ const RegisterScreen = ({ navigation }) => {
             // fieldButtonLabel={'Forgot?'}
             // fieldButtonFunction={() => { }}
             />
-            <Text style={{ color: 'red', fontSize: 11, fontFamily: 'Roboto-Regular' }}>{otpError}</Text>
+            <Text style={{ color: 'red', fontSize: responsiveFontSize(1.5), fontFamily: 'Roboto-Regular' }}>{otpError}</Text>
           </View>)}
         {/* <InputField
           label={'Password'}
@@ -351,7 +353,7 @@ const RegisterScreen = ({ navigation }) => {
           style={{
             flexDirection: 'row',
             justifyContent: 'center',
-            marginBottom: 30,
+            marginBottom: responsiveWidth(8),
           }}>
           <Text style={{color: '#666'}}>Already registered?</Text>
           <TouchableOpacity onPress={() => navigation.navigate('Login')}>

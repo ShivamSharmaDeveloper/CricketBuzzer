@@ -1,5 +1,5 @@
 import { View, Text, SafeAreaView, TouchableOpacity, Image, TextInput, } from 'react-native';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { windowHeight, windowWidth } from '../utils/Dimensions';
 import { AuthContext } from '../context/AuthContext';
@@ -8,27 +8,44 @@ import phonepe from '../assets/images/phonepe.png';
 import googlepay from '../assets/images/googlepay.png';
 import paytm from '../assets/images/paytm.png';
 import { Dropdown } from 'react-native-element-dropdown';
-import { validateAmount } from '../components/validation';
+import { validateAmount, validateRiquired } from '../components/validation';
+import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 
 const WithdrawFundScreen = ({ navigation }) => {
   const { userToken } = useContext(AuthContext);
   const data = [
     { label: 'PhonePe (9166276171)', value: 'phonepe' },
     { label: 'GooglePay (9166276171)', value: 'googlepay' },
+    { label: 'PayTM (9166276171)', value: 'paytm' },
   ];
   const [value, setValue] = useState([]);
+  const [valueError, setValueError] = useState('');
   const [amount, setAmount] = useState('');
   const [amountError, setAmountError] = useState('');
-
+  useEffect(() => {
+    if (amount.length > 0) {
+      setAmountError('');
+    } else if (Number(amount) >= 100) {
+      setAmountError('');
+    }
+    if (value.length !== 0){
+      setValueError('');
+    }
+  }, [amount, value]);
   const validateAmountField = () => {
-    const error = validateAmount(amount, userToken?.coins);
+    const error = validateRiquired(amount) ? validateRiquired(amount) : Number(amount) < 1000 ? 'Please enter amount more than 1000 or 1000' : validateAmount(amount, userToken?.coins);
     setAmountError(error);
+    return !error;
+  };
+  const validateValueField = () => {
+    const error = value.length === 0 ? 'Please choose one option' : '';
+    setValueError(error);
     return !error;
   };
 
   const handleProceed = () => {
     // Validate fields before proceeding
-    if (!validateAmountField() || value.length === 0) {
+    if (!validateAmountField() || !validateValueField()) {
       console.log('save');
       // If any validation fails, return without proceeding
       return;
@@ -39,22 +56,24 @@ const WithdrawFundScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={{ justifyContent: 'center' }}>
-      <View style={{ backgroundColor: '#fff', height: windowHeight - 705, width: windowWidth, flexDirection: 'row' }}>
+      <View style={{ backgroundColor: '#fff', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: responsiveWidth(4.1) }}>
         <MaterialIcons
           name="arrow-back"
-          size={25}
+          size={responsiveWidth(7)}
           color="#333"
-          style={{ margin: 15 }}
           onPress={() => { navigation.navigate('Home'); }}
         />
-        <Text style={{ fontSize: 21, color: '#333', marginBottom: 10, fontWeight: 600, margin: 15 }}>Withdraw Fund</Text>
-        <View style={{ flexDirection: 'flex-end', justifyContent: 'flex-end', alignContent: 'flex-end', alignItems: 'flex-end', margin: 10, marginHorizontal: 100, paddingBottom: 8 }}>
-          <Text style={{ fontSize: 21, color: '#333', fontFamily: 'Roboto-Bold' }}>{userToken?.coins ? userToken?.coins : 0}</Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Text style={{ fontSize: responsiveFontSize(2.8), color: '#333', fontWeight: '600', marginRight: responsiveWidth(25), alignSelf: 'center' }}>Withdraw Fund</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Text style={{ fontSize: responsiveFontSize(2.8), color: '#333', fontFamily: 'Roboto-Bold' }}>{userToken?.coins ? userToken?.coins : 0}</Text>
+          </View>
         </View>
       </View>
-      <View style={{ flexDirection: 'column', margin: 20, gap: 20 }}>
-        <Text style={{ fontSize: 18, fontFamily: 'Roboto-Bold', color: '#333' }}>Payment Method</Text>
-        <View style={{ flexDirection: 'row', gap: 10 }}>
+
+      <View style={{ flexDirection: 'column', margin: responsiveWidth(5), gap: responsiveWidth(5) }}>
+        <Text style={{ fontSize: responsiveFontSize(2.5), fontFamily: 'Roboto-Bold', color: '#333' }}>Payment Method</Text>
+        <View style={{ flexDirection: 'row', gap: responsiveWidth(3) }}>
           <TouchableOpacity onPress={() => {
             navigation.navigate('Bank Details', {
               // title: route.params?.title,
@@ -62,124 +81,127 @@ const WithdrawFundScreen = ({ navigation }) => {
             });
 
           }}
-            style={{ borderRadius: 10, borderWidth: 1, borderColor: '#ccc', flexDirection: 'column', alignItems: 'center', gap: 5, padding: 5, backgroundColor: '#fff' }}
+            style={{ borderRadius: 10, borderWidth: 1, borderColor: '#ccc', flexDirection: 'column', alignItems: 'center', gap: responsiveWidth(1.5), padding: responsiveWidth(1.5), backgroundColor: '#fff' }}
           >
             <Image
               source={bank}
-              style={{ width: 60, height: 60, borderRadius: 10, }}
+              style={{ width: responsiveWidth(16.9), height: responsiveHeight(7.9), borderRadius: 10, }}
             />
-            <Text style={{ fontSize: 14, color: '#333', fontFamily: 'Roboto-Bold' }}>Bank</Text>
+            <Text style={{ fontSize: responsiveFontSize(1.9), color: '#333', fontFamily: 'Roboto-Bold' }}>Bank</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => {
-            navigation.navigate('Upi', {
+            navigation.navigate('Phonepe', {
               // title: route.params?.title,
               // id: route.params?.id,
             });
 
           }}
-            style={{ borderRadius: 10, borderWidth: 1, borderColor: '#ccc', flexDirection: 'column', alignItems: 'center', gap: 5, padding: 5, backgroundColor: '#fff' }}
+            style={{ borderRadius: 10, borderWidth: 1, borderColor: '#ccc', flexDirection: 'column', alignItems: 'center', gap: responsiveWidth(1.5), padding: responsiveWidth(1.5), backgroundColor: '#fff' }}
           >
             <Image
               source={phonepe}
-              style={{ width: 60, height: 60, borderRadius: 10, }}
+              style={{ width: responsiveWidth(16.9), height: responsiveHeight(7.9), borderRadius: 10, }}
             />
-            <Text style={{ fontSize: 14, color: '#333', fontFamily: 'Roboto-Bold' }}>PhonePe</Text>
+            <Text style={{ fontSize: responsiveFontSize(1.9), color: '#333', fontFamily: 'Roboto-Bold' }}>PhonePe</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => {
-            navigation.navigate('Upi', {
+            navigation.navigate('Googlepay', {
               // title: route.params?.title,
               // id: route.params?.id,
             });
 
           }}
-            style={{ borderRadius: 10, borderWidth: 1, borderColor: '#ccc', flexDirection: 'column', alignItems: 'center', gap: 5, padding: 5, backgroundColor: '#fff' }}
+            style={{ borderRadius: 10, borderWidth: 1, borderColor: '#ccc', flexDirection: 'column', alignItems: 'center', gap: responsiveWidth(1.5), padding: responsiveWidth(1.5), backgroundColor: '#fff' }}
           >
             <Image
               source={googlepay}
-              style={{ width: 60, height: 60, borderRadius: 10, }}
+              style={{ width: responsiveWidth(16.9), height: responsiveHeight(7.9), borderRadius: 10, }}
             />
-            <Text style={{ fontSize: 14, color: '#333', fontFamily: 'Roboto-Bold' }}>Google Pay</Text>
+            <Text style={{ fontSize: responsiveFontSize(1.9), color: '#333', fontFamily: 'Roboto-Bold' }}>Google Pay</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => {
-            navigation.navigate('Upi', {
+            navigation.navigate('Paytm', {
               // title: route.params?.title,
               // id: route.params?.id,
             });
 
           }}
-            style={{ borderRadius: 10, borderWidth: 1, borderColor: '#ccc', flexDirection: 'column', alignItems: 'center', gap: 5, padding: 5, backgroundColor: '#fff' }}
+            style={{ borderRadius: 10, borderWidth: 1, borderColor: '#ccc', flexDirection: 'column', alignItems: 'center', gap: responsiveWidth(1.5), padding: responsiveWidth(1.5), backgroundColor: '#fff' }}
           >
             <Image
               source={paytm}
-              style={{ width: 60, height: 60, borderRadius: 10, }}
+              style={{ width: responsiveWidth(16.9), height: responsiveHeight(7.9), borderRadius: 10, }}
             />
-            <Text style={{ fontSize: 14, color: '#333', fontFamily: 'Roboto-Bold' }}>PayTM</Text>
+            <Text style={{ fontSize: responsiveFontSize(1.9), color: '#333', fontFamily: 'Roboto-Bold' }}>PayTM</Text>
           </TouchableOpacity>
         </View>
-        <Text style={{ fontFamily: 'Roboto-Bold', fontSize: 18, color: "#333", marginTop: 10 }}>Withdraw Fund</Text>
-        <Dropdown
-          data={data}
-          placeholderStyle={{ color: '#333', fontSize: 16, fontFamily: 'Roboto-Bold', alignItems: 'center', textAlign: 'center' }}
-          placeholder='Select Payment Method'
-          labelField="label"
-          valueField="value"
-          value={value}
-          style={{ color: '#333', borderColor: "#ccc", borderWidth: 1, padding: 10, backgroundColor: '#fff' }}
-          onChange={item => {
-            setValue(item.value);
-          }}
-          selectedTextStyle={{ color: "#333", fontFamily: 'Roboto-Bold', fontSize: 16 }}
-          activeColor='#ccc'
-          itemTextStyle={{ color: "#333" }}
-        />
-        <View style={{ flexDirection: 'row', gap: 10 }}>
-          <View style={{ flexDirection: 'column', gap: 5, flexWrap: 'wrap', width: windowWidth - 200, }}>
-            <View
-              style={{
-                flexDirection: 'row',
-                borderRadius: 10,
-                borderColor: '#ccc',
-                // borderBottomWidth: 1,
-                borderWidth: 1,
-                paddingBottom: 8,
-                // marginBottom: 4,
-                width: windowWidth - 200,
-                backgroundColor: '#fff',
-                border: 10,
-              }}>
-              <TextInput
-                placeholder={'Enter Amount'}
-                keyboardType={'phone-pad'}
-                onChangeText={(text) => { setAmount(text); }}
-                value={amount}
-                maxLength={5}
-                placeholderTextColor="#666"
-                style={{ flex: 1, paddingVertical: 2, color: '#666', fontSize: 16, paddingHorizontal: 15, paddingTop: 8, textAlign: 'center' }}
-              // editable={false}
-              />
+        <View style={{ flexDirection: 'column', }}>
+          <Text style={{ fontFamily: 'Roboto-Bold', fontSize: responsiveFontSize(2.5), color: "#333", marginTop: responsiveWidth(1) }}>Withdraw Fund</Text>
+          <Dropdown
+            data={data}
+            placeholderStyle={{ color: '#333', fontSize: responsiveFontSize(2.2), fontFamily: 'Roboto-Bold', alignItems: 'center', textAlign: 'center' }}
+            placeholder='Select Payment Method'
+            labelField="label"
+            valueField="value"
+            value={value}
+            style={{ color: '#333', borderColor: "#ccc", borderWidth: 1, padding: responsiveWidth(2), backgroundColor: '#fff', borderRadius: 10, marginTop: responsiveWidth(5) }}
+            onChange={item => {
+              setValue(item.value);
+            }}
+            selectedTextStyle={{ color: "#333", fontFamily: 'Roboto-Bold', fontSize: responsiveFontSize(2.5) }}
+            activeColor='#ccc'
+            itemTextStyle={{ color: "#333" }}
+          />
+          <Text style={{ color: 'red', fontSize: responsiveFontSize(1.6), fontFamily: 'Roboto-Regular', marginLeft: responsiveWidth(3), flexWrap: 'wrap', width: responsiveWidth(50),marginTop: responsiveWidth(2),}}>{valueError}</Text>
+          <View style={{ flexDirection: 'row', gap: responsiveWidth(3), marginTop: responsiveWidth(2) }}>
+            <View style={{ flexDirection: 'column', gap: responsiveWidth(1.5), flexWrap: 'wrap', width: responsiveWidth(45), }}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  borderRadius: 10,
+                  borderColor: '#ccc',
+                  // borderBottomWidth: 1,
+                  borderWidth: 1,
+                  paddingBottom: responsiveWidth(2.2),
+                  // marginBottom: 4,
+                  width: responsiveWidth(45),
+                  backgroundColor: '#fff',
+                  border: responsiveWidth(3),
+                }}>
+                <TextInput
+                  placeholder={'Enter Amount'}
+                  keyboardType={'phone-pad'}
+                  onChangeText={(text) => { setAmount(text); }}
+                  value={amount}
+                  maxLength={5}
+                  placeholderTextColor="#666"
+                  style={{ flex: responsiveWidth(1), paddingVertical: responsiveWidth(0.5), color: '#666', fontSize: responsiveFontSize(2.2), paddingHorizontal: responsiveWidth(4.1), paddingTop: responsiveWidth(2.2), textAlign: 'center' }}
+                // editable={false}
+                />
+              </View>
+              <Text style={{ color: 'red', fontSize: responsiveFontSize(1.6), fontFamily: 'Roboto-Regular', marginLeft: responsiveWidth(1), flexWrap: 'wrap', width: responsiveWidth(65), }}>{amountError}</Text>
             </View>
-            <Text style={{ color: 'red', fontSize: 12, fontFamily: 'Roboto-Regular', marginLeft: 10, flexWrap: 'wrap', width: windowWidth - 210, }}>{amountError}</Text>
-          </View>
-          <TouchableOpacity
-            onPress={() => { handleProceed(); }}
-            style={{
-              backgroundColor: '#3689b1',
-              padding: 15,
-              borderRadius: 10,
-              marginBottom: 30,
-              width: 150,
-            }}>
-            <Text
+            <TouchableOpacity
+              onPress={() => { handleProceed(); }}
               style={{
-                textAlign: 'center',
-                fontWeight: '700',
-                fontSize: 14,
-                color: '#fff',
-                textTransform: 'uppercase',
+                backgroundColor: '#3689b1',
+                padding: responsiveWidth(4.1),
+                borderRadius: 10,
+                marginBottom: responsiveWidth(8),
+                width: responsiveWidth(42),
               }}>
-              Submit Request
-            </Text>
-          </TouchableOpacity>
+              <Text
+                style={{
+                  textAlign: 'center',
+                  fontWeight: '700',
+                  fontSize: responsiveFontSize(1.9),
+                  color: '#fff',
+                  textTransform: 'uppercase',
+                }}>
+                Submit Request
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </SafeAreaView >

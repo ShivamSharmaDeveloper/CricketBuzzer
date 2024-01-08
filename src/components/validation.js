@@ -61,9 +61,11 @@ export const validatePoints = (points) => {
         return 'Points are required';
     }
 
-    if (Number(points) < 100) {
-        return 'Minimum Points can be added is 100';
-    } else if (Number(points) === 100) {
+    if (Number(points) < 500) {
+        return 'Minimum Points can be added is 500 or more than 500';
+    } else if (Number(points) > 10000) {
+        return 'Amount can not be more than 10000';
+    } else if (Number(points) === 500) {
         return '';
     }
 
@@ -77,10 +79,12 @@ export const validateAmount = (amount, fund) => {
         return 'Amount is required';
     }
 
-    if (amount > fund) {
+    if (Number(amount) > Number(fund)) {
         return 'Amount must not be greater than wallet fund.';
-    } else if (amount == fund) {
+    } else if (Number(amount) === Number(fund) && Number(amount) !== 0) {
         return '';
+    } else if (Number(amount) === 0){
+        return 'Amount can not be zero';
     }
     // Add more custom validation rules if needed
 

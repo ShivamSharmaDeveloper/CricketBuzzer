@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, TextInput} from 'react-native';
+import { responsiveWidth } from 'react-native-responsive-dimensions';
 
 export default function InputField({
   label,
@@ -17,9 +18,9 @@ export default function InputField({
       style={{
         flexDirection: 'row',
         borderBottomColor: '#ccc',
-        borderBottomWidth: 1,
-        paddingBottom: 8,
-        marginBottom: 5,
+        borderBottomWidth: responsiveWidth(0.3),
+        paddingBottom: responsiveWidth(2),
+        marginBottom: responsiveWidth(1),
         // backgroundColor: '#333'
       }}>
       {icon}
@@ -27,7 +28,7 @@ export default function InputField({
         <TextInput
           placeholder={label}
           keyboardType={keyboardType}
-          style={{flex: 1, paddingVertical: 0}}
+          style={{flex: responsiveWidth(1), paddingVertical: responsiveWidth(0)}}
           secureTextEntry={true}
         />
       ) : (
@@ -38,7 +39,7 @@ export default function InputField({
           value={value}
           maxLength={maxLength}
           placeholderTextColor="#666"
-          style={{flex: 1, paddingVertical: 0, color: '#666'}}
+          style={{flex: responsiveWidth(1), paddingVertical: responsiveWidth(0), color: '#666'}}
         />
       )}
       <TouchableOpacity onPress={fieldButtonFunction}>

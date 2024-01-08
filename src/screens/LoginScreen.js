@@ -23,6 +23,7 @@ import auth from '@react-native-firebase/auth';
 import Loader from '../components/Loader';
 import { validateOtp, validatePhoneNumber } from '../components/validation';
 import { sendSmsVerification, checkVerification } from '../components/twillo';
+import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 // import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 
 const LoginScreen = ({ navigation }) => {
@@ -53,6 +54,10 @@ const LoginScreen = ({ navigation }) => {
   useEffect(() => {
     // GoogleSignin.configure({ webClientId: '163356141884-del12trf51fe64n5fqlqrqujee18uteh.apps.googleusercontent.com'});
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    setPhoneNumber('');
+    setOtpValue('');
+    setShowOtp(false);
+    console.log("login")
     return subscriber; // unsubscribe on unmount
   }, []);
 
@@ -177,12 +182,12 @@ const LoginScreen = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, justifyContent: 'center' }}>
-      <View style={{ paddingHorizontal: 25 }}>
+    <SafeAreaView style={{ flex: responsiveWidth(1), justifyContent: 'center' }}>
+      <View style={{ paddingHorizontal: responsiveWidth(7) }}>
         <View style={{ alignItems: 'center' }}>
           <LoginSVG
-            height={250}
-            width={300}
+            height={responsiveHeight(33)}
+            width={responsiveWidth(88)}
             style={{ transform: [{ rotate: '-5deg' }] }}
           />
         </View>
@@ -190,22 +195,22 @@ const LoginScreen = ({ navigation }) => {
         <Text
           style={{
             fontFamily: 'Roboto-Medium',
-            fontSize: 28,
+            fontSize: responsiveFontSize(3.8),
             fontWeight: '500',
             color: '#333',
-            marginBottom: 30,
+            marginBottom: responsiveWidth(8),
           }}>
           Login
         </Text>
-        <View style={{ flexDirection: 'column', marginBottom: 15 }}>
+        <View style={{ flexDirection: 'column', marginBottom: responsiveWidth(4.2) }}>
           <InputField
             label={'Phone Number'}
             icon={
               <MaterialIcons
                 name="phone"
-                size={20}
+                size={responsiveWidth(6)}
                 color="#666"
-                style={{ marginRight: 5 }}
+                style={{ marginRight: responsiveWidth(1.5) }}
               />
             }
             keyboardType="phone-pad"
@@ -216,19 +221,19 @@ const LoginScreen = ({ navigation }) => {
             value={phoneNumber}
             maxLength={10}
           />
-          <Text style={{ color: 'red', fontSize: 11, fontFamily: 'Roboto-Regular', }}>{phoneNumberError}</Text>
+          <Text style={{ color: 'red', fontSize: responsiveFontSize(1.5), fontFamily: 'Roboto-Regular', }}>{phoneNumberError}</Text>
         </View>
 
         {showOtp && (
-          <View style={{ marginBottom: 15, flexDirection: 'column', }}>
+          <View style={{ marginBottom: responsiveWidth(4), flexDirection: 'column', }}>
             <InputField
               label={'OTP'}
               icon={
                 <Ionicons
                   name="lock-closed-outline"
-                  size={20}
+                  size={responsiveWidth(6)}
                   color="#666"
-                  style={{ marginRight: 5 }}
+                  style={{ marginRight: responsiveWidth(1.5) }}
                 />
               }
               inputType="otp"
@@ -242,7 +247,7 @@ const LoginScreen = ({ navigation }) => {
             // fieldButtonLabel={'Forgot?'}
             // fieldButtonFunction={() => { }}
             />
-            <Text style={{ color: 'red', fontSize: 11, fontFamily: 'Roboto-Regular' }}>{otpError}</Text>
+            <Text style={{ color: 'red', fontSize: responsiveFontSize(1.5), fontFamily: 'Roboto-Regular' }}>{otpError}</Text>
           </View>
         )}
 
@@ -256,7 +261,7 @@ const LoginScreen = ({ navigation }) => {
           style={{
             flexDirection: 'row',
             justifyContent: 'center',
-            marginBottom: 30,
+            marginBottom: responsiveWidth(8),
           }}>
           <Text style={{ color: '#666' }}>New to the app?</Text>
           <TouchableOpacity onPress={() => navigation.navigate('Register')}>

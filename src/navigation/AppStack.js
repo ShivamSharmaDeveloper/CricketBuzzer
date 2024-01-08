@@ -46,7 +46,7 @@ const AuthStack = () => {
           <Ionicons name="newspaper-outline" size={22} color={focused ? "#fff" : "#333"} />
         ),
       }} />
-      <Drawer.Screen name="Wallet Fund" component={WalletFundNavigation} options={{
+      <Drawer.Screen name="Withdraw Fund" component={WalletFundNavigation} options={{
         drawerIcon: ({focused}) => (
           <Mcicons name="bank-outline" size={22} color={focused ? "#fff" : "#333"} />
         ),

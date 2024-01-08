@@ -7,7 +7,7 @@ import { validatePhoneNumber } from '../../components/validation';
 import { AuthContext } from '../../context/AuthContext';
 import { responsiveFontSize, responsiveWidth } from 'react-native-responsive-dimensions';
 
-const Upi = () => {
+const Googlepay = () => {
     const { userToken } = useContext(AuthContext);
     const [phoneNumber, setPhoneNumber] = useState(userToken ? userToken?.phone : '');
     const [phoneNumberError, setPhoneNumberError] = useState('');
@@ -88,4 +88,4 @@ const Upi = () => {
     )
 }
 
-export default Upi;
+export default Googlepay

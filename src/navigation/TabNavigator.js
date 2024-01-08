@@ -16,6 +16,7 @@ import { AuthContext } from '../context/AuthContext';
 import SinglePannaScreen from '../screens/Games/SinglePannaScreen';
 import DoublePannaScreen from '../screens/Games/DoublePannaScreen';
 import TriplePannaScreen from '../screens/Games/TriplePannaScreen';
+import { responsiveFontSize, responsiveWidth } from 'react-native-responsive-dimensions';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -32,10 +33,10 @@ const HeaderWallet = ({navigation}) => {
         }}>
         <Ionicons
           name="wallet"
-          size={30}
+          size={responsiveWidth(8)}
           color='#fff'
         />
-        <Text style={{ fontSize: 18, fontFamily: 'Roboto-Medium', textAlign: 'center', margin: 5, color: '#fff' }}>
+        <Text style={{ fontSize: responsiveFontSize(2.5), fontFamily: 'Roboto-Medium', textAlign: 'center', margin: responsiveWidth(1.5), color: '#fff' }}>
           {userToken?.coins ? userToken?.coins : 0}
         </Text>
       </View>

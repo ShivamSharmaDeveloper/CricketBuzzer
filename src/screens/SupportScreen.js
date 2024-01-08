@@ -4,26 +4,27 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { windowHeight, windowWidth } from '../utils/Dimensions';
 import phone from '../assets/images/phone.png';
 import whatsapp from '../assets/images/whatsapp.png';
+import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 
 const SupportScreen = ({ navigation }) => {
   return (
-    <SafeAreaView style={{ flex: 1, justifyContent: 'center' }}>
-      <View style={{ backgroundColor: '#fff', height: windowHeight - 705, width: windowWidth, flexDirection: 'row' }}>
+    <SafeAreaView style={{ flex: responsiveWidth(1), justifyContent: 'center' }}>
+      <View style={{ backgroundColor: '#fff', height: responsiveHeight(7.5), width: responsiveWidth(windowWidth), flexDirection: 'row' }}>
         <MaterialIcons
           name="arrow-back"
-          size={25}
+          size={responsiveWidth(7)}
           color="#333"
-          style={{ margin: 15 }}
+          style={{ margin: responsiveWidth(4.1) }}
           onPress={() => { navigation.navigate('Home'); }}
         />
-        <Text style={{ fontSize: 21, color: '#333', marginBottom: 10, fontWeight: 600, margin: 15 }}>Support</Text>
+        <Text style={{ fontSize: responsiveFontSize(2.8), color: '#333', marginBottom: responsiveWidth(3), fontWeight: 600, margin: responsiveWidth(4.1) }}>Support</Text>
       </View>
-      <View style={{ flex: 1, alignItems: 'flex-start', margin: 30, gap: 20, marginTop: 20 }}>
-        <View style={{ backgroundColor: '#6a0028', height: windowHeight - 700, width: windowWidth - 60, borderRadius: 10, flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-          <View style={{ padding: 15, backgroundColor: '#a80a44', borderTopLeftRadius: 10, borderBottomLeftRadius: 10, height: 64 }}>
+      <View style={{ flex: responsiveWidth(1), alignItems: 'flex-start', margin: responsiveWidth(8.2), gap: responsiveWidth(5.4), marginTop: responsiveWidth(5.4) }}>
+        <View style={{ backgroundColor: '#6a0028', height: responsiveHeight(8.5), width: responsiveWidth(83.5), borderRadius: responsiveWidth(3), flexDirection: 'row', alignItems: 'center', gap: responsiveWidth(3) }}>
+          <View style={{ padding: responsiveWidth(4.1), backgroundColor: '#a80a44', borderTopLeftRadius: responsiveWidth(3), borderBottomLeftRadius: responsiveWidth(3), height: responsiveHeight(8.5) }}>
             <Image
               source={phone}
-              style={{ width: 30, height: 30, borderRadius: 10 }}
+              style={{ width: responsiveWidth(9), height: responsiveHeight(4), borderRadius: responsiveWidth(3) }}
             />
           </View>
           <View>
@@ -31,11 +32,11 @@ const SupportScreen = ({ navigation }) => {
             <Text style={{ color: '#fff', fontFamily: 'Roboto-Bold' }}>+919256713662</Text>
           </View>
         </View>
-        <View style={{ backgroundColor: '#6a0028', height: windowHeight - 700, width: windowWidth - 60, borderRadius: 10, flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-          <View style={{ padding: 15, backgroundColor: '#a80a44', borderTopLeftRadius: 10, borderBottomLeftRadius: 10, height: 64 }}>
+        <View style={{ backgroundColor: '#6a0028', height: responsiveHeight(8.5), width: responsiveWidth(83.5), borderRadius: responsiveWidth(3), flexDirection: 'row', alignItems: 'center', gap: responsiveWidth(3) }}>
+          <View style={{ padding: responsiveWidth(4.1), backgroundColor: '#a80a44', borderTopLeftRadius: responsiveWidth(3), borderBottomLeftRadius: responsiveWidth(3), height: responsiveHeight(8.5) }}>
             <Image
               source={whatsapp}
-              style={{ width: 30, height: 30, borderRadius: 10 }}
+              style={{ width: responsiveWidth(9), height: responsiveHeight(4), borderRadius: responsiveWidth(3) }}
             />
           </View>
           <View>

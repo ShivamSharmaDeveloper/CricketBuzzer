@@ -6,6 +6,9 @@ import Bank from '../screens/Payment/Bank';
 import WalletFundScreen from '../screens/WithdrawFundScreen';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import Upi from '../screens/Payment/Upi';
+import Phonepe from '../screens/Payment/Phonepe';
+import Googlepay from '../screens/Payment/Googlepay';
+import Paytm from '../screens/Payment/Paytm';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -29,8 +32,30 @@ const WalletStack = () => {
                  }}
             />
             <Stack.Screen
-                name="Upi"
-                component={Upi}
+                name="Phonepe"
+                component={Phonepe}
+                options={({ route }) => ({
+                    headerStyle: {
+                        backgroundColor: '#6a0028',
+                    },
+                    headerTintColor: '#fff',
+                    title: 'UPI Details',
+                })}
+            />
+            <Stack.Screen
+                name="Googlepay"
+                component={Googlepay}
+                options={({ route }) => ({
+                    headerStyle: {
+                        backgroundColor: '#6a0028',
+                    },
+                    headerTintColor: '#fff',
+                    title: 'UPI Details',
+                })}
+            />
+            <Stack.Screen
+                name="Paytm"
+                component={Paytm}
                 options={({ route }) => ({
                     headerStyle: {
                         backgroundColor: '#6a0028',
