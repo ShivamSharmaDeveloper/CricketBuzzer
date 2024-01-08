@@ -10,6 +10,7 @@ import paytm from '../assets/images/paytm.png';
 import { Dropdown } from 'react-native-element-dropdown';
 import { validateAmount, validateRiquired } from '../components/validation';
 import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
+import { Dialog } from 'react-native-elements';
 
 const WithdrawFundScreen = ({ navigation }) => {
   const { userToken } = useContext(AuthContext);
@@ -22,6 +23,7 @@ const WithdrawFundScreen = ({ navigation }) => {
   const [valueError, setValueError] = useState('');
   const [amount, setAmount] = useState('');
   const [amountError, setAmountError] = useState('');
+  const [success, setSuccess] = useState(false);
   useEffect(() => {
     if (amount.length > 0) {
       setAmountError('');
@@ -51,6 +53,7 @@ const WithdrawFundScreen = ({ navigation }) => {
       return;
     } else {
       console.log(value, 'running');
+      setSuccess(true);
     }
   };
 
@@ -204,6 +207,23 @@ const WithdrawFundScreen = ({ navigation }) => {
           </View>
         </View>
       </View>
+      <Dialog
+        isVisible={success}
+        onBackdropPress={() => { setSuccess(true); }}
+        style={{ color: '#333', backgroundColor: '#333' }}
+      >
+        <Dialog.Title title="Request Sent!" titleStyle={{ color: '#333', }} />
+        <Dialog.Actions>
+          <Dialog.Button
+            title="OK"
+            onPress={() => {
+              setSuccess(false);
+              setAmount('');
+            }}
+            titleStyle={{ color: 'green' }}
+          />
+        </Dialog.Actions>
+      </Dialog>
     </SafeAreaView >
   );
 };
