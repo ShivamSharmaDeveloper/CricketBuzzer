@@ -7,8 +7,10 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import RNUpiPayment from 'react-native-upi-payment';
 import { Dialog } from 'react-native-elements';
 import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
+import { useIsFocused } from '@react-navigation/native';
 
 const AddFundScreen = ({ navigation }) => {
+  const isFocused = useIsFocused();
   const [points, setPoints] = useState('');
   const [pointsError, setPointsError] = useState('');
   const [success, setSuccess] = useState(false);
@@ -22,6 +24,13 @@ const AddFundScreen = ({ navigation }) => {
       setPointsError('');
     }
   }, [points]);
+
+  useEffect(() => {
+    if (isFocused) {
+      setPoints('');
+      setPointsError('');
+    }
+  }, [isFocused]);
 
   const validatePointsField = () => {
     const error = validatePoints(points);

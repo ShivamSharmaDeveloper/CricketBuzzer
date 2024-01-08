@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { SafeAreaView, Text, TouchableOpacity, View } from 'react-native'
 import { windowHeight, windowWidth } from '../../utils/Dimensions'
 import { TextInput } from 'react-native-gesture-handler'
@@ -6,8 +6,10 @@ import RadioButtonGroup from '../../components/RadioBottonGroup'
 import { validateAmount, validateDigit } from '../../components/validation'
 import { AuthContext } from '../../context/AuthContext'
 import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions'
+import { useIsFocused } from '@react-navigation/native'
 
 const DoublePannaScreen = () => {
+    const isFocused = useIsFocused();
     const { userToken } = useContext(AuthContext);
     const [selectedOption, setSelectedOption] = useState('Open');
     const [digits, setDigits] = useState('');
@@ -46,14 +48,21 @@ const DoublePannaScreen = () => {
     };
     const handleProceed = () => {
         // Validate fields before proceeding
-        if (!validateAmountField() && !validateDigitsField()) {
+        if (!validateAmountField() || !validateDigitsField()) {
             // If any validation fails, return without proceeding
             return;
         } else {
 
         }
-    }
-
+    };
+    useEffect(() => {
+        if (isFocused) {
+            setDigits('');
+            setDigitError('');
+            setAmount('');
+            setAmountError('');
+        }
+    }, [isFocused]);
     return (
         <SafeAreaView style={{ flex: responsiveWidth(1) }}>
             <View style={{ backgroundColor: '#6a0028', width: responsiveWidth(100), height: responsiveHeight(100) }}>

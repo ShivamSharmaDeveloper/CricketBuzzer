@@ -11,8 +11,10 @@ import { Dropdown } from 'react-native-element-dropdown';
 import { validateAmount, validateRiquired } from '../components/validation';
 import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 import { Dialog } from 'react-native-elements';
+import { useIsFocused } from '@react-navigation/native';
 
 const WithdrawFundScreen = ({ navigation }) => {
+  const isFocused = useIsFocused();
   const { userToken } = useContext(AuthContext);
   const data = [
     { label: 'PhonePe (9166276171)', value: 'phonepe' },
@@ -30,7 +32,7 @@ const WithdrawFundScreen = ({ navigation }) => {
     } else if (Number(amount) >= 100) {
       setAmountError('');
     }
-    if (value.length !== 0){
+    if (value.length !== 0) {
       setValueError('');
     }
   }, [amount, value]);
@@ -56,6 +58,15 @@ const WithdrawFundScreen = ({ navigation }) => {
       setSuccess(true);
     }
   };
+  useEffect(() => {
+    if (isFocused) {
+      setAmount('');
+      setAmountError('');
+      setValue([]);
+      setValueError('');
+      setSuccess(false);
+    }
+  }, [isFocused]);
 
   return (
     <SafeAreaView style={{ justifyContent: 'center' }}>
@@ -155,7 +166,7 @@ const WithdrawFundScreen = ({ navigation }) => {
             activeColor='#ccc'
             itemTextStyle={{ color: "#333" }}
           />
-          <Text style={{ color: 'red', fontSize: responsiveFontSize(1.6), fontFamily: 'Roboto-Regular', marginLeft: responsiveWidth(3), flexWrap: 'wrap', width: responsiveWidth(50),marginTop: responsiveWidth(2),}}>{valueError}</Text>
+          <Text style={{ color: 'red', fontSize: responsiveFontSize(1.6), fontFamily: 'Roboto-Regular', marginLeft: responsiveWidth(3), flexWrap: 'wrap', width: responsiveWidth(50), marginTop: responsiveWidth(2), }}>{valueError}</Text>
           <View style={{ flexDirection: 'row', gap: responsiveWidth(3), marginTop: responsiveWidth(2) }}>
             <View style={{ flexDirection: 'column', gap: responsiveWidth(1.5), flexWrap: 'wrap', width: responsiveWidth(45), }}>
               <View
@@ -219,6 +230,7 @@ const WithdrawFundScreen = ({ navigation }) => {
             onPress={() => {
               setSuccess(false);
               setAmount('');
+              setValue([]);
             }}
             titleStyle={{ color: 'green' }}
           />
