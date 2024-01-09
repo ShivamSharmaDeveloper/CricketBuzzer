@@ -67,7 +67,7 @@ export const AuthProvider = ({ children }) => {
 
     console.log(userToken, 'token');
     return (
-        <AuthContext.Provider value={{ login, logout, isLoading, isLoadingGlobal, setIsLoadingGlobal, userToken }}>
+        <AuthContext.Provider value={{ login, logout, isLoading, isLoadingGlobal, setIsLoadingGlobal, userToken, setUserToken }}>
             {children}
             <Loader visible={isLoadingGlobal} />
         </AuthContext.Provider>
