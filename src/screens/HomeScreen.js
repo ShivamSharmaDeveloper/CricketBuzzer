@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -24,9 +24,14 @@ import {
   responsiveWidth,
   responsiveFontSize
 } from "react-native-responsive-dimensions";
+import { useIsFocused } from '@react-navigation/native';
+import firestore from '@react-native-firebase/firestore';
+import Loader from '../components/Loader';
 
 export default function HomeScreen({ navigation }) {
-  const {userToken} = useContext(AuthContext);
+  const isFocused = useIsFocused();
+  const { userToken, isLoadingGlobal, setIsLoadingGlobal } = useContext(AuthContext);
+  const [events, setEvents] = useState(null);
   const [gamesTab, setGamesTab] = useState(1);
   const carouselRef = useRef(null);
 
@@ -37,6 +42,20 @@ export default function HomeScreen({ navigation }) {
   const onSelectSwitch = value => {
     setGamesTab(value);
   };
+  const handleEventList = async () => {
+    const querySnapshot = await firestore()
+      .collection('Events')
+      .orderBy('isPlay', 'asc')
+      .get();
+    const userDataArray = querySnapshot.docs.map(doc => doc.data());
+    // console.log("snapshot");
+    setEvents(userDataArray);
+  };
+  useEffect(() => {
+    if (isFocused) {
+      handleEventList();
+    }
+  }, [isFocused]);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
@@ -124,7 +143,7 @@ export default function HomeScreen({ navigation }) {
           marginVertical: responsiveWidth(5.5), flexDirection: 'row',
           justifyContent: 'space-between',
         }}>
-          <TouchableOpacity onPress={() => { navigation.navigate('Add Fund');}} style={{
+          <TouchableOpacity onPress={() => { navigation.navigate('Add Fund'); }} style={{
             backgroundColor: '#6a0028',
             padding: 10,
             width: responsiveWidth(36),
@@ -158,9 +177,9 @@ export default function HomeScreen({ navigation }) {
           /> */}
         </View>
 
-        {freeGames.map(item => (
+        {events ? events.map(item => (
           <ListItem
-            key={item.id}
+            key={item.open}
             // photo={item.poster}
             title={item.title}
             subTitle={item.subtitle}
@@ -174,7 +193,9 @@ export default function HomeScreen({ navigation }) {
               })
             }
           />
-        ))}
+        )) :
+          <Loader visible={isLoadingGlobal} />
+        }
         {/* {gamesTab === 2 &&
           paidGames.map(item => (
             <ListItem
