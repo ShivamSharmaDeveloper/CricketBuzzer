@@ -67,7 +67,7 @@ const HomeStack = () => {
         name="Single Digit"
         component={SingleDigitScreen}
         options={({route, navigation}) => ({
-          // title: route.params?.title,
+          // event: route.params?.title,
           headerStyle: {
             backgroundColor: '#6a0028',
           },

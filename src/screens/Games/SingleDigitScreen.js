@@ -1,21 +1,25 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { SafeAreaView, Text, TouchableOpacity, View } from 'react-native'
-import { windowHeight, windowWidth } from '../../utils/Dimensions'
-import { TextInput } from 'react-native-gesture-handler'
-import RadioButtonGroup from '../../components/RadioBottonGroup'
-import { validateAmount, validateDigit } from '../../components/validation'
-import { AuthContext } from '../../context/AuthContext'
-import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions'
-import { useIsFocused } from '@react-navigation/native'
+import React, { useContext, useEffect, useState } from 'react';
+import { SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
+import { windowHeight, windowWidth } from '../../utils/Dimensions';
+import { TextInput } from 'react-native-gesture-handler';
+import RadioButtonGroup from '../../components/RadioBottonGroup';
+import { validateAmount, validateDigit } from '../../components/validation';
+import { AuthContext } from '../../context/AuthContext';
+import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
+import { useIsFocused } from '@react-navigation/native';
+import { Dialog } from 'react-native-elements';
+import firestore from '@react-native-firebase/firestore';
 
-const SingleDigitScreen = () => {
+const SingleDigitScreen = ({route}) => {
     const isFocused = useIsFocused();
-    const { userToken } = useContext(AuthContext);
+    const { userToken, setUserToken } = useContext(AuthContext);
     const [selectedOption, setSelectedOption] = useState('Open');
     const [digits, setDigits] = useState('');
     const [digitError, setDigitError] = useState('');
     const [amount, setAmount] = useState('');
     const [amountError, setAmountError] = useState('');
+    const [success, setSuccess] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const formatDate = () => {
         const months = [
@@ -46,13 +50,66 @@ const SingleDigitScreen = () => {
         setDigitError(error);
         return !error;
     };
+    const handleBid = async() => {
+        try {
+            const userCollection = firestore().collection('Users');
+            const userQuery = userCollection.where('phone', '==', userToken?.phone);
+            const userSnapshot = await userQuery.get();
+
+            if (!userSnapshot.empty) {
+                const userDoc = userSnapshot.docs[0];
+                const currentCoins = userDoc.get('coins') || 0;
+                console.log(currentCoins, 'coins');
+
+                const updatedCoins = currentCoins - Number(amount);
+
+                // Use the document reference to update the document
+                await userDoc.ref.update({
+                    coins: updatedCoins,
+                });
+                const date = new Date();
+                const currentTime = date.toString();
+
+                await firestore()
+                    .collection('User_Events')
+                    .add({
+                        phone: userToken?.phone,
+                        amount: amount,
+                        digit: digits,
+                        date: currentTime,
+                        game: 'Single Digit',
+                        event: route.params?.title,
+                    });
+                // console.log('Coins updated successfully');
+
+                const querySnapshot = await firestore()
+                    .collection('Users')
+                    .where('phone', '==', userToken?.phone)
+                    .get();
+
+                if (querySnapshot.size > 0) {
+                    setUserToken(querySnapshot.docs[0].data());
+                } else {
+                    console.warn('User not found.');
+                }
+            } else {
+                console.log('User not found');
+            }
+        } catch (error) {
+            console.error('Error updating coins:', error);
+        }
+        setLoading(false);
+        setSuccess(true);
+    };
+
     const handleProceed = () => {
         // Validate fields before proceeding
         if (!validateAmountField() || !validateDigitsField()) {
             // If any validation fails, return without proceeding
             return;
         } else {
-
+            setLoading(true);
+            handleBid();
         }
     };
     useEffect(() => {
@@ -192,6 +249,27 @@ const SingleDigitScreen = () => {
                     </TouchableOpacity>
                 </View>
             </View>
+            <Dialog isVisible={loading} onBackdropPress={() => setLoading(true)}>
+                <Dialog.Loading />
+            </Dialog>
+            <Dialog
+                isVisible={success}
+                onBackdropPress={() => { setSuccess(true); }}
+                style={{ color: '#333', backgroundColor: '#333' }}
+            >
+                <Dialog.Title title="Bid Placed!" titleStyle={{ color: '#333', }} />
+                <Dialog.Actions>
+                    <Dialog.Button
+                        title="OK"
+                        onPress={() => {
+                            setSuccess(false);
+                            setAmount('');
+                            setDigits('');
+                        }}
+                        titleStyle={{ color: 'green' }}
+                    />
+                </Dialog.Actions>
+            </Dialog>
         </SafeAreaView>
     )
 }

@@ -12,20 +12,22 @@ import { validateAmount, validateRiquired } from '../components/validation';
 import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 import { Dialog } from 'react-native-elements';
 import { useIsFocused } from '@react-navigation/native';
+import firestore from '@react-native-firebase/firestore';
 
 const WithdrawFundScreen = ({ navigation }) => {
   const isFocused = useIsFocused();
-  const { userToken } = useContext(AuthContext);
+  const { userToken, setUserToken } = useContext(AuthContext);
   const data = [
-    { label: 'PhonePe (9166276171)', value: 'phonepe' },
-    { label: 'GooglePay (9166276171)', value: 'googlepay' },
-    { label: 'PayTM (9166276171)', value: 'paytm' },
+    { label: `PhonePe (${userToken?.phone})`, value: 'phonepe' },
+    { label: `GooglePay (${userToken?.phone})`, value: 'googlepay' },
+    { label: `PayTM (${userToken?.phone})`, value: 'paytm' },
   ];
   const [value, setValue] = useState([]);
   const [valueError, setValueError] = useState('');
   const [amount, setAmount] = useState('');
   const [amountError, setAmountError] = useState('');
   const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     if (amount.length > 0) {
       setAmountError('');
@@ -47,6 +49,55 @@ const WithdrawFundScreen = ({ navigation }) => {
     return !error;
   };
 
+  const handleUpdate = async () => {
+    try {
+      const userCollection = firestore().collection('Users');
+      const userQuery = userCollection.where('phone', '==', userToken?.phone);
+      const userSnapshot = await userQuery.get();
+
+      if (!userSnapshot.empty) {
+        const userDoc = userSnapshot.docs[0];
+        const currentCoins = userDoc.get('coins') || 0;
+        console.log(currentCoins, 'coins');
+
+        const updatedCoins = currentCoins - Number(amount);
+
+        // Use the document reference to update the document
+        await userDoc.ref.update({
+          coins: updatedCoins,
+        });
+        const date = new Date();
+        const currentTime = date.toString();
+
+        await firestore()
+          .collection('Withdraw_List')
+          .add({
+            phone: userToken?.phone,
+            amount: amount,
+            time: currentTime,
+          });
+        // console.log('Coins updated successfully');
+        //
+        const querySnapshot = await firestore()
+          .collection('Users')
+          .where('phone', '==', userToken?.phone)
+          .get();
+
+        if (querySnapshot.size > 0) {
+          setUserToken(querySnapshot.docs[0].data());
+        } else {
+          console.warn('User not found.');
+        }
+      } else {
+        console.log('User not found');
+      }
+    } catch (error) {
+      console.error('Error updating coins:', error);
+    }
+    setLoading(false);
+    setSuccess(true);
+  };
+
   const handleProceed = () => {
     // Validate fields before proceeding
     if (!validateAmountField() || !validateValueField()) {
@@ -54,8 +105,8 @@ const WithdrawFundScreen = ({ navigation }) => {
       // If any validation fails, return without proceeding
       return;
     } else {
-      console.log(value, 'running');
-      setSuccess(true);
+      setLoading(true);
+      handleUpdate();
     }
   };
   useEffect(() => {
@@ -218,12 +269,16 @@ const WithdrawFundScreen = ({ navigation }) => {
           </View>
         </View>
       </View>
+      <Dialog isVisible={loading} onBackdropPress={() => setLoading(true)}>
+        <Dialog.Loading />
+      </Dialog>
       <Dialog
         isVisible={success}
         onBackdropPress={() => { setSuccess(true); }}
         style={{ color: '#333', backgroundColor: '#333' }}
       >
         <Dialog.Title title="Request Sent!" titleStyle={{ color: '#333', }} />
+        <Text style={{ color: '#333' }}>Amount will be credited in 24hr's in your account.</Text>
         <Dialog.Actions>
           <Dialog.Button
             title="OK"

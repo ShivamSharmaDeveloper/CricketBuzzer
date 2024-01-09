@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, Linking, SafeAreaView } from 'react-native';
 import { validatePoints } from '../components/validation';
 import { TextInput } from 'react-native-gesture-handler';
@@ -8,8 +8,11 @@ import RNUpiPayment from 'react-native-upi-payment';
 import { Dialog } from 'react-native-elements';
 import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 import { useIsFocused } from '@react-navigation/native';
+import firestore from '@react-native-firebase/firestore';
+import { AuthContext } from '../context/AuthContext';
 
 const AddFundScreen = ({ navigation }) => {
+  const { userToken, setUserToken } = useContext(AuthContext);
   const isFocused = useIsFocused();
   const [points, setPoints] = useState('');
   const [pointsError, setPointsError] = useState('');
@@ -37,22 +40,57 @@ const AddFundScreen = ({ navigation }) => {
     setPointsError(error);
     return !error;
   };
-  function successCallback(data) {
+  const successCallback = async (data) => {
+    try {
+      const userCollection = firestore().collection('Users');
+      const userQuery = userCollection.where('phone', '==', userToken?.phone);
+      const userSnapshot = await userQuery.get();
+
+      if (!userSnapshot.empty) {
+        const userDoc = userSnapshot.docs[0];
+        const currentCoins = userDoc.get('coins') || 0;
+        console.log(currentCoins, 'coins');
+
+        const updatedCoins = currentCoins + Number(points);
+
+        // Use the document reference to update the document
+        await userDoc.ref.update({
+          coins: updatedCoins,
+        });
+
+        // console.log('Coins updated successfully');
+        //
+        const querySnapshot = await firestore()
+          .collection('Users')
+          .where('phone', '==', userToken?.phone)
+          .get();
+
+        if (querySnapshot.size > 0) {
+          setUserToken(querySnapshot.docs[0].data());
+        } else {
+          console.warn('User not found.');
+        }
+      } else {
+        console.log('User not found');
+      }
+    } catch (error) {
+      console.error('Error updating coins:', error);
+    }
     setLoading(false);
     setVisible3(true);
     setSuccess(true);
-    console.log(data, "success")
+    // console.log(data, "success")
     // do whatever with the data
-  }
+  };
 
-  function failureCallback(data) {
+  const failureCallback = (data) => {
     setLoading(false);
     setVisible3(true);
-    console.log(data, "failure")
+    // console.log(data, "failure")
     setSuccess(false);
     // setVisible3(false);
     // do whatever with the data
-  }
+  };
   const handleAddPoints = async () => {
     // Validate fields before proceeding
     if (!validatePointsField()) {
@@ -260,9 +298,10 @@ const AddFundScreen = ({ navigation }) => {
           style={{ color: '#333', backgroundColor: '#333' }}
         >
           <Dialog.Title title="Payment Success!" titleStyle={{ color: '#333', }} />
+          <Text style={{ color: '#333' }}>Your {points} Points Added!</Text>
           <Dialog.Actions>
             <Dialog.Button
-              title="CONFIRM"
+              title="OK"
               onPress={() => {
                 setSuccess(false);
                 setVisible3(false);

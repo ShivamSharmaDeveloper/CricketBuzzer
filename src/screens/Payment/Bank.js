@@ -4,6 +4,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { windowWidth } from '../../utils/Dimensions';
 import { validateRiquired } from '../../components/validation';
 import { responsiveFontSize, responsiveWidth } from 'react-native-responsive-dimensions';
+import { Dialog } from 'react-native-elements';
 
 const Bank = () => {
     const [accNumber, setAccNumber] = useState('');
@@ -18,6 +19,7 @@ const Bank = () => {
     const [bankNameError, setBankNameError] = useState('');
     const [Branch, setBranch] = useState('');
     const [BranchError, setBranchError] = useState('');
+    const [success, setSuccess] = useState(false);
 
     useEffect(() => {
         if (accName.length > 3){
@@ -38,7 +40,7 @@ const Bank = () => {
         if (Branch.length > 3){
             setBranchError('');
         }
-    }, [accName, accConfNumber, accNumber, ifscCode, Branch, bankName])
+    }, [accName, accConfNumber, accNumber, ifscCode, Branch, bankName]);
 
     const validateAccNameField = () => {
         const error = validateRiquired(accName) || accName.length < 3 ? 'Invalid name' : '';
@@ -83,9 +85,10 @@ const Bank = () => {
             // If any validation fails, return without proceeding
             return;
         } else {
+            setSuccess(true);
             console.log('running');
         }
-    }
+    };
 
     return (
         <SafeAreaView style={{ justifyContent: 'center' }}>
@@ -289,6 +292,29 @@ const Bank = () => {
                     </View>
                 </View>
             </View>
+            <Dialog
+                isVisible={success}
+                onBackdropPress={() => { setSuccess(true); }}
+                style={{ color: '#333', backgroundColor: '#333' }}
+            >
+                <Dialog.Title title="Bank Details Saved" titleStyle={{ color: '#333', }} />
+                <Text style={{ color: '#333' }}>Your Bank details request has been sent.</Text>
+                <Dialog.Actions>
+                    <Dialog.Button
+                        title="OK"
+                        onPress={() => {
+                            setSuccess(false);
+                            setAccName('');
+                            setAccNumber('');
+                            setAccConfNumber('');
+                            setBankName('');
+                            setBranch('');
+                            setIfscCode('');
+                        }}
+                        titleStyle={{ color: 'green' }}
+                    />
+                </Dialog.Actions>
+            </Dialog>
         </SafeAreaView>
     )
 }
