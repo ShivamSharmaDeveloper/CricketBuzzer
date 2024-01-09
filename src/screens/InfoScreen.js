@@ -7,7 +7,7 @@ import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-nat
 
 const InfoScreen = ({ navigation }) => {
   return (
-    <SafeAreaView style={{ flex: responsiveWidth(1), justifyContent: 'center' }}>
+    <SafeAreaView style={{ flex: 1, justifyContent: 'center' }}>
       <View style={{ backgroundColor: '#fff', height: responsiveHeight(7.5), width: responsiveWidth(windowWidth), flexDirection: 'row' }}>
         <MaterialIcons
           name="arrow-back"
@@ -18,7 +18,7 @@ const InfoScreen = ({ navigation }) => {
         />
         <Text style={{ fontSize: responsiveFontSize(2.8), color: '#333', marginBottom: responsiveWidth(3), fontWeight: 600, margin: responsiveWidth(4.1) }}>Information</Text>
       </View>
-      <View style={{ flex: responsiveWidth(1), alignItems: 'center', gap: responsiveWidth(5), marginTop: responsiveWidth(5) }}>
+      <View style={{ flex: 1, alignItems: 'center', gap: responsiveWidth(5), marginTop: responsiveWidth(5) }}>
         <Image
           source={logo}
           style={{ width: responsiveWidth(28), height: responsiveHeight(12.5), borderRadius: 10, }}

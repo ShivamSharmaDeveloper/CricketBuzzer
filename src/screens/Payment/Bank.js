@@ -114,7 +114,7 @@ const Bank = () => {
                                 value={accName}
                                 maxLength={25}
                                 placeholderTextColor="#666"
-                                style={{ flex: responsiveWidth(1), paddingVertical: responsiveWidth(0.5), color: '#666', fontSize: responsiveFontSize(2), paddingHorizontal: responsiveWidth(4.1), paddingTop: responsiveWidth(2.2), fontFamily: 'Roboto-Bold' }}
+                                style={{ flex: 1, paddingVertical: responsiveWidth(0.5), color: '#666', fontSize: responsiveFontSize(2), paddingHorizontal: responsiveWidth(4.1), paddingTop: responsiveWidth(2.2), fontFamily: 'Roboto-Bold' }}
                             // editable={false}
                             />
                         </View>
@@ -143,7 +143,7 @@ const Bank = () => {
                                 value={accNumber}
                                 maxLength={16}
                                 placeholderTextColor="#666"
-                                style={{ flex: responsiveWidth(1), paddingVertical: responsiveWidth(0.5), color: '#666', fontSize: responsiveFontSize(2), paddingHorizontal: responsiveWidth(4.1), paddingTop: responsiveWidth(2.2), fontFamily: 'Roboto-Bold' }}
+                                style={{ flex: 1, paddingVertical: responsiveWidth(0.5), color: '#666', fontSize: responsiveFontSize(2), paddingHorizontal: responsiveWidth(4.1), paddingTop: responsiveWidth(2.2), fontFamily: 'Roboto-Bold' }}
                             // editable={false}
                             />
                         </View>
@@ -172,7 +172,7 @@ const Bank = () => {
                                 value={accConfNumber}
                                 maxLength={16}
                                 placeholderTextColor="#666"
-                                style={{ flex: responsiveWidth(1), paddingVertical: responsiveWidth(0.5), color: '#666', fontSize: responsiveFontSize(2), paddingHorizontal: responsiveWidth(4.1), paddingTop: responsiveWidth(2.2), fontFamily: 'Roboto-Bold' }}
+                                style={{ flex: 1, paddingVertical: responsiveWidth(0.5), color: '#666', fontSize: responsiveFontSize(2), paddingHorizontal: responsiveWidth(4.1), paddingTop: responsiveWidth(2.2), fontFamily: 'Roboto-Bold' }}
                             // editable={false}
                             />
                         </View>
@@ -201,7 +201,7 @@ const Bank = () => {
                                 value={ifscCode}
                                 maxLength={11}
                                 placeholderTextColor="#666"
-                                style={{ flex: responsiveWidth(1), paddingVertical: responsiveWidth(0.5), color: '#666', fontSize: responsiveFontSize(2), paddingHorizontal: responsiveWidth(4.1), paddingTop: responsiveWidth(2.2), fontFamily: 'Roboto-Bold' }}
+                                style={{ flex: 1, paddingVertical: responsiveWidth(0.5), color: '#666', fontSize: responsiveFontSize(2), paddingHorizontal: responsiveWidth(4.1), paddingTop: responsiveWidth(2.2), fontFamily: 'Roboto-Bold' }}
                             // editable={false}
                             />
                         </View>
@@ -230,7 +230,7 @@ const Bank = () => {
                                 value={bankName}
                                 maxLength={25}
                                 placeholderTextColor="#666"
-                                style={{ flex: responsiveWidth(1), paddingVertical: responsiveWidth(0.5), color: '#666', fontSize: responsiveFontSize(2), paddingHorizontal: responsiveWidth(4.1), paddingTop: responsiveWidth(2.2), fontFamily: 'Roboto-Bold' }}
+                                style={{ flex: 1, paddingVertical: responsiveWidth(0.5), color: '#666', fontSize: responsiveFontSize(2), paddingHorizontal: responsiveWidth(4.1), paddingTop: responsiveWidth(2.2), fontFamily: 'Roboto-Bold' }}
                             // editable={false}
                             />
                         </View>
@@ -259,7 +259,7 @@ const Bank = () => {
                                 value={Branch}
                                 maxLength={25}
                                 placeholderTextColor="#666"
-                                style={{ flex: responsiveWidth(1), paddingVertical: responsiveWidth(0.5), color: '#666', fontSize: responsiveFontSize(2), paddingHorizontal: responsiveWidth(4.1), paddingTop: responsiveWidth(2.2), fontFamily: 'Roboto-Bold' }}
+                                style={{ flex: 1, paddingVertical: responsiveWidth(0.5), color: '#666', fontSize: responsiveFontSize(2), paddingHorizontal: responsiveWidth(4.1), paddingTop: responsiveWidth(2.2), fontFamily: 'Roboto-Bold' }}
                             // editable={false}
                             />
                         </View>

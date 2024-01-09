@@ -8,8 +8,8 @@ import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimen
 
 const GameDetailsScreen = ({ navigation, route }) => {
   return (
-    <SafeAreaView style={{flex: responsiveWidth(1)}}>
-    <View style={{ flex: responsiveWidth(1), justifyContent: 'flex-start', alignItems: 'center' }}>
+    <SafeAreaView style={{flex: 1}}>
+    <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center' }}>
       <View style={{ marginTop: responsiveWidth(5.5) }}>
         <TouchableOpacity onPress={() => {
           navigation.navigate('Single Digit', {

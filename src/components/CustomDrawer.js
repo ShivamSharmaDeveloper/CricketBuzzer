@@ -44,7 +44,7 @@ const CustomDrawer = props => {
     }
   };
   return (
-    <View style={{ flex: responsiveWidth(1) }}>
+    <View style={{ flex: 1 }}>
       <DrawerContentScrollView
         {...props}
         contentContainerStyle={{ backgroundColor: '#8200d6' }}>
@@ -76,7 +76,7 @@ const CustomDrawer = props => {
             <FontAwesome5 name="coins" size={responsiveWidth(4)} color="#fff" />
           </View>
         </ImageBackground>
-        <View style={{ flex: responsiveWidth(1), backgroundColor: '#fff', paddingTop: responsiveWidth(3) }}>
+        <View style={{ flex: 1, backgroundColor: '#fff', paddingTop: responsiveWidth(3) }}>
           <DrawerItemList {...props} />
         </View>
       </DrawerContentScrollView>

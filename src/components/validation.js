@@ -80,7 +80,7 @@ export const validateAmount = (amount, fund) => {
     }
 
     if (Number(amount) > Number(fund)) {
-        return 'Amount must not be greater than wallet fund.';
+        return 'Amount can not be greater than wallet fund.';
     } else if (Number(amount) === Number(fund) && Number(amount) !== 0) {
         return '';
     } else if (Number(amount) === 0){

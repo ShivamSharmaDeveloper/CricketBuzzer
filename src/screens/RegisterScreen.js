@@ -175,7 +175,7 @@ const RegisterScreen = ({ navigation }) => {
     }
   };
   return (
-    <SafeAreaView style={{ flex: responsiveWidth(1), justifyContent: 'center' }}>
+    <SafeAreaView style={{ flex: 1, justifyContent: 'center' }}>
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={{ paddingHorizontal: responsiveWidth(7) }}>
@@ -197,7 +197,7 @@ const RegisterScreen = ({ navigation }) => {
           }}>
           Register
         </Text>
-        <View style={{ flex: responsiveWidth(1), flexDirection: 'column' }}>
+        <View style={{ flex: 1, flexDirection: 'column' }}>
           <InputField
             label={'Full Name'}
             onChangeText={(text) => {
@@ -217,7 +217,7 @@ const RegisterScreen = ({ navigation }) => {
           />
           <Text style={{ color: 'red', fontSize: responsiveFontSize(1.5), fontFamily: 'Roboto-Regular' }}>{fullNameError}</Text>
         </View>
-        <View style={{ flex: responsiveWidth(1), marginVertical: responsiveWidth(4.2), flexDirection: 'column' }}>
+        <View style={{ flex: 1, marginVertical: responsiveWidth(4.2), flexDirection: 'column' }}>
           <InputField
             label={'Email ID'}
             onChangeText={(text) => {
@@ -237,7 +237,7 @@ const RegisterScreen = ({ navigation }) => {
           />
           <Text style={{ color: 'red', fontSize: responsiveFontSize(1.5), fontFamily: 'Roboto-Regular' }}>{emailIdError}</Text>
         </View>
-        <View style={{ flex: responsiveWidth(1), marginBottom: responsiveWidth(4.2), flexDirection: 'column' }}>
+        <View style={{ flex: 1, marginBottom: responsiveWidth(4.2), flexDirection: 'column' }}>
           <InputField
             label={'Phone Number'}
             icon={
@@ -259,7 +259,7 @@ const RegisterScreen = ({ navigation }) => {
           <Text style={{ color: 'red', fontSize: responsiveFontSize(1.5), fontFamily: 'Roboto-Regular' }}>{phoneNumberError}</Text>
         </View>
         {showOtp && (
-          <View style={{ flex: responsiveWidth(1), marginBottom: responsiveWidth(4.2), flexDirection: 'column' }}>
+          <View style={{ flex: 1, marginBottom: responsiveWidth(4.2), flexDirection: 'column' }}>
             <InputField
               label={'OTP'}
               icon={

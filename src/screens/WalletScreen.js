@@ -8,7 +8,7 @@ import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-nat
 const WalletScreen = ({ navigation }) => {
   const { userToken } = useContext(AuthContext);
   return (
-    <SafeAreaView style={{ flex: responsiveWidth(1), justifyContent: 'center' }}>
+    <SafeAreaView style={{ flex: 1, justifyContent: 'center' }}>
       <View style={{ backgroundColor: '#fff', height: responsiveHeight(7.5), width: responsiveWidth(windowWidth), flexDirection: 'row' }}>
         <MaterialIcons
           name="arrow-back"
@@ -19,8 +19,8 @@ const WalletScreen = ({ navigation }) => {
         />
         <Text style={{ fontSize: responsiveFontSize(2.8), color: '#333', marginBottom: responsiveWidth(3), fontWeight: 600, margin: responsiveWidth(4.1) }}>Wallet Statement</Text>
       </View>
-      <View style={{ flex: responsiveWidth(1), marginTop: responsiveWidth(5), marginLeft: responsiveWidth(3), marginRight: responsiveWidth(3), backgroundColor: '#D9D9D9', maxHeight: responsiveHeight(22) }}>
-        <View style={{ flex: responsiveWidth(1), justifyContent: 'space-between', flexDirection: 'row', marginLeft: responsiveWidth(3), marginTop: responsiveWidth(5), marginRight: responsiveWidth(3) }}>
+      <View style={{ flex: 1, marginTop: responsiveWidth(5), marginLeft: responsiveWidth(3), marginRight: responsiveWidth(3), backgroundColor: '#D9D9D9', maxHeight: responsiveHeight(22) }}>
+        <View style={{ flex: 1, justifyContent: 'space-between', flexDirection: 'row', marginLeft: responsiveWidth(3), marginTop: responsiveWidth(5), marginRight: responsiveWidth(3) }}>
           <Text style={{
             color: '#000',
             // textAlign: 'center',
@@ -34,7 +34,7 @@ const WalletScreen = ({ navigation }) => {
             fontSize: responsiveFontSize(2.7),
           }}>{userToken?.coins ? userToken?.coins : 0}</Text>
         </View>
-        <View style={{ flex: responsiveWidth(2), flexDirection: 'column', marginLeft: responsiveWidth(3), marginRight: responsiveWidth(3), }}>
+        <View style={{ flex: 2, flexDirection: 'column', marginLeft: responsiveWidth(3), marginRight: responsiveWidth(3), }}>
           <Text style={{
             color: '#000',
             // textAlign: 'center',
@@ -49,7 +49,7 @@ const WalletScreen = ({ navigation }) => {
           }}>Withdraw Close time is 10:00 AM</Text>
         </View>
       </View>
-      <View style={{ flex: responsiveWidth(1), marginTop: responsiveWidth(5), marginLeft: responsiveWidth(3), marginRight: responsiveWidth(3), flexDirection: 'row', justifyContent: 'space-evenly', gap: responsiveWidth(8) }}>
+      <View style={{ flex: 1, marginTop: responsiveWidth(5), marginLeft: responsiveWidth(3), marginRight: responsiveWidth(3), flexDirection: 'row', justifyContent: 'space-evenly', gap: responsiveWidth(8) }}>
         <TouchableOpacity onPress={() => { navigation.navigate('Add Fund');}} style={{
           backgroundColor: '#6a0028',
           padding: responsiveWidth(4.1),

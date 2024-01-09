@@ -54,7 +54,7 @@ const Upi = () => {
                                 value={phoneNumber}
                                 maxLength={10}
                                 placeholderTextColor="#666"
-                                style={{ flex: responsiveWidth(1), paddingVertical: responsiveWidth(1), color: '#666', fontSize: responsiveFontSize(2.2), paddingHorizontal: responsiveWidth(4.1), paddingTop: responsiveWidth(2), fontFamily: 'Roboto-Bold' }}
+                                style={{ flex: 1, paddingVertical: responsiveWidth(1), color: '#666', fontSize: responsiveFontSize(2.2), paddingHorizontal: responsiveWidth(4.1), paddingTop: responsiveWidth(2), fontFamily: 'Roboto-Bold' }}
                                 editable={false}
                             />
                         </View>

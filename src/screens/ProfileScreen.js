@@ -9,7 +9,7 @@ import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-nat
 const ProfileScreen = ({ navigation }) => {
   const { userToken } = useContext(AuthContext);
   return (
-    <SafeAreaView style={{ flex: responsiveWidth(1), justifyContent: 'center' }}>
+    <SafeAreaView style={{ flex: 1, justifyContent: 'center' }}>
       <View style={{ backgroundColor: '#fff', height: responsiveHeight(7.5), width: responsiveWidth(windowWidth), flexDirection: 'row' }}>
         <MaterialIcons
           name="arrow-back"
@@ -20,10 +20,10 @@ const ProfileScreen = ({ navigation }) => {
         />
         <Text style={{ fontSize: responsiveFontSize(2.8), color: '#333', marginBottom: responsiveWidth(3), fontWeight: 600, margin: responsiveWidth(4.1) }}>My Profile</Text>
       </View>
-      <View style={{ flex: responsiveWidth(1), alignItems: 'center', gap: responsiveWidth(3), marginTop: responsiveWidth(5) }}>
+      <View style={{ flex: 1, alignItems: 'center', gap: responsiveWidth(3), marginTop: responsiveWidth(5) }}>
         <Image
           source={logo}
-          style={{ width: responsiveWidth(28), height: responsiveHeight(12.5), borderRadius: responsiveWidth(3), }}
+          style={{ width: responsiveWidth(28), height: responsiveHeight(13.5), borderRadius: responsiveWidth(3), }}
         />
         <View style={{ backgroundColor: '#a80a44', width: responsiveWidth(86), borderRadius: responsiveWidth(3) }}>
           <View style={{ padding: responsiveWidth(5), paddingBottom: responsiveWidth(7), width: responsiveWidth(86), gap: responsiveWidth(5) }}>
@@ -49,7 +49,7 @@ const ProfileScreen = ({ navigation }) => {
                   value={userToken?.name}
                   // maxLength={25}
                   placeholderTextColor="#666"
-                  style={{ flex: responsiveWidth(1), paddingVertical: responsiveWidth(1), color: '#666', fontSize: responsiveFontSize(2.2), paddingHorizontal: responsiveWidth(4.1), paddingTop: responsiveWidth(1.5) }}
+                  style={{ flex: 1, paddingVertical: responsiveWidth(1), color: '#666', fontSize: responsiveFontSize(2.2), paddingHorizontal: responsiveWidth(4.1), paddingTop: responsiveWidth(1.5) }}
                   editable={false}
                 />
               </View>
@@ -76,7 +76,7 @@ const ProfileScreen = ({ navigation }) => {
                   value={userToken?.email}
                   // maxLength={5}
                   placeholderTextColor="#666"
-                  style={{ flex: responsiveWidth(1), paddingVertical: responsiveWidth(1), color: '#666', fontSize: responsiveFontSize(2.2), paddingHorizontal: responsiveWidth(4.1), paddingTop: responsiveWidth(1.5) }}
+                  style={{ flex: 1, paddingVertical: responsiveWidth(1), color: '#666', fontSize: responsiveFontSize(2.2), paddingHorizontal: responsiveWidth(4.1), paddingTop: responsiveWidth(1.5) }}
                   editable={false}
                 />
               </View>
@@ -103,7 +103,7 @@ const ProfileScreen = ({ navigation }) => {
                   value={userToken?.phone}
                   // maxLength={5}
                   placeholderTextColor="#666"
-                  style={{ flex: responsiveWidth(1), paddingVertical: responsiveWidth(1), color: '#666', fontSize: responsiveFontSize(2.2), paddingHorizontal: responsiveWidth(4.1), paddingTop: responsiveWidth(1.5) }}
+                  style={{ flex: 1, paddingVertical: responsiveWidth(1), color: '#666', fontSize: responsiveFontSize(2.2), paddingHorizontal: responsiveWidth(4.1), paddingTop: responsiveWidth(1.5) }}
                   editable={false}
                 />
               </View>

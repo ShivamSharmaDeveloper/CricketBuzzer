@@ -126,7 +126,7 @@ export default function HomeScreen({ navigation }) {
         }}>
           <TouchableOpacity onPress={() => { navigation.navigate('Add Fund');}} style={{
             backgroundColor: '#6a0028',
-            padding: responsiveWidth(3),
+            padding: 10,
             width: responsiveWidth(36),
             borderRadius: responsiveWidth(3),
           }}>
@@ -139,7 +139,7 @@ export default function HomeScreen({ navigation }) {
           </TouchableOpacity>
           <TouchableOpacity onPress={() => { navigation.navigate('Withdraw Fund'); }} style={{
             backgroundColor: '#6a0028',
-            padding: responsiveWidth(3),
+            padding: 10,
             width: responsiveWidth(36),
             borderRadius: responsiveWidth(3),
           }}>
@@ -164,7 +164,7 @@ export default function HomeScreen({ navigation }) {
             // photo={item.poster}
             title={item.title}
             subTitle={item.subtitle}
-            isFree={item.isFree}
+            isPlay={item.isPlay}
             open={item.open}
             close={item.close}
             onPress={() =>

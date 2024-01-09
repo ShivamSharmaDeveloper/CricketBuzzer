@@ -89,7 +89,7 @@ const AddFundScreen = ({ navigation }) => {
     }
   };
   return (
-    <SafeAreaView style={{ flex: responsiveWidth(1), justifyContent: 'center' }}>
+    <SafeAreaView style={{ flex: 1, justifyContent: 'center' }}>
       <View style={{ backgroundColor: '#fff', height: responsiveHeight(7.5), width: responsiveWidth(windowWidth), flexDirection: 'row' }}>
         <MaterialIcons
           name="arrow-back"
@@ -100,7 +100,7 @@ const AddFundScreen = ({ navigation }) => {
         />
         <Text style={{ fontSize: responsiveFontSize(2.8), color: '#333', marginBottom: responsiveWidth(3), fontWeight: 600, margin: responsiveWidth(4.1) }}>Add Points</Text>
       </View>
-      <View style={{ flex: responsiveWidth(1), justifyContent: 'flex-start', alignItems: 'flex-start', margin: responsiveWidth(5), width: windowWidth, flexDirection: 'column' }}>
+      <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'flex-start', margin: responsiveWidth(5), width: windowWidth, flexDirection: 'column' }}>
         <View style={{ flexDirection: 'column', marginBottom: pointsError ? responsiveWidth(3) : responsiveWidth(1.5) }}>
           <Text style={{ fontSize: responsiveFontSize(2.5), color: '#333', marginBottom: responsiveWidth(3), fontWeight: 600 }}>Points</Text>
           <View
@@ -123,7 +123,7 @@ const AddFundScreen = ({ navigation }) => {
               value={points}
               maxLength={5}
               placeholderTextColor="#666"
-              style={{ flex: responsiveWidth(1), paddingVertical: responsiveWidth(0.7), color: '#666', fontSize: responsiveFontSize(2.2), paddingHorizontal: responsiveWidth(4.1), paddingTop: responsiveWidth(3) }}
+              style={{ flex: 1, paddingVertical: responsiveWidth(0.7), color: '#666', fontSize: responsiveFontSize(2.2), paddingHorizontal: responsiveWidth(4.1), paddingTop: responsiveWidth(3) }}
             />
           </View>
           <Text style={{ color: 'red', fontSize: responsiveFontSize(1.6), fontFamily: 'Roboto-Regular', marginLeft: responsiveWidth(3) }}>{pointsError}</Text>

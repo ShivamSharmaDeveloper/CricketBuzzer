@@ -28,7 +28,7 @@ export default function InputField({
         <TextInput
           placeholder={label}
           keyboardType={keyboardType}
-          style={{flex: responsiveWidth(1), paddingVertical: responsiveWidth(0)}}
+          style={{flex: 1, paddingVertical: responsiveWidth(0)}}
           secureTextEntry={true}
         />
       ) : (
@@ -39,7 +39,7 @@ export default function InputField({
           value={value}
           maxLength={maxLength}
           placeholderTextColor="#666"
-          style={{flex: responsiveWidth(1), paddingVertical: responsiveWidth(0), color: '#666'}}
+          style={{flex: 1, paddingVertical: responsiveWidth(0), color: '#666'}}
         />
       )}
       <TouchableOpacity onPress={fieldButtonFunction}>

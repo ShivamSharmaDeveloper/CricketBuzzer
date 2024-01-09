@@ -87,7 +87,7 @@ const WithdrawFundScreen = ({ navigation }) => {
 
       <View style={{ flexDirection: 'column', margin: responsiveWidth(5), gap: responsiveWidth(5) }}>
         <Text style={{ fontSize: responsiveFontSize(2.5), fontFamily: 'Roboto-Bold', color: '#333' }}>Payment Method</Text>
-        <View style={{ flexDirection: 'row', gap: responsiveWidth(3) }}>
+        <View style={{ flexDirection: 'row', gap: responsiveWidth(2) }}>
           <TouchableOpacity onPress={() => {
             navigation.navigate('Bank Details', {
               // title: route.params?.title,
@@ -189,7 +189,7 @@ const WithdrawFundScreen = ({ navigation }) => {
                   value={amount}
                   maxLength={5}
                   placeholderTextColor="#666"
-                  style={{ flex: responsiveWidth(1), paddingVertical: responsiveWidth(0.5), color: '#666', fontSize: responsiveFontSize(2.2), paddingHorizontal: responsiveWidth(4.1), paddingTop: responsiveWidth(2.2), textAlign: 'center' }}
+                  style={{ flex: 1, paddingVertical: responsiveWidth(0.5), color: '#666', fontSize: responsiveFontSize(2.2), paddingHorizontal: responsiveWidth(4.1), paddingTop: responsiveWidth(2.2), textAlign: 'center' }}
                 // editable={false}
                 />
               </View>

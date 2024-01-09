@@ -66,7 +66,7 @@ const SingleDigitScreen = () => {
 
 
     return (
-        <SafeAreaView style={{ flex: responsiveWidth(1) }}>
+        <SafeAreaView style={{ flex: 1 }}>
             <View style={{ backgroundColor: '#6a0028', width: responsiveWidth(100), height: responsiveHeight(100) }}>
                 <View style={{ flexDirection: 'column', marginHorizontal: responsiveWidth(8.3), marginTop: responsiveWidth(8.3) }}>
                     <Text style={{ fontSize: responsiveFontSize(2), color: '#fff', marginBottom: responsiveWidth(3), fontFamily: 'Roboto-Bold' }}>Choose Date</Text>
@@ -89,7 +89,7 @@ const SingleDigitScreen = () => {
                             // onChangeText={(text) => { setPoints(text); }}
                             value={formatedDate}
                             placeholderTextColor="#666"
-                            style={{ flex: responsiveWidth(1), paddingVertical: responsiveWidth(1), color: '#666', fontSize: responsiveFontSize(2.2), paddingHorizontal: responsiveWidth(4.1), paddingTop: responsiveWidth(1.5) }}
+                            style={{ flex: 1, paddingVertical: responsiveWidth(1), color: '#666', fontSize: responsiveFontSize(2.2), paddingHorizontal: responsiveWidth(4.1), paddingTop: responsiveWidth(1.5) }}
                             editable={false}
                         />
                     </View>
@@ -136,7 +136,7 @@ const SingleDigitScreen = () => {
                             value={digits}
                             maxLength={1}
                             placeholderTextColor="#666"
-                            style={{ flex: responsiveWidth(1), paddingVertical: responsiveWidth(1), color: '#666', fontSize: responsiveFontSize(2.2), paddingHorizontal: responsiveWidth(4.1), paddingTop: responsiveWidth(2.3) }}
+                            style={{ flex: 1, paddingVertical: responsiveWidth(1), color: '#666', fontSize: responsiveFontSize(2.2), paddingHorizontal: responsiveWidth(4.1), paddingTop: responsiveWidth(2.3) }}
                         // editable={false}
                         />
                     </View>
@@ -164,7 +164,7 @@ const SingleDigitScreen = () => {
                             value={amount}
                             maxLength={responsiveWidth(1.5)}
                             placeholderTextColor="#666"
-                            style={{ flex: responsiveWidth(1), paddingVertical: responsiveWidth(1), color: '#666', fontSize: responsiveFontSize(2.2), paddingHorizontal: responsiveWidth(4.1), paddingTop: responsiveWidth(2.3) }}
+                            style={{ flex: 1, paddingVertical: responsiveWidth(1), color: '#666', fontSize: responsiveFontSize(2.2), paddingHorizontal: responsiveWidth(4.1), paddingTop: responsiveWidth(2.3) }}
                         // editable={false}
                         />
                     </View>

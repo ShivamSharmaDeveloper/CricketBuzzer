@@ -182,7 +182,7 @@ const LoginScreen = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={{ flex: responsiveWidth(1), justifyContent: 'center' }}>
+    <SafeAreaView style={{ flex: 1, justifyContent: 'center' }}>
       <View style={{ paddingHorizontal: responsiveWidth(7) }}>
         <View style={{ alignItems: 'center' }}>
           <LoginSVG
