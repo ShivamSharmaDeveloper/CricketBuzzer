@@ -84,10 +84,14 @@ const AddFundScreen = ({ navigation }) => {
   };
 
   const failureCallback = (data) => {
-    setLoading(false);
-    setVisible3(true);
-    // console.log(data, "failure")
-    setSuccess(false);
+    if (data.Status == "Success") {
+      successCallback();
+    } else {
+      setLoading(false);
+      setVisible3(true);
+      console.log(data, "failure")
+      setSuccess(false);
+    }
     // setVisible3(false);
     // do whatever with the data
   };
@@ -102,7 +106,7 @@ const AddFundScreen = ({ navigation }) => {
         setLoading(true);
         RNUpiPayment.initializePayment(
           {
-            vpa: 'shivamsharma7899@ybl', // or can be john@ybl or mobileNo@upi
+            vpa: 'mswipe.1400062623008175@kotak', // or can be john@ybl or mobileNo@upi
             payeeName: 'Kalyan Satta',
             amount: points,
             transactionRef: 'aasf-332-aoei-fn',
