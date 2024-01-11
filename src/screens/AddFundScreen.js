@@ -19,6 +19,7 @@ const AddFundScreen = ({ navigation }) => {
   const [success, setSuccess] = useState(false);
   const [visible3, setVisible3] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [upi, setUpi] = useState('');
 
   useEffect(() => {
     if (points.length > 0) {
@@ -40,6 +41,29 @@ const AddFundScreen = ({ navigation }) => {
     setPointsError(error);
     return !error;
   };
+  const handleAddMoney = async () => {
+    try {
+      const userCollection = firestore().collection('AddMoney');
+      const userQuery = userCollection.where('name', '==', 'admin');
+      const userSnapshot = await userQuery.get();
+
+      if (!userSnapshot.empty) {
+        const userDoc = userSnapshot.docs[0];
+        const currentCoins = userDoc.get('earnings') || 0;
+        console.log(currentCoins, 'earnings');
+
+        const updatedCoins = currentCoins + Number(points);
+
+        // Use the document reference to update the document
+        await userDoc.ref.update({
+          earnings: updatedCoins,
+        });
+      }
+    } catch (error) {
+      console.log(error, 'error');
+    }
+  };
+
   const successCallback = async (data) => {
     try {
       const userCollection = firestore().collection('Users');
@@ -57,7 +81,7 @@ const AddFundScreen = ({ navigation }) => {
         await userDoc.ref.update({
           coins: updatedCoins,
         });
-
+        handleAddMoney();
         // console.log('Coins updated successfully');
         //
         const querySnapshot = await firestore()
@@ -70,6 +94,7 @@ const AddFundScreen = ({ navigation }) => {
         } else {
           console.warn('User not found.');
         }
+
       } else {
         console.log('User not found');
       }
@@ -104,9 +129,18 @@ const AddFundScreen = ({ navigation }) => {
       // let upiUrl = `upi://pay?pa=shivamsharma7899@ybl&pn=Shivam%20Sharma&mc=0000&mode=02&purpose=00&am=${points}&cu=INR&tn=Kalyan%20Satta%20App`;
       try {
         setLoading(true);
+        const querySnapshot = await firestore()
+          .collection('admin')
+          .where('name', '==', 'admin')
+          .get();
+        if (querySnapshot.size > 0) {
+          setUpi(querySnapshot?.docs[0]?.data());
+        } else {
+          console.warn('User not found.');
+        }
         RNUpiPayment.initializePayment(
           {
-            vpa: 'mswipe.1400062623008175@kotak', // or can be john@ybl or mobileNo@upi
+            vpa: upi?.upi, // or can be john@ybl or mobileNo@upi
             payeeName: 'Kalyan Satta',
             amount: points,
             transactionRef: 'aasf-332-aoei-fn',
