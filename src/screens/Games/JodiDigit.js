@@ -152,8 +152,9 @@ const JodiDigit = ({ route }) => {
     const formatedDate = formatDate();
     const validateAmountField = () => {
         const error = validateAmount(amount, userToken?.coins);
-        setAmountError(error);
-        return !error;
+        const valid = error === '' ? Number(amount) > 1000 ? 'Amount can not be greater than 1000' : '' : error;
+        setAmountError(valid);
+        return !valid;
     };
     const validateDigitsField = () => {
         const error = digits.length === 0 ? 'Please choose one option' : '';
@@ -285,7 +286,7 @@ const JodiDigit = ({ route }) => {
                     <Text style={{ fontSize: responsiveFontSize(2), color: '#fff', marginBottom: responsiveWidth(3), fontFamily: 'Roboto-Bold' }}>Digits</Text>
                     <Dropdown
                         data={data}
-                        placeholderStyle={{ color: '#333', fontSize: responsiveFontSize(2.2), fontFamily: 'Roboto-Bold', alignItems: 'center', textAlign: 'center' }}
+                        placeholderStyle={{ color: '#333', fontSize: responsiveFontSize(2.2), fontFamily: 'Roboto-Bold', }}
                         placeholder='Select Digit'
                         labelField="label"
                         valueField="value"

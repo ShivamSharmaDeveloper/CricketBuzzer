@@ -17,7 +17,7 @@ const ResultCard = ({ date, open, both, close }) => {
                 <View style={{ borderRightWidth: 1, width: responsiveWidth(9), paddingHorizontal: responsiveWidth(3.1), paddingVertical: responsiveHeight(1) }}>
                     <Text style={{ color: '#333', fontSize: responsiveFontSize(1.8) }}>{open}</Text>
                 </View>
-                <View style={{ width: responsiveWidth(10), paddingHorizontal: responsiveWidth(3), paddingVertical: responsiveHeight(1) }}>
+                <View style={{ width: responsiveWidth(10), paddingHorizontal: responsiveWidth(2.8), paddingVertical: responsiveHeight(1) }}>
                     <Text style={{ color: '#333', fontSize: responsiveFontSize(1.8) }}>{both}</Text>
                 </View>
                 <View style={{ borderLeftWidth: 1, width: responsiveWidth(9), paddingHorizontal: responsiveWidth(3.1), paddingVertical: responsiveHeight(1) }}>

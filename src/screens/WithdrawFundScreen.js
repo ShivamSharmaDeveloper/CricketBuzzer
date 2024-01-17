@@ -121,17 +121,18 @@ const WithdrawFundScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={{ justifyContent: 'center' }}>
-      <View style={{ backgroundColor: '#fff', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: responsiveWidth(4.1) }}>
+      <View style={{ backgroundColor: '#6a0028', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: responsiveWidth(4.1) }}>
         <MaterialIcons
           name="arrow-back"
           size={responsiveWidth(7)}
-          color="#333"
+          color="white"
           onPress={() => { navigation.navigate('Home'); }}
+          style={{width: responsiveWidth(10)}}
         />
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Text style={{ fontSize: responsiveFontSize(2.8), color: '#333', fontWeight: '600', marginRight: responsiveWidth(25), alignSelf: 'center' }}>Withdraw Fund</Text>
+          <Text style={{ fontSize: responsiveFontSize(2.8), color: 'white', fontWeight: '600', marginRight: responsiveWidth(15), alignSelf: 'center', width: responsiveWidth(40) }}>Withdraw Fund</Text>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={{ fontSize: responsiveFontSize(2.8), color: '#333', fontFamily: 'Roboto-Bold' }}>{userToken?.coins ? userToken?.coins : 0}</Text>
+            <Text style={{ fontSize: responsiveFontSize(2.8), color: 'white', fontFamily: 'Roboto-Bold' }}>{userToken?.coins ? userToken?.coins : 0}</Text>
           </View>
         </View>
       </View>

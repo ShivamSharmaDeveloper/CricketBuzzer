@@ -8,15 +8,15 @@ import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-nat
 const InfoScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={{ flex: 1, justifyContent: 'center' }}>
-      <View style={{ backgroundColor: '#fff', height: responsiveHeight(7.5), width: responsiveWidth(windowWidth), flexDirection: 'row' }}>
+      <View style={{ backgroundColor: '#6a0028', height: responsiveHeight(7.5), width: responsiveWidth(windowWidth), flexDirection: 'row' }}>
         <MaterialIcons
           name="arrow-back"
           size={responsiveWidth(7)}
-          color="#333"
+          color="white"
           style={{ margin: responsiveWidth(4.1) }}
           onPress={() => { navigation.navigate('Home'); }}
         />
-        <Text style={{ fontSize: responsiveFontSize(2.8), color: '#333', marginBottom: responsiveWidth(3), fontWeight: 600, margin: responsiveWidth(4.1) }}>Information</Text>
+        <Text style={{ fontSize: responsiveFontSize(2.8), color: 'white', marginBottom: responsiveWidth(3), fontWeight: 600, margin: responsiveWidth(4.1) }}>Information</Text>
       </View>
       <View style={{ flex: 1, alignItems: 'center', gap: responsiveWidth(5), marginTop: responsiveWidth(5) }}>
         <Image

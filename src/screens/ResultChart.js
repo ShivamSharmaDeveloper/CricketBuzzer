@@ -1,12 +1,15 @@
 import { View, Text, ScrollView } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 import ResultCard from '../components/ResultCard';
 import firestore from '@react-native-firebase/firestore';
 import moment from 'moment';
+import Loader from '../components/Loader';
+import { AuthContext } from '../context/AuthContext';
 
 const ResultChart = ({ route }) => {
+    const { isLoadingGlobal, setIsLoadingGlobal } = useContext(AuthContext);
     const [results, setResults] = useState([]);
 
     const processOpenClose = (open, close) => {
@@ -29,6 +32,7 @@ const ResultChart = ({ route }) => {
 
     const fetchDataAndProcess = async () => {
         try {
+            setIsLoadingGlobal(true);
             const querySnapshot = await firestore()
                 .collection('Result') // Replace with your collection name
                 .where('game_name', '==', route.params?.title)
@@ -66,6 +70,8 @@ const ResultChart = ({ route }) => {
             setResults(processedData);
         } catch (error) {
             console.error('Error fetching data:', error);
+        } finally {
+            setIsLoadingGlobal(false);
         }
     };
 
@@ -146,7 +152,7 @@ const ResultChart = ({ route }) => {
     // console.log(modifiedResult);
     return (
         <SafeAreaView style={{ flex: 1, }}>
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={{ justifyContent: 'flex-start', flexDirection: 'column' }}>
                     <View style={{ marginTop: responsiveWidth(3), alignItems: 'center' }}>
                         <Text style={{ color: '#333', fontFamily: 'Roboto-Bold', fontSize: responsiveFontSize(2.2), textTransform: 'uppercase', }}>{route.params?.title} Result Chart</Text>
@@ -160,7 +166,7 @@ const ResultChart = ({ route }) => {
                                 both={data.both}
                                 close={data.close}
                             />
-                        )) : <Text style={{ color: '#6a0028', fontFamily: 'Roboto-Bold', fontSize: responsiveFontSize(2.2), textTransform: 'uppercase',}}>No Result Chart Here</Text> }
+                        )) : <Text style={{ color: '#6a0028', fontFamily: 'Roboto-Bold', fontSize: responsiveFontSize(2), textTransform: 'uppercase', }}>No Result Chart Here</Text>}
                     </View>
                 </View>
             </ScrollView>

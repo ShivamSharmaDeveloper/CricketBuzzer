@@ -9,15 +9,15 @@ const WalletScreen = ({ navigation }) => {
   const { userToken } = useContext(AuthContext);
   return (
     <SafeAreaView style={{ flex: 1, justifyContent: 'center' }}>
-      <View style={{ backgroundColor: '#fff', height: responsiveHeight(7.5), width: responsiveWidth(windowWidth), flexDirection: 'row' }}>
+      <View style={{ backgroundColor: '#6a0028', height: responsiveHeight(7.5), width: responsiveWidth(windowWidth), flexDirection: 'row' }}>
         <MaterialIcons
           name="arrow-back"
           size={responsiveWidth(7)}
-          color="#333"
+          color="white"
           style={{ margin: responsiveWidth(4.1) }}
           onPress={() => { navigation.navigate('Home'); }}
         />
-        <Text style={{ fontSize: responsiveFontSize(2.8), color: '#333', marginBottom: responsiveWidth(3), fontWeight: 600, margin: responsiveWidth(4.1) }}>Wallet Statement</Text>
+        <Text style={{ fontSize: responsiveFontSize(2.8), color: 'white', marginBottom: responsiveWidth(3), fontWeight: 600, margin: responsiveWidth(4.1) }}>Wallet Statement</Text>
       </View>
       <View style={{ flex: 1, marginTop: responsiveWidth(5), marginLeft: responsiveWidth(3), marginRight: responsiveWidth(3), backgroundColor: '#D9D9D9', maxHeight: responsiveHeight(22) }}>
         <View style={{ flex: 1, justifyContent: 'space-between', flexDirection: 'row', marginLeft: responsiveWidth(3), marginTop: responsiveWidth(5), marginRight: responsiveWidth(3) }}>

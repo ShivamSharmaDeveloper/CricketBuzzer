@@ -135,8 +135,9 @@ const DoublePannaScreen = ({ route }) => {
     const formatedDate = formatDate();
     const validateAmountField = () => {
         const error = validateAmount(amount, userToken?.coins);
-        setAmountError(error);
-        return !error;
+        const valid = error === '' ? Number(amount) > 3200 ? 'Amount can not be greater than 3200' : '' : error;
+        setAmountError(valid);
+        return !valid;
     };
     const validateDigitsField = () => {
         const error = digits.length === 0 ? 'Please choose one option' : '';
@@ -270,15 +271,15 @@ const DoublePannaScreen = ({ route }) => {
                             // borderBottomWidth: 1,
                             // borderWidth: 1,
                             // paddingBottom: responsiveWidth(1.2),
-                            marginBottom: responsiveWidth(1.5),
+                            // marginBottom: responsiveWidth(1.5),
                             width: responsiveWidth(25),
                             alignItems: 'center',
                             // backgroundColor: '#666',
                             // border: responsiveWidth(3),
                         }}>
                         <RadioButtonGroup selectedOption={selectedOption} setSelectedOption={setSelectedOption} openTime={route.params?.open} />
-                        <Text style={{ color: 'white', fontSize: responsiveFontSize(1.7), fontFamily: 'Roboto-Regular', marginLeft: responsiveWidth(3), marginTop: responsiveWidth(3) }}>{sessionError}</Text>
                     </View>
+                    <Text style={{ color: 'white', fontSize: responsiveFontSize(1.7), fontFamily: 'Roboto-Regular', marginLeft: responsiveWidth(3), marginTop: responsiveWidth(0.5) }}>{sessionError}</Text>
                 </View>
                 <View style={{ flexDirection: 'column', marginHorizontal: responsiveWidth(8.3), marginTop: responsiveWidth(3) }}>
                     <Text style={{ fontSize: responsiveFontSize(2), color: '#fff', marginBottom: responsiveWidth(3), fontFamily: 'Roboto-Bold' }}>Digits</Text>

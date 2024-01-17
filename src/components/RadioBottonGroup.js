@@ -15,7 +15,7 @@ const RadioButtonGroup = ({ selectedOption, setSelectedOption, openTime }) => {
                 checkedIcon="dot-circle-o"
                 uncheckedIcon="circle-o"
                 checkedColor="white"
-                uncheckedColor={isCrossedCurrentTime(openTime) ? "grey" : "white"}
+                uncheckedColor={isCrossedCurrentTime(openTime) ? "grey" : "#C0C0C0"}
                 // title={'Open'}
                 containerStyle={{ padding: responsiveWidth(0)}}
                 disabled={isCrossedCurrentTime(openTime)}

@@ -12,8 +12,9 @@ import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimen
 const GameDetailsScreen = ({ navigation, route }) => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#870032' }}>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center' }}>
-          <View style={{ margin: responsiveHeight(4), width: responsiveWidth(100), flexDirection: 'row', gap: responsiveWidth(4), flexWrap: 'wrap', paddingHorizontal: responsiveWidth(5) }}>
+          <View style={{ margin: responsiveHeight(4), width: responsiveWidth(100), flexDirection: 'row', gap: responsiveWidth(4), flexWrap: 'wrap', paddingHorizontal: responsiveWidth(6.2) }}>
             <TouchableOpacity onPress={() => {
               navigation.navigate('Single Digit', {
                 title: route.params?.title,
@@ -25,7 +26,7 @@ const GameDetailsScreen = ({ navigation, route }) => {
             >
               <Image
                 source={singleDigit}
-                style={{ width: responsiveWidth(42.5), height: responsiveHeight(20), borderRadius: 10, }}
+                style={{ width: responsiveWidth(40), height: responsiveHeight(20.3), borderRadius: 10, }}
               />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => {
@@ -38,7 +39,7 @@ const GameDetailsScreen = ({ navigation, route }) => {
             }}>
               <Image
                 source={singlePanna}
-                style={{ width: responsiveWidth(42.5), height: responsiveHeight(20), borderRadius: 10, }}
+                style={{ width: responsiveWidth(40), height: responsiveHeight(20.3), borderRadius: 10, }}
               />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => {
@@ -51,7 +52,7 @@ const GameDetailsScreen = ({ navigation, route }) => {
             }}>
               <Image
                 source={doublePanna}
-                style={{ width: responsiveWidth(42.5), height: responsiveHeight(20), borderRadius: 10, }}
+                style={{ width: responsiveWidth(40), height: responsiveHeight(20.3), borderRadius: 10, }}
               />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => {
@@ -64,7 +65,7 @@ const GameDetailsScreen = ({ navigation, route }) => {
             }}>
               <Image
                 source={triplePanna}
-                style={{ width: responsiveWidth(42.5), height: responsiveHeight(20), borderRadius: 10, }}
+                style={{ width: responsiveWidth(40), height: responsiveHeight(20.3), borderRadius: 10, }}
               />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => {
@@ -75,7 +76,7 @@ const GameDetailsScreen = ({ navigation, route }) => {
             }}>
               <Image
                 source={jodiDigit}
-                style={{ width: responsiveWidth(42.5), height: responsiveHeight(20), borderRadius: 10, }}
+                style={{ width: responsiveWidth(40), height: responsiveHeight(20.3), borderRadius: 10, }}
               />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => {
@@ -88,7 +89,7 @@ const GameDetailsScreen = ({ navigation, route }) => {
             }}>
               <Image
                 source={halfSangam}
-                style={{ width: responsiveWidth(42.5), height: responsiveHeight(20), borderRadius: 10, }}
+                style={{ width: responsiveWidth(40), height: responsiveHeight(20.3), borderRadius: 10, }}
               />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => {
@@ -99,11 +100,12 @@ const GameDetailsScreen = ({ navigation, route }) => {
             }}>
               <Image
                 source={fullSangam}
-                style={{ width: responsiveWidth(42.5), height: responsiveHeight(20), borderRadius: 10, }}
+                style={{ width: responsiveWidth(40), height: responsiveHeight(20.3), borderRadius: 10, }}
               />
             </TouchableOpacity>
           </View>
         </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };

@@ -98,50 +98,53 @@ export default function HomeScreen({ navigation }) {
     setGamesTab(value);
   };
   const handleEventList = async () => {
-    const querySnapshot = await firestore()
-      .collection('Events')
-      .orderBy('isPlay', 'asc')
-      .get();
-    const userDataArray = querySnapshot.docs.map(doc => doc.data());
-    const updatedEvents = updateIsPlayStatus(userDataArray);
-    setEvents(updatedEvents);
-    // console.log(userDataArray, "snapshot");
+    try {
+      const querySnapshot = await firestore()
+        .collection('Events')
+        .orderBy('isPlay', 'asc')
+        .get();
+      const userDataArray = querySnapshot.docs.map(doc => doc.data());
+      const updatedEvents = updateIsPlayStatus(userDataArray);
+      setEvents(updatedEvents);
+      // console.log(userDataArray, "snapshot");
+    } catch (error) {
+      console.log(error, 'error');
+    }
   };
   useEffect(() => {
     if (isFocused) {
-      try {
-        setIsLoadingGlobal(true);
         // Example usage
         handleEventList();
         // console.log(freeGames);
         // setEvents(freeGames);
         // Call the updateSubtitles function when the app is opened
         updateSubtitles();
-      } catch (error) {
-        console.log(error, 'error');
-      } finally {
-        setIsLoadingGlobal(false);
-      }
     }
   }, [isFocused]);
+  useEffect(() => {
+    setIsLoadingGlobal(true);
+    setTimeout(() => {
+      setIsLoadingGlobal(false);
+    }, 2000);
+  }, []);
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
-      <ScrollView style={{ padding: responsiveWidth(5.5) }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#000' }}>
         <View
           style={{
             flexDirection: 'row',
             justifyContent: 'space-between',
-            marginBottom: responsiveWidth(5.5),
+            padding: responsiveHeight(2),
+            backgroundColor: '#6a0028'
           }}>
           <TouchableOpacity onPress={() => navigation.openDrawer()}>
             <Ionicons
               name="menu"
               size={responsiveWidth(8.5)}
-              color='#333'
+              color='white'
             />
           </TouchableOpacity>
-          <Text style={{ fontSize: responsiveFontSize(2.7), fontFamily: 'Roboto-Medium', marginTop: responsiveWidth(0.5), color: '#333' }}>
+          <Text style={{ fontSize: responsiveFontSize(2.7), fontFamily: 'Roboto-Medium', marginTop: responsiveWidth(0.5), color: 'white' }}>
             Ratan khatri matka
           </Text>
           <TouchableOpacity onPress={() => navigation.navigate('Wallet Statement')}>
@@ -154,9 +157,9 @@ export default function HomeScreen({ navigation }) {
               <Ionicons
                 name="wallet"
                 size={responsiveWidth(8.5)}
-                color='#333'
+                color='white'
               />
-              <Text style={{ fontSize: responsiveFontSize(2.5), fontFamily: 'Roboto-Medium', textAlign: 'center', margin: responsiveWidth(1), color: '#333' }}>
+              <Text style={{ fontSize: responsiveFontSize(2.5), fontFamily: 'Roboto-Medium', textAlign: 'center', margin: responsiveWidth(1), color: 'white' }}>
                 {userToken?.coins ? userToken?.coins : 0}
               </Text>
             </View>
@@ -195,21 +198,24 @@ export default function HomeScreen({ navigation }) {
             <Text style={{color: '#0aada8'}}>See all</Text>
           </TouchableOpacity>
         </View> */}
-
-        <Carousel
-          ref={carouselRef}
-          data={sliderData}
-          renderItem={renderBanner}
-          sliderWidth={responsiveWidth(90)}
-          itemWidth={responsiveWidth(85)}
-          loop={true}
-          autoplay={true}
-          autoplayInterval={3000}
-        />
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={{ paddingHorizontal: responsiveWidth(5.5), marginTop: responsiveHeight(2) }}>
+          <Carousel
+            ref={carouselRef}
+            data={sliderData}
+            renderItem={renderBanner}
+            sliderWidth={responsiveWidth(90)}
+            itemWidth={responsiveWidth(85)}
+            loop={true}
+            autoplay={true}
+            autoplayInterval={3000}
+          />
+        </View>
 
         <View style={{
           marginVertical: responsiveWidth(5.5), flexDirection: 'row',
           justifyContent: 'space-between',
+          paddingHorizontal: responsiveWidth(5.5)
         }}>
           <TouchableOpacity onPress={() => { navigation.navigate('Add Fund'); }} style={{
             backgroundColor: '#6a0028',
@@ -245,26 +251,28 @@ export default function HomeScreen({ navigation }) {
           /> */}
         </View>
 
-        {events && events.map(item => (
-          <ListItem
-            key={item.open}
-            navigation={navigation}
-            // photo={item.poster}
-            title={item.title}
-            subTitle={item.subtitle}
-            isPlay={item.isPlay}
-            open={item.open}
-            close={item.close}
-            onPress={() =>
-              navigation.navigate('Game', {
-                title: item.title,
-                id: item.id,
-                open: item.open,
-                close: item.close,
-              })
-            }
-          />
-        ))}
+        <View style={{ paddingHorizontal: responsiveWidth(5.5) }}>
+          {events && events.map(item => (
+            <ListItem
+              key={item.open}
+              navigation={navigation}
+              // photo={item.poster}
+              title={item.title}
+              subTitle={item.subtitle}
+              isPlay={item.isPlay}
+              open={item.open}
+              close={item.close}
+              onPress={() =>
+                navigation.navigate('Game', {
+                  title: item.title,
+                  id: item.id,
+                  open: item.open,
+                  close: item.close,
+                })
+              }
+            />
+          ))}
+        </View>
         {/* {gamesTab === 2 &&
           paidGames.map(item => (
             <ListItem
@@ -282,7 +290,6 @@ export default function HomeScreen({ navigation }) {
               }
             />
           ))} */}
-        <Loader visible={isLoadingGlobal} />
       </ScrollView>
     </SafeAreaView>
   );
