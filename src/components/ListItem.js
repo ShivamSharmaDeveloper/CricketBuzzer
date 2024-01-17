@@ -25,15 +25,15 @@ export default function ListItem({ title, subTitle, isPlay, price, onPress, open
             })}>
               <Image
                 source={photo}
-                style={{ width: responsiveWidth(13.8), height: responsiveHeight(7), borderRadius: responsiveWidth(3), marginRight: responsiveWidth(8), marginLeft: responsiveWidth(3) }}
+                style={{ width: responsiveWidth(13.8), height: responsiveHeight(7), borderRadius: responsiveWidth(3), marginLeft: responsiveWidth(3) }}
               />
             </TouchableOpacity>
-            <View style={{ width: responsiveWidth(37), alignItems: 'center' }}>
+            <View style={{ width: responsiveWidth(39), alignItems: 'center', marginLeft: responsiveWidth(5) }}>
               <Text
                 style={{
                   color: 'white',
                   fontFamily: 'Roboto-Medium',
-                  fontSize: responsiveFontSize(2.3),
+                  fontSize: responsiveFontSize(2.1),
                   textTransform: 'uppercase',
                 }}>
                 {title}
