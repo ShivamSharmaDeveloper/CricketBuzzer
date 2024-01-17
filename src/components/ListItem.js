@@ -8,7 +8,7 @@ import {
   responsiveFontSize
 } from "react-native-responsive-dimensions";
 
-export default function ListItem({ title, subTitle, isPlay, price, onPress, open, close }) {
+export default function ListItem({ title, subTitle, isPlay, price, onPress, open, close, navigation }) {
   return (
     <View style={{ backgroundColor: '#1111', flexDirection: 'column', marginBottom: responsiveWidth(5), borderRadius: responsiveWidth(3), height: responsiveHeight(18), }}>
       <View style={{
@@ -17,10 +17,16 @@ export default function ListItem({ title, subTitle, isPlay, price, onPress, open
         alignItems: 'flex-start',
       }}>
         <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1, marginTop: responsiveWidth(3) }}>
-          <Image
-            source={photo}
-            style={{ width: responsiveWidth(13.8), height: responsiveHeight(6.5), borderRadius: responsiveWidth(3), marginRight: responsiveWidth(8), marginLeft: responsiveWidth(3) }}
-          />
+          <TouchableOpacity onPress={() => navigation.navigate('Results', {
+            title: title,
+            open: open,
+            close: close,
+          })}>
+            <Image
+              source={photo}
+              style={{ width: responsiveWidth(13.8), height: responsiveHeight(6.5), borderRadius: responsiveWidth(3), marginRight: responsiveWidth(8), marginLeft: responsiveWidth(3) }}
+            />
+          </TouchableOpacity>
           <View style={{ width: responsiveWidth(37), alignItems: 'center' }}>
             <Text
               style={{

@@ -3,23 +3,37 @@ import { SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
 import { windowHeight, windowWidth } from '../../utils/Dimensions';
 import { TextInput } from 'react-native-gesture-handler';
 import RadioButtonGroup from '../../components/RadioBottonGroup';
-import { validateAmount, validateDigit } from '../../components/validation';
+import { validateAmount, validateDigit, validateRiquired } from '../../components/validation';
 import { AuthContext } from '../../context/AuthContext';
 import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 import { useIsFocused } from '@react-navigation/native';
 import { Dialog } from 'react-native-elements';
 import firestore from '@react-native-firebase/firestore';
+import { Dropdown } from 'react-native-element-dropdown';
 
-const SingleDigitScreen = ({route}) => {
+const SingleDigitScreen = ({ route }) => {
     const isFocused = useIsFocused();
     const { userToken, setUserToken } = useContext(AuthContext);
-    const [selectedOption, setSelectedOption] = useState('Open');
-    const [digits, setDigits] = useState('');
+    const [selectedOption, setSelectedOption] = useState('');
+    const [digits, setDigits] = useState([]);
     const [digitError, setDigitError] = useState('');
     const [amount, setAmount] = useState('');
     const [amountError, setAmountError] = useState('');
+    const [sessionError, setSessionError] = useState('');
     const [success, setSuccess] = useState(false);
     const [loading, setLoading] = useState(false);
+    let data = [
+        { label: '0', value: '0' },
+        { label: '1', value: '1' },
+        { label: '2', value: '2' },
+        { label: '3', value: '3' },
+        { label: '4', value: '4' },
+        { label: '5', value: '5' },
+        { label: '6', value: '6' },
+        { label: '7', value: '7' },
+        { label: '8', value: '8' },
+        { label: '9', value: '9' },
+    ];
 
     const formatDate = () => {
         const months = [
@@ -46,11 +60,16 @@ const SingleDigitScreen = ({route}) => {
         return !error;
     };
     const validateDigitsField = () => {
-        const error = validateDigit(digits);
+        const error = digits.length === 0 ? 'Please choose one option' : '';
         setDigitError(error);
         return !error;
     };
-    const handleBid = async() => {
+    const validateSessionField = () => {
+        const error = validateRiquired(selectedOption);
+        setSessionError(error);
+        return !error;
+    };
+    const handleBid = async () => {
         try {
             const userCollection = firestore().collection('Users');
             const userQuery = userCollection.where('phone', '==', userToken?.phone);
@@ -77,6 +96,7 @@ const SingleDigitScreen = ({route}) => {
                         amount: amount,
                         digit: digits,
                         date: currentTime,
+                        session: selectedOption,
                         game: 'Single Digit',
                         event: route.params?.title,
                     });
@@ -104,7 +124,7 @@ const SingleDigitScreen = ({route}) => {
 
     const handleProceed = () => {
         // Validate fields before proceeding
-        if (!validateAmountField() || !validateDigitsField()) {
+        if (!validateAmountField() || !validateDigitsField() || !validateSessionField()) {
             // If any validation fails, return without proceeding
             return;
         } else {
@@ -114,13 +134,24 @@ const SingleDigitScreen = ({route}) => {
     };
     useEffect(() => {
         if (isFocused) {
-            setDigits('');
+            setDigits([]);
             setDigitError('');
             setAmount('');
             setAmountError('');
+            setSessionError('');
         }
     }, [isFocused]);
-
+    useEffect(() => {
+        if (amount.length > 0) {
+            setAmountError('');
+        }
+        if (digits.length !== 0) {
+            setDigitError('');
+        }
+        if (selectedOption.length > 0) {
+            setSessionError('');
+        }
+    }, [amount, digits, selectedOption]);
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
@@ -168,36 +199,28 @@ const SingleDigitScreen = ({route}) => {
                             // backgroundColor: '#666',
                             // border: responsiveWidth(3),
                         }}>
-                        <RadioButtonGroup selectedOption={selectedOption} setSelectedOption={setSelectedOption} />
+                        <RadioButtonGroup selectedOption={selectedOption} setSelectedOption={setSelectedOption} openTime={route.params?.open} />
+                        <Text style={{ color: 'white', fontSize: responsiveFontSize(1.7), fontFamily: 'Roboto-Regular', marginLeft: responsiveWidth(3), marginTop: responsiveWidth(3) }}>{sessionError}</Text>
                     </View>
                 </View>
                 <View style={{ flexDirection: 'column', marginHorizontal: responsiveWidth(8.3), marginTop: responsiveWidth(3) }}>
                     <Text style={{ fontSize: responsiveFontSize(2), color: '#fff', marginBottom: responsiveWidth(3), fontFamily: 'Roboto-Bold' }}>Digits</Text>
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            borderRadius: 50,
-                            borderColor: '#ccc',
-                            // borderBottomWidth: 1,
-                            borderWidth: 1,
-                            paddingBottom: responsiveWidth(2.3),
-                            marginBottom: digitError ? responsiveWidth(2.3) : responsiveWidth(0),
-                            width: responsiveWidth(83.5),
-                            backgroundColor: '#fff',
-                            border: responsiveWidth(3),
-                        }}>
-                        <TextInput
-                            placeholder={'Enter Digits'}
-                            keyboardType={'phone-pad'}
-                            onChangeText={(text) => { setDigits(text); }}
-                            value={digits}
-                            maxLength={1}
-                            placeholderTextColor="#666"
-                            style={{ flex: 1, paddingVertical: responsiveWidth(1), color: '#666', fontSize: responsiveFontSize(2.2), paddingHorizontal: responsiveWidth(4.1), paddingTop: responsiveWidth(2.3) }}
-                        // editable={false}
-                        />
-                    </View>
-                    <Text style={{ color: 'white', fontSize: responsiveFontSize(1.7), fontFamily: 'Roboto-Regular', marginLeft: responsiveWidth(3) }}>{digitError}</Text>
+                    <Dropdown
+                        data={data}
+                        placeholderStyle={{ color: '#333', fontSize: responsiveFontSize(2.2), fontFamily: 'Roboto-Medium', }}
+                        placeholder='Select Digit'
+                        labelField="label"
+                        valueField="value"
+                        value={digits}
+                        style={{ color: '#333', borderColor: "#ccc", borderWidth: 1, padding: responsiveWidth(2), backgroundColor: '#fff', borderRadius: 10, marginTop: responsiveWidth(1), paddingLeft: responsiveWidth(5) }}
+                        onChange={item => {
+                            setDigits(item.value);
+                        }}
+                        selectedTextStyle={{ color: "#333", fontFamily: 'Roboto-Medium', fontSize: responsiveFontSize(2.5) }}
+                        activeColor='#ccc'
+                        itemTextStyle={{ color: "#333" }}
+                    />
+                    <Text style={{ color: 'white', fontSize: responsiveFontSize(1.7), fontFamily: 'Roboto-Regular', marginLeft: responsiveWidth(3), marginTop: responsiveWidth(3) }}>{digitError}</Text>
                 </View>
                 <View style={{ flexDirection: 'column', marginHorizontal: responsiveWidth(8.3), marginTop: responsiveWidth(3) }}>
                     <Text style={{ fontSize: responsiveFontSize(2), color: '#fff', marginBottom: responsiveWidth(3), fontFamily: 'Roboto-Bold' }}>Amount</Text>

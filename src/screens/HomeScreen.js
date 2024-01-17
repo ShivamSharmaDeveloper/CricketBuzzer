@@ -27,6 +27,7 @@ import {
 import { useIsFocused } from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
 import Loader from '../components/Loader';
+import moment from 'moment';
 
 export default function HomeScreen({ navigation }) {
   const isFocused = useIsFocused();
@@ -35,6 +36,60 @@ export default function HomeScreen({ navigation }) {
   const [gamesTab, setGamesTab] = useState(1);
   const carouselRef = useRef(null);
 
+  const updateIsPlayStatus = (events) => {
+    const currentTime = moment();
+    const updatedEvents = events.map((event) => {
+      const openTime = moment(event.open, 'hh:mm A');
+      const closeTime = moment(event.close, 'hh:mm A');
+      event.isPlay = closeTime.isBefore(currentTime) ? 'No' : 'Yes';
+      event.openTime = openTime;
+      return event;
+    });
+
+    const sortedEvents = updatedEvents.sort((a, b) => a.openTime - b.openTime);
+
+    return sortedEvents;
+  };
+  function updateSubtitles() {
+    const currentDate = new Date();
+    const currentHour = currentDate.getHours();
+    const currentMinutes = currentDate.getMinutes();
+
+    // Get the open time of the first element
+    const firstGameOpenTime = freeGames[0]?.open;
+
+    if (firstGameOpenTime) {
+      // Split the open time into hours and minutes
+      const [openHour, openMinutes] = firstGameOpenTime.split(':').map(Number);
+
+      // Compare the current time with the open time
+      if (currentHour < openHour || (currentHour === openHour && currentMinutes < openMinutes)) {
+        // If the current time is earlier than the open time, update the subtitles
+        const updatedEvents = events.map((event) => {
+          event.subtitle = '***-**-***';
+          return event;
+        });
+
+        updateAllEventsSubtitles();
+        setEvents(updatedEvents);
+      }
+    }
+  }
+  const updateAllEventsSubtitles = async () => {
+    try {
+      const querySnapshot = await firestore().collection('Events').get();
+      const batch = firestore().batch();
+
+      querySnapshot.forEach((doc) => {
+        const eventRef = doc.ref;
+        batch.update(eventRef, { subtitle: '***-**-***' });
+      });
+      await batch.commit();
+      console.log('Batch update successful');
+    } catch (error) {
+      console.error('Error updating batch:', error);
+    }
+  };
   const renderBanner = ({ item, index }) => {
     return <BannerSlider data={item} />;
   };
@@ -48,12 +103,25 @@ export default function HomeScreen({ navigation }) {
       .orderBy('isPlay', 'asc')
       .get();
     const userDataArray = querySnapshot.docs.map(doc => doc.data());
-    // console.log("snapshot");
-    setEvents(userDataArray);
+    const updatedEvents = updateIsPlayStatus(userDataArray);
+    setEvents(updatedEvents);
+    // console.log(userDataArray, "snapshot");
   };
   useEffect(() => {
     if (isFocused) {
-      handleEventList();
+      try {
+        setIsLoadingGlobal(true);
+        // Example usage
+        handleEventList();
+        // console.log(freeGames);
+        // setEvents(freeGames);
+        // Call the updateSubtitles function when the app is opened
+        updateSubtitles();
+      } catch (error) {
+        console.log(error, 'error');
+      } finally {
+        setIsLoadingGlobal(false);
+      }
     }
   }, [isFocused]);
 
@@ -177,9 +245,10 @@ export default function HomeScreen({ navigation }) {
           /> */}
         </View>
 
-        {events ? events.map(item => (
+        {events && events.map(item => (
           <ListItem
             key={item.open}
+            navigation={navigation}
             // photo={item.poster}
             title={item.title}
             subTitle={item.subtitle}
@@ -190,12 +259,12 @@ export default function HomeScreen({ navigation }) {
               navigation.navigate('Game', {
                 title: item.title,
                 id: item.id,
+                open: item.open,
+                close: item.close,
               })
             }
           />
-        )) :
-          <Loader visible={isLoadingGlobal} />
-        }
+        ))}
         {/* {gamesTab === 2 &&
           paidGames.map(item => (
             <ListItem
@@ -213,6 +282,7 @@ export default function HomeScreen({ navigation }) {
               }
             />
           ))} */}
+        <Loader visible={isLoadingGlobal} />
       </ScrollView>
     </SafeAreaView>
   );

@@ -1,39 +1,136 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { SafeAreaView, Text, TouchableOpacity, View } from 'react-native'
-import { windowHeight, windowWidth } from '../../utils/Dimensions'
-import { TextInput } from 'react-native-gesture-handler'
-import RadioButtonGroup from '../../components/RadioBottonGroup'
-import { validateAmount, validateDigit, validateRiquired } from '../../components/validation'
-import { AuthContext } from '../../context/AuthContext'
-import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions'
-import { useIsFocused } from '@react-navigation/native'
-import { Dialog } from 'react-native-elements'
+import React, { useContext, useEffect, useState } from 'react';
+import { SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
+import { windowHeight, windowWidth } from '../../utils/Dimensions';
+import { TextInput } from 'react-native-gesture-handler';
+import RadioButtonGroup from '../../components/RadioBottonGroup';
+import { validateAmount, validateDigit } from '../../components/validation';
+import { AuthContext } from '../../context/AuthContext';
+import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
+import { useIsFocused } from '@react-navigation/native';
+import { Dialog } from 'react-native-elements';
 import firestore from '@react-native-firebase/firestore';
-import { Dropdown } from 'react-native-element-dropdown'
+import { Dropdown } from 'react-native-element-dropdown';
 
-const TriplePannaScreen = ({route}) => {
+const JodiDigit = ({ route }) => {
     const isFocused = useIsFocused();
     const { userToken, setUserToken } = useContext(AuthContext);
-    const [selectedOption, setSelectedOption] = useState('');
+    const [selectedOption, setSelectedOption] = useState('Open');
     const [digits, setDigits] = useState([]);
     const [digitError, setDigitError] = useState('');
     const [amount, setAmount] = useState('');
     const [amountError, setAmountError] = useState('');
-    const [sessionError, setSessionError] = useState('');
-    const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
+    const [loading, setLoading] = useState(false);
+
     let data = [
-        { label: '000', value: '000' },
-        { label: '111', value: '111' },
-        { label: '222', value: '222' },
-        { label: '333', value: '333' },
-        { label: '444', value: '444' },
-        { label: '555', value: '555' },
-        { label: '666', value: '666' },
-        { label: '777', value: '777' },
-        { label: '888', value: '888' },
-        { label: '999', value: '999' },
+        {label: '00', value: '00'},
+        {label: '01', value: '01'},
+        {label: '02', value: '02'},
+        {label: '03', value: '03'},
+        {label: '04', value: '04'},
+        {label: '05', value: '05'},
+        {label: '06', value: '06'},
+        {label: '07', value: '07'},
+        {label: '08', value: '08'},
+        {label: '09', value: '09'},
+        {label: '10', value: '10'},
+        {label: '11', value: '11'},
+        {label: '12', value: '12'},
+        {label: '13', value: '13'},
+        {label: '14', value: '14'},
+        {label: '15', value: '15'},
+        {label: '16', value: '16'},
+        {label: '17', value: '17'},
+        {label: '18', value: '18'},
+        {label: '19', value: '19'},
+        {label: '20', value: '20'},
+        {label: '21', value: '21'},
+        {label: '22', value: '22'},
+        {label: '23', value: '23'},
+        {label: '24', value: '24'},
+        {label: '25', value: '25'},
+        {label: '26', value: '26'},
+        {label: '27', value: '27'},
+        {label: '28', value: '28'},
+        {label: '29', value: '29'},
+        {label: '30', value: '30'},
+        {label: '31', value: '31'},
+        {label: '32', value: '32'},
+        {label: '33', value: '33'},
+        {label: '34', value: '34'},
+        {label: '35', value: '35'},
+        {label: '36', value: '36'},
+        {label: '37', value: '37'},
+        {label: '38', value: '38'},
+        {label: '39', value: '39'},
+        {label: '40', value: '40'},
+        {label: '41', value: '41'},
+        {label: '42', value: '42'},
+        {label: '43', value: '43'},
+        {label: '44', value: '44'},
+        {label: '45', value: '45'},
+        {label: '46', value: '46'},
+        {label: '47', value: '47'},
+        {label: '48', value: '48'},
+        {label: '49', value: '49'},
+        {label: '50', value: '50'},
+        {label: '51', value: '51'},
+        {label: '52', value: '52'},
+        {label: '53', value: '53'},
+        {label: '54', value: '54'},
+        {label: '55', value: '55'},
+        {label: '56', value: '56'},
+        {label: '57', value: '57'},
+        {label: '58', value: '58'},
+        {label: '59', value: '59'},
+        {label: '60', value: '60'},
+        {label: '61', value: '61'},
+        {label: '63', value: '63'},
+        {label: '64', value: '64'},
+        {label: '65', value: '65'},
+        {label: '66', value: '66'},
+        {label: '67', value: '67'},
+        {label: '68', value: '68'},
+        {label: '69', value: '69'},
+        {label: '70', value: '70'},
+        {label: '71', value: '71'},
+        {label: '72', value: '72'},
+        {label: '73', value: '73'},
+        {label: '74', value: '74'},
+        {label: '75', value: '75'},
+        {label: '76', value: '76'},
+        {label: '77', value: '77'},
+        {label: '78', value: '78'},
+        {label: '79', value: '79'},
+        {label: '80', value: '80'},
+        {label: '81', value: '81'},
+        {label: '82', value: '82'},
+        {label: '83', value: '83'},
+        {label: '84', value: '84'},
+        {label: '85', value: '85'},
+        {label: '86', value: '86'},
+        {label: '87', value: '87'},
+        {label: '88', value: '88'},
+        {label: '89', value: '89'},
+        {label: '90', value: '90'},
+        {label: '91', value: '91'},
+        {label: '92', value: '92'},
+        {label: '93', value: '93'},
+        {label: '94', value: '94'},
+        {label: '95', value: '95'},
+        {label: '96', value: '96'},
+        {label: '97', value: '97'},
+        {label: '98', value: '98'},
+        {label: '99', value: '99'},
     ];
+    useEffect(() => {
+        if (amount.length > 0) {
+            setAmountError('');
+        }
+        if (digits.length !== 0) {
+            setDigitError('');
+        }
+    }, [amount, digits]);
     const formatDate = () => {
         const months = [
             'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
@@ -63,11 +160,6 @@ const TriplePannaScreen = ({route}) => {
         setDigitError(error);
         return !error;
     };
-    const validateSessionField = () => {
-        const error = validateRiquired(selectedOption);
-        setSessionError(error);
-        return !error;
-    };
     const handleBid = async () => {
         try {
             const userCollection = firestore().collection('Users');
@@ -95,8 +187,7 @@ const TriplePannaScreen = ({route}) => {
                         amount: amount,
                         digit: digits,
                         date: currentTime,
-                        session: selectedOption,
-                        game: 'Triple Panna',
+                        game: 'Jodi Digit',
                         event: route.params?.title,
                     });
                 // console.log('Coins updated successfully');
@@ -120,9 +211,10 @@ const TriplePannaScreen = ({route}) => {
         setLoading(false);
         setSuccess(true);
     };
+
     const handleProceed = () => {
         // Validate fields before proceeding
-        if (!validateAmountField() || !validateDigitsField() || !validateSessionField()) {
+        if (!validateAmountField() || !validateDigitsField()) {
             // If any validation fails, return without proceeding
             return;
         } else {
@@ -136,20 +228,10 @@ const TriplePannaScreen = ({route}) => {
             setDigitError('');
             setAmount('');
             setAmountError('');
-            setSessionError('');
         }
     }, [isFocused]);
-    useEffect(() => {
-        if (amount.length > 0) {
-            setAmountError('');
-        }
-        if (digits.length !== 0) {
-            setDigitError('');
-        }
-        if (selectedOption.length > 0) {
-            setSessionError('');
-        }
-    }, [amount, digits, selectedOption]);
+
+
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <View style={{ backgroundColor: '#6a0028', width: responsiveWidth(100), height: responsiveHeight(100) }}>
@@ -179,7 +261,7 @@ const TriplePannaScreen = ({route}) => {
                         />
                     </View>
                 </View>
-                <View style={{ flexDirection: 'column', marginHorizontal: responsiveWidth(8.3), marginTop: responsiveWidth(3) }}>
+                {/* <View style={{ flexDirection: 'column', marginHorizontal: responsiveWidth(8.3), marginTop: responsiveWidth(3) }}>
                     <Text style={{ fontSize: responsiveFontSize(2), color: '#fff', marginBottom: responsiveWidth(3), fontFamily: 'Roboto-Bold' }}>Choose Session</Text>
                     <View
                         style={{
@@ -196,15 +278,14 @@ const TriplePannaScreen = ({route}) => {
                             // backgroundColor: '#666',
                             // border: responsiveWidth(3),
                         }}>
-                        <RadioButtonGroup selectedOption={selectedOption} setSelectedOption={setSelectedOption} openTime={route.params?.open} />
-                        <Text style={{ color: 'white', fontSize: responsiveFontSize(1.7), fontFamily: 'Roboto-Regular', marginLeft: responsiveWidth(3), marginTop: responsiveWidth(3) }}>{sessionError}</Text>
+                        <RadioButtonGroup selectedOption={selectedOption} setSelectedOption={setSelectedOption} />
                     </View>
-                </View>
+                </View> */}
                 <View style={{ flexDirection: 'column', marginHorizontal: responsiveWidth(8.3), marginTop: responsiveWidth(3) }}>
                     <Text style={{ fontSize: responsiveFontSize(2), color: '#fff', marginBottom: responsiveWidth(3), fontFamily: 'Roboto-Bold' }}>Digits</Text>
                     <Dropdown
                         data={data}
-                        placeholderStyle={{ color: '#333', fontSize: responsiveFontSize(2.2), fontFamily: 'Roboto-Medium', }}
+                        placeholderStyle={{ color: '#333', fontSize: responsiveFontSize(2.2), fontFamily: 'Roboto-Bold', alignItems: 'center', textAlign: 'center' }}
                         placeholder='Select Digit'
                         labelField="label"
                         valueField="value"
@@ -213,7 +294,7 @@ const TriplePannaScreen = ({route}) => {
                         onChange={item => {
                             setDigits(item.value);
                         }}
-                        selectedTextStyle={{ color: "#333", fontFamily: 'Roboto-Medium', fontSize: responsiveFontSize(2.5) }}
+                        selectedTextStyle={{ color: "#333", fontFamily: 'Roboto-Bold', fontSize: responsiveFontSize(2.5) }}
                         activeColor='#ccc'
                         itemTextStyle={{ color: "#333" }}
                     />
@@ -254,7 +335,7 @@ const TriplePannaScreen = ({route}) => {
                             backgroundColor: '#3689b1',
                             padding: responsiveWidth(4.1),
                             borderRadius: 60,
-                            marginBottom: 20,
+                            marginBottom: responsiveWidth(5),
                             width: responsiveWidth(30),
                         }}>
                         <Text
@@ -294,4 +375,4 @@ const TriplePannaScreen = ({route}) => {
     )
 }
 
-export default TriplePannaScreen;
+export default JodiDigit;

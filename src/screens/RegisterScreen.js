@@ -63,13 +63,15 @@ const RegisterScreen = ({ navigation }) => {
   useEffect(() => {
     // GoogleSignin.configure({ webClientId: '163356141884-del12trf51fe64n5fqlqrqujee18uteh.apps.googleusercontent.com'});
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    console.log('running')
     return subscriber; // unsubscribe on unmount
   }, []);
 
   const handleUserLogin = async (userData) => {
     try {
       setIsLoadingGlobal(true); // Start global loader
+      const currentDate = new Date();
+      const formattedDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
+      const currentTime = formattedDate.toString();
       await firestore()
         .collection('Users')
         .add({
@@ -77,6 +79,10 @@ const RegisterScreen = ({ navigation }) => {
           email: emailId,
           phone: phoneNumber,
           coins: 5,
+          date: currentTime,
+          phonepe: phoneNumber,
+          googlepay: phoneNumber,
+          paytm: phoneNumber,
         });
 
       console.log('User added!');

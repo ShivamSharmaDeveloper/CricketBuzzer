@@ -80,11 +80,13 @@ export const validateAmount = (amount, fund) => {
     }
 
     if (Number(amount) > Number(fund)) {
-        return 'Amount can not be greater than wallet fund.';
+        return 'Insufficient balance in your wallet.';
     } else if (Number(amount) === Number(fund) && Number(amount) !== 0) {
         return '';
     } else if (Number(amount) === 0){
         return 'Amount can not be zero';
+    } else if (Number(amount) < 10){
+        return 'Minimum amount should be 10';
     }
     // Add more custom validation rules if needed
 

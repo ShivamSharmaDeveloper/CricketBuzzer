@@ -17,6 +17,10 @@ import SinglePannaScreen from '../screens/Games/SinglePannaScreen';
 import DoublePannaScreen from '../screens/Games/DoublePannaScreen';
 import TriplePannaScreen from '../screens/Games/TriplePannaScreen';
 import { responsiveFontSize, responsiveWidth } from 'react-native-responsive-dimensions';
+import JodiDigit from '../screens/Games/JodiDigit';
+import HalfSangam from '../screens/Games/HalfSangam';
+import FullSangam from '../screens/Games/FullSangam';
+import ResultChart from '../screens/ResultChart';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -64,6 +68,19 @@ const HomeStack = () => {
         })}
       />
       <Stack.Screen
+        name="Results"
+        component={ResultChart}
+        options={({route, navigation}) => ({
+          // event: route.params?.title,
+          headerStyle: {
+            backgroundColor: '#6a0028',
+          },
+          headerTintColor: '#fff',
+          // headerRight: (...props) => <HeaderWallet {...props} navigation={navigation}/>
+        })}
+        screenOptions
+      />
+      <Stack.Screen
         name="Single Digit"
         component={SingleDigitScreen}
         options={({route, navigation}) => ({
@@ -103,6 +120,42 @@ const HomeStack = () => {
       <Stack.Screen
         name="Triple Panna"
         component={TriplePannaScreen}
+        options={({route, navigation}) => ({
+          // title: route.params?.title,
+          headerStyle: {
+            backgroundColor: '#6a0028',
+          },
+          headerTintColor: '#fff',
+          headerRight: (...props) => <HeaderWallet {...props} navigation={navigation}/>
+        })}
+      />
+      <Stack.Screen
+        name="Jodi Digit"
+        component={JodiDigit}
+        options={({route, navigation}) => ({
+          // title: route.params?.title,
+          headerStyle: {
+            backgroundColor: '#6a0028',
+          },
+          headerTintColor: '#fff',
+          headerRight: (...props) => <HeaderWallet {...props} navigation={navigation}/>
+        })}
+      />
+      <Stack.Screen
+        name="Half Sangam"
+        component={HalfSangam}
+        options={({route, navigation}) => ({
+          // title: route.params?.title,
+          headerStyle: {
+            backgroundColor: '#6a0028',
+          },
+          headerTintColor: '#fff',
+          headerRight: (...props) => <HeaderWallet {...props} navigation={navigation}/>
+        })}
+      />
+      <Stack.Screen
+        name="Full Sangam"
+        component={FullSangam}
         options={({route, navigation}) => ({
           // title: route.params?.title,
           headerStyle: {
