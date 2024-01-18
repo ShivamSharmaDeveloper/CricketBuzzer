@@ -8,7 +8,7 @@ import {
   responsiveFontSize
 } from "react-native-responsive-dimensions";
 
-export default function ListItem({ title, subTitle, isPlay, price, onPress, open, close, navigation }) {
+export default React.memo(function ListItem({ title, subTitle, isPlay, price, onPress, open, close, navigation }) {
   return (
     <TouchableOpacity onPress={onPress} disabled={isPlay == 'No'}>
       <View style={{ backgroundColor: '#a80a44', flexDirection: 'column', marginBottom: responsiveWidth(1), borderRadius: responsiveWidth(3), height: responsiveHeight(18), marginTop: 10 }}>
@@ -94,4 +94,4 @@ export default function ListItem({ title, subTitle, isPlay, price, onPress, open
       </View>
     </TouchableOpacity>
   );
-}
+})

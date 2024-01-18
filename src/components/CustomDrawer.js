@@ -17,18 +17,27 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { AuthContext } from '../context/AuthContext';
 import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
 // import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 
 const CustomDrawer = props => {
-  const { logout, userToken } = useContext(AuthContext);
+  const { logout, userToken, setIsLoadingGlobal } = useContext(AuthContext);
   // const logoutUser = useCallback(() => {
   //   auth().signOut();
   //   logout();
   // }, [logout]);
   const onShare = async () => {
     try {
+      setIsLoadingGlobal(true);
+      const querySnapshot = await firestore()
+        .collection('admin')
+        .where('name', '==', 'admin')
+        .get();
+      let data;
+      if (querySnapshot.size > 0) {
+        data = querySnapshot.docs[0].data();
+      }
       const result = await Share.share({
-        message:
-          'This is Kalyan Sattta app Please share: https://www.bytenexttechnologies.in/',
+        message: data?.share_message,
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
@@ -41,6 +50,8 @@ const CustomDrawer = props => {
       }
     } catch (error) {
       console.warn(error.message);
+    } finally {
+      setIsLoadingGlobal(false);
     }
   };
   return (
@@ -97,7 +108,7 @@ const CustomDrawer = props => {
         </TouchableOpacity>
         <TouchableOpacity onPress={logout} style={{ paddingVertical: responsiveWidth(4.2) }}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Ionicons name="exit-outline" size={responsiveWidth(6)} color="#333"/>
+            <Ionicons name="exit-outline" size={responsiveWidth(6)} color="#333" />
             <Text
               style={{
                 fontSize: responsiveFontSize(2),

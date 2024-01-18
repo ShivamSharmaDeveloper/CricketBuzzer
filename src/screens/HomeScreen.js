@@ -125,7 +125,7 @@ export default function HomeScreen({ navigation }) {
     setIsLoadingGlobal(true);
     setTimeout(() => {
       setIsLoadingGlobal(false);
-    }, 2000);
+    }, 5000);
   }, []);
 
   return (

@@ -2,7 +2,7 @@ import { View, Text } from 'react-native'
 import React from 'react'
 import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions'
 
-const ResultCard = ({ date, open, both, close }) => {
+const ResultCard = React.memo(({ date, open, both, close }) => {
     // Array of random background colors
     const backgroundColors = ['#b3ffb3', '#ffb3d9', '#ffe066', '#b3b3ff', '#ff6666'];
 
@@ -26,6 +26,6 @@ const ResultCard = ({ date, open, both, close }) => {
             </View>
         </View>
     )
-}
+})
 
 export default ResultCard

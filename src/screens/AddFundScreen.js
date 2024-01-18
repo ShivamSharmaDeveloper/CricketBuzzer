@@ -19,7 +19,6 @@ const AddFundScreen = ({ navigation }) => {
   const [success, setSuccess] = useState(false);
   const [visible3, setVisible3] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [upi, setUpi] = useState('');
 
   useEffect(() => {
     if (points.length > 0) {
@@ -133,8 +132,9 @@ const AddFundScreen = ({ navigation }) => {
           .collection('admin')
           .where('name', '==', 'admin')
           .get();
+        let upi;
         if (querySnapshot.size > 0) {
-          setUpi(querySnapshot?.docs[0]?.data());
+          upi = querySnapshot?.docs[0]?.data();
         } else {
           console.warn('User not found.');
         }
