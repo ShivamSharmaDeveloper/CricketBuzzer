@@ -40,13 +40,13 @@ const WalletScreen = ({ navigation }) => {
             // textAlign: 'center',
             fontFamily: 'Roboto-Regular',
             fontSize: responsiveFontSize(2.7),
-          }}>Withdraw Open time is 8:00 AM</Text>
+          }}>Withdraw Open time is 9:00 AM</Text>
           <Text style={{
             color: '#000',
             // textAlign: 'center',
             fontFamily: 'Roboto-Regular',
             fontSize: responsiveFontSize(2.7),
-          }}>Withdraw Close time is 10:00 AM</Text>
+          }}>Withdraw Close time is 12:00 PM</Text>
         </View>
       </View>
       <View style={{ flex: 1, marginTop: responsiveWidth(5), marginLeft: responsiveWidth(3), marginRight: responsiveWidth(3), flexDirection: 'row', justifyContent: 'space-evenly', gap: responsiveWidth(8) }}>
