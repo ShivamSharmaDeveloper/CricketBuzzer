@@ -87,6 +87,8 @@ export const validateAmount = (amount, fund) => {
         return 'Amount can not be zero';
     } else if (Number(amount) < 10){
         return 'Minimum amount should be 10';
+    } else if (Number(amount) > 100000){
+        return 'Maximum withdrawal is 100000';
     }
     // Add more custom validation rules if needed
 
