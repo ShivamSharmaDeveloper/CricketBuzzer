@@ -75,6 +75,8 @@ const WithdrawFundScreen = ({ navigation }) => {
             phone: userToken?.phone,
             amount: amount,
             time: currentTime,
+            name: userToken?.name,
+            method: value,
           });
         // console.log('Coins updated successfully');
         //
