@@ -65,7 +65,7 @@ export default function HomeScreen({ navigation }) {
       // Compare the current time with the open time
       if (currentHour < openHour || (currentHour === openHour && currentMinutes < openMinutes)) {
         // If the current time is earlier than the open time, update the subtitles
-        const updatedEvents = events.map((event) => {
+        const updatedEvents = events?.map((event) => {
           event.subtitle = '***-**-***';
           return event;
         });
@@ -101,7 +101,8 @@ export default function HomeScreen({ navigation }) {
     try {
       const querySnapshot = await firestore()
         .collection('Events')
-        .orderBy('isPlay', 'asc')
+        .where('isActive', '==', 'Yes')
+        // .orderBy('isPlay', 'asc')
         .get();
       const userDataArray = querySnapshot.docs.map(doc => doc.data());
       const updatedEvents = updateIsPlayStatus(userDataArray);
