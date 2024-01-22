@@ -569,7 +569,7 @@ const FullSangam = ({ route }) => {
                         closePanna: panna,
                         date: currentTime,
                         session: selectedOption,
-                        game: 'Half Sangam',
+                        game: 'Full Sangam',
                         event: route.params?.title,
                     });
                 // console.log('Coins updated successfully');

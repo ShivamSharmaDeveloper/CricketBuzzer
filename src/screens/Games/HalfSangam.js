@@ -476,7 +476,7 @@ const HalfSangam = ({ route }) => {
                     <Dropdown
                         data={pannaData}
                         placeholderStyle={{ color: '#333', fontSize: responsiveFontSize(2.2), fontFamily: 'Roboto-Medium', }}
-                        placeholder={`Select ${selectedOption === 'Open' ? 'Close' : 'Open'} Panna`}
+                        placeholder={`Select ${selectedOption === 'Open' ? 'Close' : selectedOption === 'Close' ? 'Open' : ''} Panna`}
                         labelField="label"
                         valueField="value"
                         value={panna}
