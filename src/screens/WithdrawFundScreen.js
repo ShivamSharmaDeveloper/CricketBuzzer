@@ -77,6 +77,7 @@ const WithdrawFundScreen = ({ navigation }) => {
             time: currentTime,
             name: userToken?.name,
             method: value,
+            status: 'pending',
           });
         // console.log('Coins updated successfully');
         //

@@ -11,7 +11,7 @@ import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimen
 
 const GameDetailsScreen = ({ navigation, route }) => {
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#870032' }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#023051' }}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'center' }}>
           <View style={{ margin: responsiveHeight(4), width: responsiveWidth(100), flexDirection: 'row', gap: responsiveWidth(4), flexWrap: 'wrap', paddingHorizontal: responsiveWidth(6.2) }}>

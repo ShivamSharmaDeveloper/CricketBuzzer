@@ -11,7 +11,7 @@ import {
 export default React.memo(function ListItem({ title, subTitle, isPlay, price, onPress, open, close, navigation }) {
   return (
     <TouchableOpacity onPress={onPress} disabled={isPlay == 'No'}>
-      <View style={{ backgroundColor: '#a80a44', flexDirection: 'column', marginBottom: responsiveWidth(1), borderRadius: responsiveWidth(3), height: responsiveHeight(18), marginTop: 10 }}>
+      <View style={{ backgroundColor: '#023051', flexDirection: 'column', marginBottom: responsiveWidth(1), borderRadius: responsiveWidth(3), height: responsiveHeight(18), marginTop: 10 }}>
         <View style={{
           flexDirection: 'row',
           justifyContent: 'space-between',
