@@ -179,17 +179,22 @@ const JodiDigit = ({ route }) => {
                     coins: updatedCoins,
                 });
                 const date = new Date();
-                const currentTime = date.toString();
-
+                const currentTime = date.toDateString();
+                // Extracting openDigit and closeDigit from the selected digits
+                const selectedDigits = digits.toString();
+                const openDigit = selectedDigits[0];
+                const closeDigit = selectedDigits[1];
                 await firestore()
                     .collection('User_Events')
                     .add({
-                        phone: userToken?.phone,
-                        amount: amount,
-                        digit: digits,
+                        name: userToken?.name,
+                        points: amount,
+                        opendigit: openDigit,
+                        closedigit: closeDigit,
                         date: currentTime,
                         game: 'Jodi Digit',
                         event: route.params?.title,
+                        session: selectedOption,
                     });
                 // console.log('Coins updated successfully');
 
@@ -317,7 +322,7 @@ const JodiDigit = ({ route }) => {
                             border: responsiveWidth(3),
                         }}>
                         <TextInput
-                            placeholder={'Enter Digits'}
+                            placeholder={'Enter Points'}
                             keyboardType={'phone-pad'}
                             onChangeText={(text) => { setAmount(text); }}
                             value={amount}

@@ -167,14 +167,16 @@ const DoublePannaScreen = ({ route }) => {
                     coins: updatedCoins,
                 });
                 const date = new Date();
-                const currentTime = date.toString();
-
+                const currentTime = date.toDateString();
+                const openPanna = selectedOption === 'Open' ? digits : '';
+                const closePanna = selectedOption === 'Close' ? digits : '';
                 await firestore()
                     .collection('User_Events')
                     .add({
-                        phone: userToken?.phone,
-                        amount: amount,
-                        digit: digits,
+                        name: userToken?.name,
+                        points: amount,
+                        openpanna: openPanna,
+                        closepanna: closePanna,
                         date: currentTime,
                         session: selectedOption,
                         game: 'Double Panna',
@@ -316,7 +318,7 @@ const DoublePannaScreen = ({ route }) => {
                             border: responsiveWidth(3),
                         }}>
                         <TextInput
-                            placeholder={'Enter Digits'}
+                            placeholder={'Enter Points'}
                             keyboardType={'phone-pad'}
                             onChangeText={(text) => { setAmount(text); }}
                             value={amount}

@@ -21,7 +21,6 @@ const FullSangam = ({ route }) => {
     const [pannaError, setPannaError] = useState('');
     const [amount, setAmount] = useState('');
     const [amountError, setAmountError] = useState('');
-    const [sessionError, setSessionError] = useState('');
     const [success, setSuccess] = useState(false);
     const [loading, setLoading] = useState(false);
     let data = [
@@ -535,11 +534,7 @@ const FullSangam = ({ route }) => {
         setPannaError(error);
         return !error;
     };
-    const validateSessionField = () => {
-        const error = validateRiquired(selectedOption);
-        setSessionError(error);
-        return !error;
-    };
+
     const handleBid = async () => {
         try {
             const userCollection = firestore().collection('Users');
@@ -558,15 +553,15 @@ const FullSangam = ({ route }) => {
                     coins: updatedCoins,
                 });
                 const date = new Date();
-                const currentTime = date.toString();
+                const currentTime = date.toDateString();
 
                 await firestore()
                     .collection('User_Events')
                     .add({
-                        phone: userToken?.phone,
-                        amount: amount,
-                        openPanna: digits,
-                        closePanna: panna,
+                        name: userToken?.name,
+                        points: amount,
+                        openpanna: digits,
+                        closepanna: panna,
                         date: currentTime,
                         session: selectedOption,
                         game: 'Full Sangam',
@@ -596,7 +591,7 @@ const FullSangam = ({ route }) => {
 
     const handleProceed = () => {
         // Validate fields before proceeding
-        if (!validateAmountField() || !validateDigitsField() || !validatePannaField() || !validateSessionField()) {
+        if (!validateAmountField() || !validateDigitsField() || !validatePannaField()) {
             // If any validation fails, return without proceeding
             return;
         } else {
@@ -608,9 +603,10 @@ const FullSangam = ({ route }) => {
         if (isFocused) {
             setDigits([]);
             setDigitError('');
+            setPanna([]);
+            setPannaError('');
             setAmount('');
             setAmountError('');
-            setSessionError('');
         }
     }, [isFocused]);
     useEffect(() => {
@@ -623,10 +619,7 @@ const FullSangam = ({ route }) => {
         if (panna.length !== 0) {
             setPannaError('');
         }
-        if (selectedOption.length > 0) {
-            setSessionError('');
-        }
-    }, [amount, digits, panna, selectedOption]);
+    }, [amount, digits, panna]);
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
@@ -679,11 +672,11 @@ const FullSangam = ({ route }) => {
                     </View>
                 </View> */}
                 <View style={{ flexDirection: 'column', marginHorizontal: responsiveWidth(8.3), marginTop: responsiveWidth(3) }}>
-                    <Text style={{ fontSize: responsiveFontSize(2), color: '#fff', marginBottom: responsiveWidth(3), fontFamily: 'Roboto-Bold' }}>Digits</Text>
+                    <Text style={{ fontSize: responsiveFontSize(2), color: '#fff', marginBottom: responsiveWidth(3), fontFamily: 'Roboto-Bold' }}>Panna</Text>
                     <Dropdown
                         data={data}
                         placeholderStyle={{ color: '#333', fontSize: responsiveFontSize(2.2), fontFamily: 'Roboto-Medium', }}
-                        placeholder='Select Open Digit'
+                        placeholder='Select Open Panna'
                         labelField="label"
                         valueField="value"
                         value={digits}
@@ -781,7 +774,8 @@ const FullSangam = ({ route }) => {
                         onPress={() => {
                             setSuccess(false);
                             setAmount('');
-                            setDigits('');
+                            setDigits([]);
+                            setPanna([]);
                         }}
                         titleStyle={{ color: 'green' }}
                     />

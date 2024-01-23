@@ -332,15 +332,20 @@ const HalfSangam = ({ route }) => {
                     coins: updatedCoins,
                 });
                 const date = new Date();
-                const currentTime = date.toString();
-
+                const currentTime = date.toDateString();
+                const openPanna = selectedOption === 'Close' ? panna : '';
+                const openDigit = selectedOption === 'Open' ? digits : '';
+                const closePanna = selectedOption === 'Open' ? panna : '';
+                const closeDigit = selectedOption === 'Close' ? digits : '';
                 await firestore()
                     .collection('User_Events')
                     .add({
-                        phone: userToken?.phone,
-                        amount: amount,
-                        digit: digits,
-                        panna: panna,
+                        name: userToken?.name,
+                        points: amount,
+                        openpanna: openPanna,
+                        opendigit: openDigit,
+                        closepanna: closePanna,
+                        closedigit: closeDigit,
                         date: currentTime,
                         session: selectedOption,
                         game: 'Half Sangam',
@@ -382,6 +387,8 @@ const HalfSangam = ({ route }) => {
         if (isFocused) {
             setDigits([]);
             setDigitError('');
+            setPanna([]);
+            setPannaError('');
             setAmount('');
             setAmountError('');
             setSessionError('');
@@ -555,7 +562,8 @@ const HalfSangam = ({ route }) => {
                         onPress={() => {
                             setSuccess(false);
                             setAmount('');
-                            setDigits('');
+                            setDigits([]);
+                            setPanna([]);
                         }}
                         titleStyle={{ color: 'green' }}
                     />
