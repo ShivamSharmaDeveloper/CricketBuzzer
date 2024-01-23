@@ -14,8 +14,9 @@ export const sendSmsVerification = async (phoneNumber) => {
             },
             body: data,
         });
-        const json = response.json();
-        return json;
+        // Extract JSON data from the response
+        const json = await response.json();
+        return json.success;
     } catch (error) {
         console.error(error);
         return false;
@@ -37,8 +38,11 @@ export const checkVerification = async (phoneNumber, code) => {
             body: data,
         });
 
-        const json = response.json();
-        return json;
+        // Extract JSON data from the response
+        const json = await response.json();
+
+        // console.log(json, "json");
+        return json.success;
     } catch (error) {
         console.error(error);
         return false;
