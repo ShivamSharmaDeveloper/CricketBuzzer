@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import AuthStack from './AuthStack';
 import AppStack from './AppStack';
 import { AuthContext } from '../context/AuthContext';
+import NavigationRef from '../components/NavigationRef';
 
 const AppNev = () => {
     const { isLoading, userToken } = useContext(AuthContext);
@@ -17,7 +18,7 @@ const AppNev = () => {
     }
 
     return (
-        <NavigationContainer>
+        <NavigationContainer ref={(ref) => NavigationRef.setTopLevelNavigator(ref)}>
             {userToken !== null ? <AppStack /> : <AuthStack />}
         </NavigationContainer>
     );

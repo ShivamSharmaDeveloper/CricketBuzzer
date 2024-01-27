@@ -11,6 +11,8 @@ import WalletScreen from '../screens/WalletScreen';
 import InfoScreen from '../screens/InfoScreen';
 import SupportScreen from '../screens/SupportScreen';
 import WalletFundNavigation from './WalletFundNavigation';
+import BidHistory from '../screens/BidHistory';
+import WinHistory from '../screens/WinHistory';
 
 const Drawer = createDrawerNavigator();
 
@@ -44,6 +46,16 @@ const AuthStack = () => {
       <Drawer.Screen name="Wallet Statement" component={WalletScreen} options={{
         drawerIcon: ({focused}) => (
           <Ionicons name="newspaper-outline" size={22} color={focused ? "#fff" : "#333"} />
+        ),
+      }} />
+      <Drawer.Screen name="Bid History" component={BidHistory} options={{
+        drawerIcon: ({focused}) => (
+          <Ionicons name="hammer-outline" size={22} color={focused ? "#fff" : "#333"} />
+        ),
+      }} />
+      <Drawer.Screen name="Win History" component={WinHistory} options={{
+        drawerIcon: ({focused}) => (
+          <Ionicons name="trophy-outline" size={22} color={focused ? "#fff" : "#333"} />
         ),
       }} />
       <Drawer.Screen name="Withdraw Fund" component={WalletFundNavigation} options={{

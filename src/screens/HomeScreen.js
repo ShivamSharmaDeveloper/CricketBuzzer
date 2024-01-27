@@ -7,6 +7,8 @@ import {
   ImageBackground,
   TextInput,
   TouchableOpacity,
+  PermissionsAndroid,
+  Platform
 } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import Feather from 'react-native-vector-icons/Feather';
@@ -26,14 +28,13 @@ import {
 } from "react-native-responsive-dimensions";
 import { useIsFocused } from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
-import Loader from '../components/Loader';
 import moment from 'moment';
+import { requestUserPermission } from '../components/NotificationService';
 
 export default function HomeScreen({ navigation }) {
   const isFocused = useIsFocused();
-  const { userToken, isLoadingGlobal, setIsLoadingGlobal } = useContext(AuthContext);
+  const { userToken, setIsLoadingGlobal } = useContext(AuthContext);
   const [events, setEvents] = useState(null);
-  const [gamesTab, setGamesTab] = useState(1);
   const carouselRef = useRef(null);
 
   const updateIsPlayStatus = (events) => {
@@ -94,9 +95,6 @@ export default function HomeScreen({ navigation }) {
     return <BannerSlider data={item} />;
   };
 
-  const onSelectSwitch = value => {
-    setGamesTab(value);
-  };
   const handleEventList = async () => {
     try {
       const querySnapshot = await firestore()
@@ -114,15 +112,25 @@ export default function HomeScreen({ navigation }) {
   };
   useEffect(() => {
     if (isFocused) {
-        // Example usage
-        handleEventList();
-        // console.log(freeGames);
-        // setEvents(freeGames);
-        // Call the updateSubtitles function when the app is opened
-        updateSubtitles();
+      // Example usage
+      handleEventList();
+      // console.log(freeGames);
+      // setEvents(freeGames);
+      // Call the updateSubtitles function when the app is opened
+      updateSubtitles();
     }
   }, [isFocused]);
   useEffect(() => {
+    if (Platform.OS === 'android') {
+      PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS).then((res) => {
+        // console.log('permsion', res);
+        requestUserPermission();
+        // For forground messages
+        // notificationListner();
+      }).catch(error => {
+        console.warn("somthing went wrong");
+      });
+    }
     setIsLoadingGlobal(true);
     setTimeout(() => {
       setIsLoadingGlobal(false);
@@ -131,43 +139,43 @@ export default function HomeScreen({ navigation }) {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#000' }}>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            padding: responsiveHeight(2),
-            backgroundColor: '#6a0028'
-          }}>
-          <TouchableOpacity onPress={() => navigation.openDrawer()}>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          padding: responsiveHeight(2),
+          backgroundColor: '#6a0028'
+        }}>
+        <TouchableOpacity onPress={() => navigation.openDrawer()}>
+          <Ionicons
+            name="menu"
+            size={responsiveWidth(8.5)}
+            color='white'
+          />
+        </TouchableOpacity>
+        <Text style={{ fontSize: responsiveFontSize(2.7), fontFamily: 'Roboto-Medium', marginTop: responsiveWidth(0.5), color: 'white' }}>
+          Ratan khatri matka
+        </Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Wallet Statement')}>
+          <View
+            style={{
+              // marginVertical: 15,
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            }}>
             <Ionicons
-              name="menu"
+              name="wallet"
               size={responsiveWidth(8.5)}
               color='white'
             />
-          </TouchableOpacity>
-          <Text style={{ fontSize: responsiveFontSize(2.7), fontFamily: 'Roboto-Medium', marginTop: responsiveWidth(0.5), color: 'white' }}>
-            Ratan khatri matka
-          </Text>
-          <TouchableOpacity onPress={() => navigation.navigate('Wallet Statement')}>
-            <View
-              style={{
-                // marginVertical: 15,
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-              }}>
-              <Ionicons
-                name="wallet"
-                size={responsiveWidth(8.5)}
-                color='white'
-              />
-              <Text style={{ fontSize: responsiveFontSize(2.5), fontFamily: 'Roboto-Medium', textAlign: 'center', margin: responsiveWidth(1), color: 'white' }}>
-                {userToken?.coins ? userToken?.coins : 0}
-              </Text>
-            </View>
-          </TouchableOpacity>
-        </View>
+            <Text style={{ fontSize: responsiveFontSize(2.5), fontFamily: 'Roboto-Medium', textAlign: 'center', margin: responsiveWidth(1), color: 'white' }}>
+              {userToken?.coins ? userToken?.coins : 0}
+            </Text>
+          </View>
+        </TouchableOpacity>
+      </View>
 
-        {/* <View
+      {/* <View
           style={{
             flexDirection: 'row',
             borderColor: '#C6C6C6',
@@ -186,7 +194,7 @@ export default function HomeScreen({ navigation }) {
           <TextInput placeholder="Search" />
         </View> */}
 
-        {/* <View
+      {/* <View
           style={{
             marginVertical: 15,
             flexDirection: 'row',
