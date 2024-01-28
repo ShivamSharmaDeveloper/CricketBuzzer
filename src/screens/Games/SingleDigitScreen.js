@@ -56,9 +56,9 @@ const SingleDigitScreen = ({ route }) => {
     const formatedDate = formatDate();
     const validateAmountField = () => {
         const error = validateAmount(amount, userToken?.coins);
-        const valid = error === '' ? Number(amount) > 100 ? 'Amount can not be greater than 100' : '' : error;
-        setAmountError(valid);
-        return !valid;
+        // const valid = error === '' ? Number(amount) > 100 ? 'Amount can not be greater than 100' : '' : error;
+        setAmountError(error);
+        return !error;
     };
     const validateDigitsField = () => {
         const error = digits.length === 0 ? 'Please choose one option' : '';
@@ -102,6 +102,7 @@ const SingleDigitScreen = ({ route }) => {
                         session: selectedOption,
                         game: 'Single Digit',
                         event: route.params?.title,
+                        phone: userToken?.phone,
                     });
                 // console.log('Coins updated successfully');
 

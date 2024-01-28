@@ -42,9 +42,28 @@ const RegisterScreen = ({ navigation }) => {
   const [fullNameError, setFullNameError] = useState('');
   const [emailIdError, setEmailIdError] = useState('');
   const [phoneNumberError, setPhoneNumberError] = useState('');
+  const [welecomeBonus, setWelecomeBonus] = useState('');
   // const [open, setOpen] = useState(false);
   // const [dobLabel, setDobLabel] = useState('Date of Birth');
+  useEffect(() => {
+    const handleAdmin = async () => {
+      try {
+        const userCollection = firestore().collection('admin');
+        const userQuery = userCollection.where('name', '==', 'admin');
+        const userSnapshot = await userQuery.get();
 
+        if (!userSnapshot.empty) {
+          const userDoc = userSnapshot.docs[0];
+          const welcome_bonus = userDoc.get('welcome_bonus') || 0;
+          // const phone_number = userDoc.get('phone_number');
+          setWelecomeBonus(welcome_bonus);
+        }
+      } catch (error) {
+        console.log(error, 'error');
+      }
+    }
+    handleAdmin();
+  }, [])
   function onAuthStateChanged(user) {
     if (user) {
       console.log(user, "user");
@@ -52,7 +71,7 @@ const RegisterScreen = ({ navigation }) => {
     }
   }
   useEffect(() => {
-    if (phoneNumber.length === 10){
+    if (phoneNumber.length === 10) {
       setPhoneNumberError('');
     }
     if (otpValue.length === 6) {
@@ -78,7 +97,7 @@ const RegisterScreen = ({ navigation }) => {
           name: fullName,
           email: emailId,
           phone: phoneNumber,
-          coins: 5,
+          coins: welecomeBonus,
           date: currentTime,
           phonepe: phoneNumber,
           googlepay: phoneNumber,
@@ -117,7 +136,7 @@ const RegisterScreen = ({ navigation }) => {
     try {
       setIsLoadingGlobal(true);
       const confirm = await checkVerification(`+91${phoneNumber}`, otpValue);
-      if(confirm){
+      if (confirm) {
         setOtpError('');
         handleUserLogin(confirm);
       } else {
@@ -353,7 +372,7 @@ const RegisterScreen = ({ navigation }) => {
           }}
         /> */}
 
-        <CustomButton label={verification ? 'Verify OTP' : 'Get OTP'} onPress={() => { handleUserRegistration();}} />
+        <CustomButton label={verification ? 'Verify OTP' : 'Get OTP'} onPress={() => { handleUserRegistration(); }} />
 
         <View
           style={{
@@ -361,7 +380,7 @@ const RegisterScreen = ({ navigation }) => {
             justifyContent: 'center',
             marginBottom: responsiveWidth(8),
           }}>
-          <Text style={{color: '#666'}}>Already registered?</Text>
+          <Text style={{ color: '#666' }}>Already registered?</Text>
           <TouchableOpacity onPress={() => navigation.navigate('Login')}>
             <Text style={{ color: '#6a0028', fontWeight: '700' }}> Login</Text>
           </TouchableOpacity>

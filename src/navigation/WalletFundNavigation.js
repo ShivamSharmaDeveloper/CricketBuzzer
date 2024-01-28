@@ -64,55 +64,6 @@ const WalletStack = () => {
                     title: 'UPI Details',
                 })}
             />
-            {/* <Stack.Screen
-                name="Single Digit"
-                component={SingleDigitScreen}
-                options={({ route, navigation }) => ({
-                    // title: route.params?.title,
-                    headerStyle: {
-                        backgroundColor: '#6a0028',
-                    },
-                    headerTintColor: '#fff',
-                    headerRight: (...props) => <HeaderWallet {...props} headerTitle={'Single Digit'} navigation={navigation} />
-                })}
-                screenOptions
-            />
-            <Stack.Screen
-                name="Single Panna"
-                component={SinglePannaScreen}
-                options={({ route, navigation }) => ({
-                    // title: route.params?.title,
-                    headerStyle: {
-                        backgroundColor: '#6a0028',
-                    },
-                    headerTintColor: '#fff',
-                    headerRight: (...props) => <HeaderWallet {...props} navigation={navigation} />
-                })}
-            />
-            <Stack.Screen
-                name="Double Panna"
-                component={DoublePannaScreen}
-                options={({ route, navigation }) => ({
-                    // title: route.params?.title,
-                    headerStyle: {
-                        backgroundColor: '#6a0028',
-                    },
-                    headerTintColor: '#fff',
-                    headerRight: (...props) => <HeaderWallet {...props} navigation={navigation} />
-                })}
-            />
-            <Stack.Screen
-                name="Triple Panna"
-                component={TriplePannaScreen}
-                options={({ route, navigation }) => ({
-                    // title: route.params?.title,
-                    headerStyle: {
-                        backgroundColor: '#6a0028',
-                    },
-                    headerTintColor: '#fff',
-                    headerRight: (...props) => <HeaderWallet {...props} navigation={navigation} />
-                })}
-            /> */}
         </Stack.Navigator>
     );
 };

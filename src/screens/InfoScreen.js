@@ -37,7 +37,7 @@ const InfoScreen = ({ navigation }) => {
               </Text>
             <Text style={{ color: '#333', fontSize: responsiveFontSize(2), fontFamily: 'Roboto-Bold', marginTop: responsiveWidth(5)}}>Rules And Regulations
               </Text>
-            <Text style={{ color: '#333', fontSize: responsiveFontSize(2), fontFamily: 'Roboto-Bold', marginTop: responsiveWidth(5)}}>-Minimum Deposit 100 Rs....
+            <Text style={{ color: '#333', fontSize: responsiveFontSize(2), fontFamily: 'Roboto-Bold', marginTop: responsiveWidth(5)}}>-Minimum Deposit 500 Rs....
               </Text>
             <Text style={{ color: '#333', fontSize: responsiveFontSize(2), fontFamily: 'Roboto-Bold', }}>-Minimum Withdrawal 1000 Rs.
               </Text>

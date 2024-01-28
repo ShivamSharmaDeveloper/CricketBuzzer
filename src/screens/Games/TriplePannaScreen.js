@@ -55,9 +55,9 @@ const TriplePannaScreen = ({ route }) => {
     const formatedDate = formatDate();
     const validateAmountField = () => {
         const error = validateAmount(amount, userToken?.coins);
-        const valid = error === '' ? Number(amount) > 9000 ? 'Amount can not be greater than 9000' : '' : error;
-        setAmountError(valid);
-        return !valid;
+        // const valid = error === '' ? Number(amount) > 9000 ? 'Amount can not be greater than 9000' : '' : error;
+        setAmountError(error);
+        return !error;
     };
     const validateDigitsField = () => {
         const error = digits.length === 0 ? 'Please choose one option' : '';
@@ -101,6 +101,7 @@ const TriplePannaScreen = ({ route }) => {
                         session: selectedOption,
                         game: 'Triple Panna',
                         event: route.params?.title,
+                        phone: userToken?.phone,
                     });
                 // console.log('Coins updated successfully');
 

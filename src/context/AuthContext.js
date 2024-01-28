@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }) => {
                     } else {
                         console.warn('User not found.');
                     }
-                    // setUserToken(JSON.parse(storedToken));
+                    // setUserToken({phone: '8209555243', coins: '1000', name: 'Shivam Sharma'});
                 }
             } catch (error) {
                 console.error('Error retrieving user token from AsyncStorage:', error);
@@ -57,7 +57,7 @@ export const AuthProvider = ({ children }) => {
             setIsLoadingGlobal(true);
             await AsyncStorage.removeItem('userToken');
             setUserToken(null);
-            auth().signOut().then(() => console.log('User signed out!'));
+            // auth().signOut().then(() => console.log('User signed out!'));
         } catch (error) {
             console.error('Error clearing user token from AsyncStorage:', error);
         } finally {

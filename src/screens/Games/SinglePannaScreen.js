@@ -166,9 +166,9 @@ const SinglePannaScreen = ({ route }) => {
     const formatedDate = formatDate();
     const validateAmountField = () => {
         const error = validateAmount(amount, userToken?.coins);
-        const valid = error === '' ? Number(amount) > 1600 ? 'Amount can not be greater than 1600' : '' : error;
-        setAmountError(valid);
-        return !valid;
+        // const valid = error === '' ? Number(amount) > 1600 ? 'Amount can not be greater than 1600' : '' : error;
+        setAmountError(error);
+        return !error;
     };
     const validateDigitsField = () => {
         const error = validateDigit(digits);
@@ -212,6 +212,7 @@ const SinglePannaScreen = ({ route }) => {
                         session: selectedOption,
                         game: 'Single Panna',
                         event: route.params?.title,
+                        phone: userToken?.phone,
                     });
                 // console.log('Coins updated successfully');
 

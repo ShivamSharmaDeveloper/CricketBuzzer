@@ -152,9 +152,9 @@ const JodiDigit = ({ route }) => {
     const formatedDate = formatDate();
     const validateAmountField = () => {
         const error = validateAmount(amount, userToken?.coins);
-        const valid = error === '' ? Number(amount) > 1000 ? 'Amount can not be greater than 1000' : '' : error;
-        setAmountError(valid);
-        return !valid;
+        // const valid = error === '' ? Number(amount) > 1000 ? 'Amount can not be greater than 1000' : '' : error;
+        setAmountError(error);
+        return !error;
     };
     const validateDigitsField = () => {
         const error = digits.length === 0 ? 'Please choose one option' : '';
@@ -195,6 +195,7 @@ const JodiDigit = ({ route }) => {
                         game: 'Jodi Digit',
                         event: route.params?.title,
                         session: selectedOption,
+                        phone: userToken?.phone,
                     });
                 // console.log('Coins updated successfully');
 

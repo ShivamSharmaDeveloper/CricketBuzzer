@@ -8,6 +8,7 @@ import jodiDigit from '../assets/images/jodiDigit.png';
 import halfSangam from '../assets/images/halfSangam.png';
 import fullSangam from '../assets/images/fullSangam.png';
 import { responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
+import { isCrossedCurrentTime } from '../utils/CheckCrossedTime';
 
 const GameDetailsScreen = ({ navigation, route }) => {
   return (
@@ -68,41 +69,59 @@ const GameDetailsScreen = ({ navigation, route }) => {
                 style={{ width: responsiveWidth(40), height: responsiveHeight(20.3), borderRadius: 10, }}
               />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => {
-              navigation.navigate('Jodi Digit', {
-                title: route.params?.title,
-                id: route.params?.id,
-              });
-            }}>
-              <Image
-                source={jodiDigit}
-                style={{ width: responsiveWidth(40), height: responsiveHeight(20.3), borderRadius: 10, }}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => {
-              navigation.navigate('Half Sangam', {
-                title: route.params?.title,
-                id: route.params?.id,
-                open: route.params?.open,
-                close: route.params?.close,
-              });
-            }}>
-              <Image
-                source={halfSangam}
-                style={{ width: responsiveWidth(40), height: responsiveHeight(20.3), borderRadius: 10, }}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => {
-              navigation.navigate('Full Sangam', {
-                title: route.params?.title,
-                id: route.params?.id,
-              });
-            }}>
-              <Image
-                source={fullSangam}
-                style={{ width: responsiveWidth(40), height: responsiveHeight(20.3), borderRadius: 10, }}
-              />
-            </TouchableOpacity>
+            {isCrossedCurrentTime(route.params.open) ?
+              <TouchableOpacity onPress={() => { alert('Bid is closed for this game!') }}>
+                <Image
+                  source={jodiDigit}
+                  style={{ width: responsiveWidth(40), height: responsiveHeight(20.3), borderRadius: 10, }}
+                />
+              </TouchableOpacity> : <TouchableOpacity onPress={() => {
+                navigation.navigate('Jodi Digit', {
+                  title: route.params?.title,
+                  id: route.params?.id,
+                });
+              }}>
+                <Image
+                  source={jodiDigit}
+                  style={{ width: responsiveWidth(40), height: responsiveHeight(20.3), borderRadius: 10, }}
+                />
+              </TouchableOpacity>}
+            {isCrossedCurrentTime(route.params.open) ?
+              <TouchableOpacity onPress={() => { alert('Bid is closed for this game!') }}>
+                <Image
+                  source={halfSangam}
+                  style={{ width: responsiveWidth(40), height: responsiveHeight(20.3), borderRadius: 10, }}
+                />
+              </TouchableOpacity> : <TouchableOpacity onPress={() => {
+                navigation.navigate('Half Sangam', {
+                  title: route.params?.title,
+                  id: route.params?.id,
+                  open: route.params?.open,
+                  close: route.params?.close,
+                });
+              }}>
+                <Image
+                  source={halfSangam}
+                  style={{ width: responsiveWidth(40), height: responsiveHeight(20.3), borderRadius: 10, }}
+                />
+              </TouchableOpacity>}
+            {isCrossedCurrentTime(route.params.open) ?
+              <TouchableOpacity onPress={() => { alert('Bid is closed for this game!') }}>
+                <Image
+                  source={fullSangam}
+                  style={{ width: responsiveWidth(40), height: responsiveHeight(20.3), borderRadius: 10, }}
+                />
+              </TouchableOpacity> : <TouchableOpacity onPress={() => {
+                navigation.navigate('Full Sangam', {
+                  title: route.params?.title,
+                  id: route.params?.id,
+                });
+              }}>
+                <Image
+                  source={fullSangam}
+                  style={{ width: responsiveWidth(40), height: responsiveHeight(20.3), borderRadius: 10, }}
+                />
+              </TouchableOpacity>}
           </View>
         </View>
       </ScrollView>

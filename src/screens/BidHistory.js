@@ -1,5 +1,5 @@
 import { View, Text, SafeAreaView, TouchableOpacity, ScrollView } from 'react-native';
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { windowWidth } from '../utils/Dimensions';
@@ -7,54 +7,19 @@ import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-nat
 import DatePicker from 'react-native-date-picker';
 import BidList from '../components/BidList';
 import { useIsFocused } from '@react-navigation/native';
+import { AuthContext } from '../context/AuthContext';
+import firestore from '@react-native-firebase/firestore';
 
 const BidHistory = ({ navigation }) => {
     const isFocused = useIsFocused();
+    const { userToken, setIsLoadingGlobal } = useContext(AuthContext);
     const [date, setDate] = useState(new Date());
     const [date2, setDate2] = useState(new Date());
     const [open, setOpen] = useState(false);
     const [open2, setOpen2] = useState(false);
     const [dobLabel, setDobLabel] = useState('From Date');
     const [dobLabel2, setDobLabel2] = useState('To Date');
-    const [list, setList] = useState([
-        {
-            id: 1,
-            event: 'Kalyan Satta',
-            session: 'open',
-            date: 'Tue Jan 23 2024',
-            game: 'Single Digit',
-            points: '5',
-            panna: '888',
-        },
-        {
-            id: 2,
-            event: 'Kalyan Satta',
-            session: 'open',
-            date: 'Tue Jan 23 2024',
-            game: 'Full Sangam',
-            points: '5',
-            panna: '2',
-        },
-        {
-            id: 3,
-            event: 'Kalyan Satta',
-            session: 'open',
-            date: 'Tue Jan 23 2024',
-            game: 'Full Sangam',
-            points: '5',
-            panna: '2',
-        },
-        {
-            id: 4,
-            event: 'Kalyan Satta',
-            session: 'open',
-            date: 'Tue Jan 23 2024',
-            game: 'Full Sangam',
-            points: '5',
-            panna: '2',
-        },
-    ]);
-    const digit = 'Open Panna';
+    const [list, setList] = useState([]);
     useEffect(() => {
         if (isFocused) {
             const currentDate = new Date();
@@ -62,8 +27,49 @@ const BidHistory = ({ navigation }) => {
             setDobLabel(currentDate.toDateString());
             setDate2(currentDate);
             setDobLabel2(currentDate.toDateString());
+            setList([]);
         }
     }, [isFocused])
+    useEffect(() => {
+        setList([]);
+    }, [date, date2])
+
+    const handleSubmit = async () => {
+        try {
+            setIsLoadingGlobal(true);
+            const fromDate = new Date(date);
+            const toDate = new Date(date2);
+            // Check if the fromDate is later than toDate or toDate is earlier than fromDate
+            if (fromDate > toDate) {
+                alert("Invalid date range. 'From' date should be earlier than 'To' date.");
+                return;
+            }
+            console.log(fromDate, toDate)
+            const querySnapshot = await firestore()
+                .collection('User_Events') // Replace with your collection name
+                .where('name', '==', userToken?.name)
+                .get();
+
+            const data = querySnapshot.docs.map(doc => doc.data());
+            const filteredArray = data.filter(item => {
+                const itemDate = new Date(item.date).toLocaleDateString();
+                const fromDateFormatted = fromDate.toLocaleDateString();
+                const toDateFormatted = toDate.toLocaleDateString();
+                return itemDate >= fromDateFormatted && itemDate <= toDateFormatted;
+            });
+
+            console.log(filteredArray);
+            // Sort the data in descending order based on result_date string
+            const listItem = filteredArray.sort((a, b) => new Date(a.date) - new Date(b.date));
+            console.log(listItem);
+            setList(listItem);
+        } catch (error) {
+            console.log(error, 'error');
+        } finally {
+            setIsLoadingGlobal(false);
+        }
+    }
+
     return (
         <SafeAreaView style={{ flex: 1, justifyContent: 'center' }}>
             <View style={{ backgroundColor: '#6a0028', height: responsiveHeight(7.5), width: responsiveWidth(windowWidth), flexDirection: 'row' }}>
@@ -126,7 +132,7 @@ const BidHistory = ({ navigation }) => {
                 </View>
                 <View style={{ alignItems: 'center' }}>
                     <TouchableOpacity
-                        onPress={() => { }}
+                        onPress={() => { handleSubmit(); }}
                         style={{
                             backgroundColor: '#6a0028',
                             padding: responsiveWidth(4.1),
@@ -147,16 +153,18 @@ const BidHistory = ({ navigation }) => {
                     </TouchableOpacity>
                 </View>
                 <ScrollView showsVerticalScrollIndicator={false}>
-                    {list && list.length !== 0 ? list.map(item => (
+                    {list && list.length !== 0 ? list.map((item, index) => (
                         <BidList
-                            key={item.id}
+                            key={index}
                             title={item.event}
-                            type={digit}
+                            openPanna={item.openpanna}
+                            closePanna={item.closepanna}
+                            openDigit={item.opendigit}
+                            closeDigit={item.closedigit}
                             session={item.session}
                             date={item.date}
                             gameType={item.game}
                             points={item.points}
-                            panna={item.panna}
                         />
                     )) : (
                         <View style={{ alignItems: 'center', marginTop: responsiveHeight(20) }}>
@@ -170,7 +178,7 @@ const BidHistory = ({ navigation }) => {
                     open={open}
                     date={date}
                     mode={'date'}
-                    maximumDate={new Date(date)}
+                    maximumDate={new Date()}
                     minimumDate={new Date('2000-01-01')}
                     onConfirm={option => {
                         setOpen(false);
@@ -186,7 +194,7 @@ const BidHistory = ({ navigation }) => {
                     open={open2}
                     date={date2}
                     mode={'date'}
-                    maximumDate={new Date(date2)}
+                    maximumDate={new Date()}
                     minimumDate={new Date('2000-01-01')}
                     onConfirm={option => {
                         setOpen2(false);

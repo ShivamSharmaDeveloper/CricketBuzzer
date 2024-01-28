@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, TouchableOpacity, Image, TextInput, } from 'react-native';
+import { View, Text, SafeAreaView, TouchableOpacity, Image, TextInput, Alert, } from 'react-native';
 import React, { useContext, useEffect, useState } from 'react';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { windowHeight, windowWidth } from '../utils/Dimensions';
@@ -18,9 +18,9 @@ const WithdrawFundScreen = ({ navigation }) => {
   const isFocused = useIsFocused();
   const { userToken, setUserToken } = useContext(AuthContext);
   const data = [
-    { label: `PhonePe (${userToken?.phone})`, value: 'phonepe' },
-    { label: `GooglePay (${userToken?.phone})`, value: 'googlepay' },
-    { label: `PayTM (${userToken?.phone})`, value: 'paytm' },
+    { label: `PhonePe (${userToken?.phonepe})`, value: 'phonepe' },
+    { label: `GooglePay (${userToken?.googlepay})`, value: 'googlepay' },
+    { label: `PayTM (${userToken?.paytm})`, value: 'paytm' },
   ];
   const [value, setValue] = useState([]);
   const [valueError, setValueError] = useState('');
@@ -28,10 +28,54 @@ const WithdrawFundScreen = ({ navigation }) => {
   const [amountError, setAmountError] = useState('');
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [minValid, setMinValid] = useState(0);
+  const [maxValid, setMaxValid] = useState(0);
+  const [withdrawClose, setWithdrawClose] = useState(false);
+  const [withdrawOpenTime, setWithdrawOpenTime] = useState('');
+  const [withdrawCloseTime, setWithdrawCloseTime] = useState('');
+
+  useEffect(() => {
+    const handleAdmin = async () => {
+      try {
+        const userCollection = firestore().collection('admin');
+        const userQuery = userCollection.where('name', '==', 'admin');
+        const userSnapshot = await userQuery.get();
+
+        if (!userSnapshot.empty) {
+          const userDoc = userSnapshot.docs[0];
+          const minAmount = userDoc.get('min_withdraw_amount') || 0;
+          const maxAmount = userDoc.get('max_withdraw_amount') || 0;
+          const withdrawOpen_Time = userDoc.get('withdraw_open_time');
+          const withdrawClose_Time = userDoc.get('withdraw_close_time');
+          setWithdrawOpenTime(withdrawOpen_Time);
+          setWithdrawCloseTime(withdrawClose_Time);
+          // Parse the withdraw open and close times into Date objects
+          const withdrawOpenDate = new Date(withdrawOpen_Time);
+          const withdrawCloseDate = new Date(withdrawClose_Time);
+          const currentTime = new Date(); // Get the current time
+
+          // Check if the current time is within the specified range
+          if (currentTime >= withdrawOpenDate && currentTime <= withdrawCloseDate) {
+            // Within the valid range, set withdrawClose to false
+            setWithdrawClose(false);
+            setMinValid(minAmount);
+            setMaxValid(maxAmount);
+          } else {
+            // Outside the valid range, set withdrawClose to true
+            setWithdrawClose(true);
+          }
+        }
+      } catch (error) {
+        console.log(error, 'error');
+      }
+    }
+    handleAdmin();
+  }, [])
+
   useEffect(() => {
     if (amount.length > 0) {
       setAmountError('');
-    } else if (Number(amount) >= 100) {
+    } else if (Number(amount) >= minValid) {
       setAmountError('');
     }
     if (value.length !== 0) {
@@ -39,7 +83,7 @@ const WithdrawFundScreen = ({ navigation }) => {
     }
   }, [amount, value]);
   const validateAmountField = () => {
-    const error = validateRiquired(amount) ? validateRiquired(amount) : Number(amount) < 1000 ? 'Please enter amount more than 1000 or 1000' : validateAmount(amount, userToken?.coins);
+    const error = validateRiquired(amount) ? validateRiquired(amount) : Number(amount) < minValid ? `Please enter amount more than ${minValid} or ${minValid}` : validateAmount(amount, userToken?.coins, maxValid);
     setAmountError(error);
     return !error;
   };
@@ -108,8 +152,12 @@ const WithdrawFundScreen = ({ navigation }) => {
       // If any validation fails, return without proceeding
       return;
     } else {
-      setLoading(true);
-      handleUpdate();
+      if (withdrawClose) {
+        alert(`Withdraw window is closed! Please withdraw in between ${withdrawOpenTime} to ${withdrawCloseTime}`);
+      } else {
+        setLoading(true);
+        handleUpdate();
+      }
     }
   };
   useEffect(() => {
@@ -130,7 +178,7 @@ const WithdrawFundScreen = ({ navigation }) => {
           size={responsiveWidth(7)}
           color="white"
           onPress={() => { navigation.navigate('Home'); }}
-          style={{width: responsiveWidth(10)}}
+          style={{ width: responsiveWidth(10) }}
         />
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Text style={{ fontSize: responsiveFontSize(2.8), color: 'white', fontWeight: '600', marginRight: responsiveWidth(15), alignSelf: 'center', width: responsiveWidth(40) }}>Withdraw Fund</Text>
@@ -242,7 +290,7 @@ const WithdrawFundScreen = ({ navigation }) => {
                   keyboardType={'phone-pad'}
                   onChangeText={(text) => { setAmount(text); }}
                   value={amount}
-                  maxLength={5}
+                  maxLength={8}
                   placeholderTextColor="#666"
                   style={{ flex: 1, paddingVertical: responsiveWidth(0.5), color: '#666', fontSize: responsiveFontSize(2.2), paddingHorizontal: responsiveWidth(4.1), paddingTop: responsiveWidth(2.2), textAlign: 'center' }}
                 // editable={false}

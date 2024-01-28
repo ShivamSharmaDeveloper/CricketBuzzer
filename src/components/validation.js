@@ -56,16 +56,16 @@ export const validateOtp = (otp) => {
     return '';
 };
 
-export const validatePoints = (points) => {
+export const validatePoints = (points, minValid, maxValid) => {
     if (!points.trim()) {
         return 'Points are required';
     }
 
-    if (Number(points) < 500) {
-        return 'Minimum Points can be added is 500 or more than 500';
-    } else if (Number(points) > 10000) {
-        return 'Amount can not be more than 10000';
-    } else if (Number(points) === 500) {
+    if (Number(points) < minValid) {
+        return `Minimum Points can be added is ${minValid} or more than ${minValid}`;
+    } else if (Number(points) > maxValid) {
+        return `Amount can not be more than ${maxValid}`;
+    } else if (Number(points) === minValid) {
         return '';
     }
 
@@ -74,7 +74,7 @@ export const validatePoints = (points) => {
     return '';
 };
 
-export const validateAmount = (amount, fund) => {
+export const validateAmount = (amount, fund, maxValid) => {
     if (!amount.trim()) {
         return 'Amount is required';
     }
@@ -87,8 +87,8 @@ export const validateAmount = (amount, fund) => {
         return 'Amount can not be zero';
     } else if (Number(amount) < 10){
         return 'Minimum amount should be 10';
-    } else if (Number(amount) > 100000){
-        return 'Maximum withdrawal is 100000';
+    } else if ( maxValid && Number(amount) > maxValid){
+        return `Maximum withdrawal is ${maxValid}`;
     }
     // Add more custom validation rules if needed
 

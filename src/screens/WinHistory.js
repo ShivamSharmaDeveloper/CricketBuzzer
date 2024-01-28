@@ -1,5 +1,5 @@
 import { View, Text, SafeAreaView, TouchableOpacity, ScrollView } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { windowWidth } from '../utils/Dimensions';
@@ -7,54 +7,33 @@ import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-nat
 import DatePicker from 'react-native-date-picker';
 import WinList from '../components/WinList';
 import { useIsFocused } from '@react-navigation/native';
+import { AuthContext } from '../context/AuthContext';
+import firestore from '@react-native-firebase/firestore';
 
 const WinHistory = ({ navigation }) => {
     const isFocused = useIsFocused();
+    const { userToken, setIsLoadingGlobal } = useContext(AuthContext);
     const [date, setDate] = useState(new Date());
     const [date2, setDate2] = useState(new Date());
     const [open, setOpen] = useState(false);
     const [open2, setOpen2] = useState(false);
     const [dobLabel, setDobLabel] = useState('From Date');
     const [dobLabel2, setDobLabel2] = useState('To Date');
-    const [list, setList] = useState([
-        {
-            id: 1,
-            event: 'Kalyan Satta',
-            session: 'open',
-            date: 'Tue Jan 23 2024',
-            game: 'Single Digit',
-            points: '15',
-            won: '888',
-        },
-        {
-            id: 2,
-            event: 'Kalyan Satta',
-            session: 'open',
-            date: 'Tue Jan 23 2024',
-            game: 'Single Digit',
-            points: '15',
-            won: '888',
-        },
-        {
-            id: 3,
-            event: 'Kalyan Satta',
-            session: 'open',
-            date: 'Tue Jan 23 2024',
-            game: 'Single Digit',
-            points: '15',
-            won: '888',
-        },
-        {
-            id: 4,
-            event: 'Kalyan Satta',
-            session: 'open',
-            date: 'Tue Jan 23 2024',
-            game: 'Single Digit',
-            points: '15',
-            won: '888',
-        },
-    ]);
-    const digit = 'Open Panna';
+    const [list, setList] = useState([]);
+
+    useEffect(() => {
+        if (isFocused) {
+            const currentDate = new Date();
+            setDate(currentDate);
+            setDobLabel(currentDate.toDateString());
+            setDate2(currentDate);
+            setDobLabel2(currentDate.toDateString());
+            setList([]);
+        }
+    }, [isFocused])
+    useEffect(() => {
+        setList([]);
+    }, [date, date2])
     useEffect(() => {
         if (isFocused) {
             const currentDate = new Date();
@@ -64,6 +43,41 @@ const WinHistory = ({ navigation }) => {
             setDobLabel2(currentDate.toDateString());
         }
     }, [isFocused])
+    const handleSubmit = async () => {
+        try {
+            setIsLoadingGlobal(true);
+            const fromDate = new Date(date);
+            const toDate = new Date(date2);
+            // Check if the fromDate is later than toDate or toDate is earlier than fromDate
+            if (fromDate > toDate) {
+                alert("Invalid date range. 'From' date should be earlier than 'To' date.");
+                return;
+            }
+            console.log(fromDate, toDate)
+            const querySnapshot = await firestore()
+                .collection('winningHistory') // Replace with your collection name
+                .where('phone', '==', userToken?.phone)
+                .get();
+
+            const data = querySnapshot.docs.map(doc => doc.data());
+            const filteredArray = data.filter(item => {
+                const itemDate = new Date(item.date).toLocaleDateString();
+                const fromDateFormatted = fromDate.toLocaleDateString();
+                const toDateFormatted = toDate.toLocaleDateString();
+                return itemDate >= fromDateFormatted && itemDate <= toDateFormatted;
+            });
+
+            console.log(filteredArray);
+            // Sort the data in descending order based on result_date string
+            const listItem = filteredArray.sort((a, b) => new Date(a.date) - new Date(b.date));
+            console.log(listItem);
+            setList(listItem);
+        } catch (error) {
+            console.log(error, 'error');
+        } finally {
+            setIsLoadingGlobal(false);
+        }
+    }
 
     return (
         <SafeAreaView style={{ flex: 1, justifyContent: 'center' }}>
@@ -127,7 +141,7 @@ const WinHistory = ({ navigation }) => {
                 </View>
                 <View style={{ alignItems: 'center' }}>
                     <TouchableOpacity
-                        onPress={() => { }}
+                        onPress={() => { handleSubmit();}}
                         style={{
                             backgroundColor: '#6a0028',
                             padding: responsiveWidth(4.1),

@@ -19,11 +19,32 @@ const AddFundScreen = ({ navigation }) => {
   const [success, setSuccess] = useState(false);
   const [visible3, setVisible3] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [minValid, setMinValid] = useState(0);
+  const [maxValid, setMaxValid] = useState(0);
+  useEffect(() => {
+    const handleAdmin = async () => {
+      try {
+        const userCollection = firestore().collection('admin');
+        const userQuery = userCollection.where('name', '==', 'admin');
+        const userSnapshot = await userQuery.get();
 
+        if (!userSnapshot.empty) {
+          const userDoc = userSnapshot.docs[0];
+          const minAmount = userDoc.get('min_add_amount') || 0;
+          const maxAmount = userDoc.get('max_add_amount') || 0;
+          setMinValid(minAmount);
+          setMaxValid(maxAmount);
+        }
+      } catch (error) {
+        console.log(error, 'error');
+      }
+    }
+    handleAdmin();
+  }, [])
   useEffect(() => {
     if (points.length > 0) {
       setPointsError('');
-    } else if (Number(points) > 100) {
+    } else if (Number(points) > minValid) {
       setPointsError('');
     }
   }, [points]);
@@ -36,7 +57,7 @@ const AddFundScreen = ({ navigation }) => {
   }, [isFocused]);
 
   const validatePointsField = () => {
-    const error = validatePoints(points);
+    const error = validatePoints(points, minValid, maxValid);
     setPointsError(error);
     return !error;
   };
@@ -49,7 +70,7 @@ const AddFundScreen = ({ navigation }) => {
       if (!userSnapshot.empty) {
         const userDoc = userSnapshot.docs[0];
         const currentCoins = userDoc.get('earnings') || 0;
-        console.log(currentCoins, 'earnings');
+        // console.log(currentCoins, 'earnings');
 
         const updatedCoins = currentCoins + Number(points);
 
@@ -65,6 +86,17 @@ const AddFundScreen = ({ navigation }) => {
 
   const successCallback = async (data) => {
     try {
+      // const date = new Date();
+      // const currentTime = date.toString();
+      // await firestore()
+      //   .collection('AddMoney')
+      //   .add({
+      //     phone: userToken?.phone,
+      //     amount: points,
+      //     time: currentTime,
+      //     name: userToken?.name,
+      //     status: 'pending',
+      //   });
       const userCollection = firestore().collection('Users');
       const userQuery = userCollection.where('phone', '==', userToken?.phone);
       const userSnapshot = await userQuery.get();
@@ -197,7 +229,7 @@ const AddFundScreen = ({ navigation }) => {
               keyboardType={'phone-pad'}
               onChangeText={(text) => { setPoints(text); }}
               value={points}
-              maxLength={5}
+              maxLength={8}
               placeholderTextColor="#666"
               style={{ flex: 1, paddingVertical: responsiveWidth(0.7), color: '#666', fontSize: responsiveFontSize(2.2), paddingHorizontal: responsiveWidth(4.1), paddingTop: responsiveWidth(3) }}
             />

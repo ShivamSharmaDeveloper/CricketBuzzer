@@ -135,9 +135,9 @@ const DoublePannaScreen = ({ route }) => {
     const formatedDate = formatDate();
     const validateAmountField = () => {
         const error = validateAmount(amount, userToken?.coins);
-        const valid = error === '' ? Number(amount) > 3200 ? 'Amount can not be greater than 3200' : '' : error;
-        setAmountError(valid);
-        return !valid;
+        // const valid = error === '' ? Number(amount) > 3200 ? 'Amount can not be greater than 3200' : '' : error;
+        setAmountError(error);
+        return !error;
     };
     const validateDigitsField = () => {
         const error = digits.length === 0 ? 'Please choose one option' : '';
@@ -181,6 +181,7 @@ const DoublePannaScreen = ({ route }) => {
                         session: selectedOption,
                         game: 'Double Panna',
                         event: route.params?.title,
+                        phone: userToken?.phone,
                     });
                 // console.log('Coins updated successfully');
 

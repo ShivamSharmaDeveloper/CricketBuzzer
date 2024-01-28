@@ -1,12 +1,35 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { View, Text, SafeAreaView, TouchableOpacity, } from 'react-native';
 import { AuthContext } from '../context/AuthContext';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { windowHeight, windowWidth } from '../utils/Dimensions';
 import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions';
+import firestore from '@react-native-firebase/firestore';
 
 const WalletScreen = ({ navigation }) => {
   const { userToken } = useContext(AuthContext);
+  const [openTime, setOpenTime] = useState('');
+  const [closeTime, setCloseTime] = useState('');
+  useEffect(() => {
+    const handleAdmin = async () => {
+      try {
+        const userCollection = firestore().collection('admin');
+        const userQuery = userCollection.where('name', '==', 'admin');
+        const userSnapshot = await userQuery.get();
+
+        if (!userSnapshot.empty) {
+          const userDoc = userSnapshot.docs[0];
+          const opentime = userDoc.get('withdraw_open_time');
+          const closetime = userDoc.get('withdraw_close_time');
+          setOpenTime(opentime);
+          setCloseTime(closetime);
+        }
+      } catch (error) {
+        console.log(error, 'error');
+      }
+    }
+    handleAdmin();
+  }, [])
   return (
     <SafeAreaView style={{ flex: 1, justifyContent: 'center' }}>
       <View style={{ backgroundColor: '#6a0028', height: responsiveHeight(7.5), width: responsiveWidth(windowWidth), flexDirection: 'row' }}>
@@ -40,13 +63,13 @@ const WalletScreen = ({ navigation }) => {
             // textAlign: 'center',
             fontFamily: 'Roboto-Regular',
             fontSize: responsiveFontSize(2.7),
-          }}>Withdraw Open time is 9:00 AM</Text>
+          }}>Withdraw Open time is {openTime}</Text>
           <Text style={{
             color: '#000',
             // textAlign: 'center',
             fontFamily: 'Roboto-Regular',
             fontSize: responsiveFontSize(2.7),
-          }}>Withdraw Close time is 12:00 PM</Text>
+          }}>Withdraw Close time is {closeTime}</Text>
         </View>
       </View>
       <View style={{ flex: 1, marginTop: responsiveWidth(5), marginLeft: responsiveWidth(3), marginRight: responsiveWidth(3), flexDirection: 'row', justifyContent: 'space-evenly', gap: responsiveWidth(8) }}>
