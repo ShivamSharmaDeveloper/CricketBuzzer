@@ -57,7 +57,7 @@ export default function HomeScreen({ navigation }) {
     const currentMinutes = currentDate.getMinutes();
 
     // Get the open time of the first element
-    const firstGameOpenTime = freeGames[0]?.open;
+    const firstGameOpenTime = events[0]?.open;
 
     if (firstGameOpenTime) {
       // Split the open time into hours and minutes
@@ -81,7 +81,7 @@ export default function HomeScreen({ navigation }) {
       const querySnapshot = await firestore().collection('Events').get();
       const batch = firestore().batch();
 
-      querySnapshot.forEach((doc) => {
+      querySnapshot.docs.forEach((doc) => {
         const eventRef = doc.ref;
         batch.update(eventRef, { subtitle: '***-**-***' });
       });
