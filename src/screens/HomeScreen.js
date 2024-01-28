@@ -154,7 +154,7 @@ export default function HomeScreen({ navigation }) {
           />
         </TouchableOpacity>
         <Text style={{ fontSize: responsiveFontSize(2.7), fontFamily: 'Roboto-Medium', marginTop: responsiveWidth(0.5), color: 'white' }}>
-          Ratan khatri matka
+          Kalyan Satta Matka
         </Text>
         <TouchableOpacity onPress={() => navigation.navigate('Wallet Statement')}>
           <View

@@ -21,7 +21,7 @@ const OnboardingScreen = ({navigation}) => {
             fontSize: 30,
             color: '#20315f',
           }}>
-          Ratan khatri matka
+          Kalyan Satta
         </Text>
       </View>
       <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
