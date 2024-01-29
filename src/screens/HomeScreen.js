@@ -55,24 +55,25 @@ export default function HomeScreen({ navigation }) {
     const currentDate = new Date();
     const currentHour = currentDate.getHours();
     const currentMinutes = currentDate.getMinutes();
+    if (events) {
+      // Get the open time of the first element
+      const firstGameOpenTime = events[0]?.open;
 
-    // Get the open time of the first element
-    const firstGameOpenTime = events[0]?.open;
+      if (firstGameOpenTime) {
+        // Split the open time into hours and minutes
+        const [openHour, openMinutes] = firstGameOpenTime.split(':').map(Number);
 
-    if (firstGameOpenTime) {
-      // Split the open time into hours and minutes
-      const [openHour, openMinutes] = firstGameOpenTime.split(':').map(Number);
+        // Compare the current time with the open time
+        if (currentHour < openHour || (currentHour === openHour && currentMinutes < openMinutes)) {
+          // If the current time is earlier than the open time, update the subtitles
+          const updatedEvents = events?.map((event) => {
+            event.subtitle = '***-**-***';
+            return event;
+          });
 
-      // Compare the current time with the open time
-      if (currentHour < openHour || (currentHour === openHour && currentMinutes < openMinutes)) {
-        // If the current time is earlier than the open time, update the subtitles
-        const updatedEvents = events?.map((event) => {
-          event.subtitle = '***-**-***';
-          return event;
-        });
-
-        updateAllEventsSubtitles();
-        setEvents(updatedEvents);
+          updateAllEventsSubtitles();
+          setEvents(updatedEvents);
+        }
       }
     }
   }
