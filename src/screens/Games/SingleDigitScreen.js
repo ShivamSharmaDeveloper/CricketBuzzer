@@ -142,6 +142,7 @@ const SingleDigitScreen = ({ route }) => {
             setDigitError('');
             setAmount('');
             setAmountError('');
+            setSelectedOption('');
             setSessionError('');
         }
     }, [isFocused]);
@@ -292,6 +293,7 @@ const SingleDigitScreen = ({ route }) => {
                             setSuccess(false);
                             setAmount('');
                             setDigits('');
+                            setSelectedOption('');
                         }}
                         titleStyle={{ color: 'green' }}
                     />

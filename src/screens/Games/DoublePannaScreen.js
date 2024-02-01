@@ -220,6 +220,7 @@ const DoublePannaScreen = ({ route }) => {
             setDigitError('');
             setAmount('');
             setAmountError('');
+            setSelectedOption('');
             setSessionError('');
         }
     }, [isFocused]);
@@ -369,6 +370,7 @@ const DoublePannaScreen = ({ route }) => {
                             setSuccess(false);
                             setAmount('');
                             setDigits('');
+                            setSelectedOption('');
                         }}
                         titleStyle={{ color: 'green' }}
                     />

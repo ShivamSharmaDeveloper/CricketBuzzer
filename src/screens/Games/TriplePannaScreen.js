@@ -140,6 +140,7 @@ const TriplePannaScreen = ({ route }) => {
             setDigitError('');
             setAmount('');
             setAmountError('');
+            setSelectedOption('');
             setSessionError('');
         }
     }, [isFocused]);
@@ -289,6 +290,7 @@ const TriplePannaScreen = ({ route }) => {
                             setSuccess(false);
                             setAmount('');
                             setDigits('');
+                            setSelectedOption('');
                         }}
                         titleStyle={{ color: 'green' }}
                     />

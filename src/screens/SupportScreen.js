@@ -68,7 +68,7 @@ const SupportScreen = ({ navigation }) => {
           </View>
           <View>
             <Text style={{ color: '#fff', fontFamily: 'Roboto-Bold' }}>Call:</Text>
-            <Text style={{ color: '#fff', fontFamily: 'Roboto-Bold' }}>+919256713662</Text>
+            <Text style={{ color: '#fff', fontFamily: 'Roboto-Bold' }}>+91{phoneNumber}</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={()=>{handleWhatsApp();}} style={{ backgroundColor: '#6a0028', height: responsiveHeight(8.5), width: responsiveWidth(83.5), borderRadius: responsiveWidth(3), flexDirection: 'row', alignItems: 'center', gap: responsiveWidth(3) }}>
@@ -80,7 +80,7 @@ const SupportScreen = ({ navigation }) => {
           </View>
           <View>
             <Text style={{ color: '#fff', fontFamily: 'Roboto-Bold' }}>WhatsApp:</Text>
-            <Text style={{ color: '#fff', fontFamily: 'Roboto-Bold' }}>+919256713662</Text>
+            <Text style={{ color: '#fff', fontFamily: 'Roboto-Bold' }}>+91{whatsApp}</Text>
           </View>
         </TouchableOpacity>
       </View>

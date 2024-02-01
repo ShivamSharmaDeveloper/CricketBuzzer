@@ -9,7 +9,7 @@ export const sliderData = [
   },
   {
     title: 'Third Game',
-    image: require('../assets/images/homescreen/slider3.jpg'),
+    image: require('../assets/images/homescreen/fastestwithdrawal.jpg'),
   },
 ];
 

@@ -392,6 +392,7 @@ const HalfSangam = ({ route }) => {
             setPannaError('');
             setAmount('');
             setAmountError('');
+            setSelectedOption('');
             setSessionError('');
         }
     }, [isFocused]);
@@ -565,6 +566,7 @@ const HalfSangam = ({ route }) => {
                             setAmount('');
                             setDigits([]);
                             setPanna([]);
+                            setSelectedOption('');
                         }}
                         titleStyle={{ color: 'green' }}
                     />

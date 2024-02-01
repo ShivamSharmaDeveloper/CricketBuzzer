@@ -33,7 +33,7 @@ import { requestUserPermission } from '../components/NotificationService';
 
 export default function HomeScreen({ navigation }) {
   const isFocused = useIsFocused();
-  const { userToken, setIsLoadingGlobal } = useContext(AuthContext);
+  const { userToken, setIsLoadingGlobal, setUserToken } = useContext(AuthContext);
   const [events, setEvents] = useState(null);
   const carouselRef = useRef(null);
 
@@ -106,19 +106,42 @@ export default function HomeScreen({ navigation }) {
       const userDataArray = querySnapshot.docs.map(doc => doc.data());
       const updatedEvents = updateIsPlayStatus(userDataArray);
       setEvents(updatedEvents);
+      handleUserData();
       // console.log(userDataArray, "snapshot");
     } catch (error) {
       console.log(error, 'error');
     }
   };
+  const handleUserData = async () => {
+    try {
+      // setIsLoadingGlobal(true);
+      const querySnapshot = await firestore()
+        .collection('Users')
+        .where('phone', '==', userToken?.phone)
+        .get();
+      if (querySnapshot.size > 0) {
+        setUserToken(querySnapshot.docs[0].data());
+      } else {
+        console.warn('User not found.');
+      }
+    } catch (error) {
+      console.log(error, "error");
+    }
+    // setIsLoadingGlobal(false);
+  };
+
   useEffect(() => {
     if (isFocused) {
-      // Example usage
-      handleEventList();
-      // console.log(freeGames);
-      // setEvents(freeGames);
-      // Call the updateSubtitles function when the app is opened
-      updateSubtitles();
+      try {
+        // Example usage
+        handleEventList();
+        // console.log(freeGames);
+        // setEvents(freeGames);
+        // Call the updateSubtitles function when the app is opened
+        updateSubtitles();
+      } catch (error) {
+        
+      }
     }
   }, [isFocused]);
   useEffect(() => {

@@ -251,6 +251,8 @@ const SinglePannaScreen = ({ route }) => {
             setDigitError('');
             setAmount('');
             setAmountError('');
+            setSelectedOption('');
+            setSessionError('');
         }
     }, [isFocused]);
 
@@ -401,6 +403,7 @@ const SinglePannaScreen = ({ route }) => {
                             setSuccess(false);
                             setAmount('');
                             setDigits('');
+                            setSelectedOption('');
                         }}
                         titleStyle={{ color: 'green' }}
                     />
