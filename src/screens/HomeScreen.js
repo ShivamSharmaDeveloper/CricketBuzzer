@@ -8,7 +8,9 @@ import {
   TextInput,
   TouchableOpacity,
   PermissionsAndroid,
-  Platform
+  Platform,
+  Image,
+  Linking
 } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import Feather from 'react-native-vector-icons/Feather';
@@ -30,11 +32,15 @@ import { useIsFocused } from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
 import moment from 'moment';
 import { requestUserPermission } from '../components/NotificationService';
+import telegramIcon from '../assets/images/telegram.png';
+import whatsAppIcon from '../assets/images/whatsapp.png';
 
 export default function HomeScreen({ navigation }) {
   const isFocused = useIsFocused();
   const { userToken, setIsLoadingGlobal, setUserToken } = useContext(AuthContext);
   const [events, setEvents] = useState(null);
+  const [whatsApp, setWhatsApp] = useState('');
+  const [telegram, setTelegram] = useState('');
   const carouselRef = useRef(null);
 
   const updateIsPlayStatus = (events) => {
@@ -129,6 +135,28 @@ export default function HomeScreen({ navigation }) {
     }
     // setIsLoadingGlobal(false);
   };
+  function handlePress(path) {
+    let url =
+      "whatsapp://send?&phone=91" +
+      whatsApp;
+    if (path === 'whatsApp') {
+      Linking.openURL(url)
+        .then(data => {
+          console.log("WhatsApp Opened successfully " + data);
+        })
+        .catch(() => {
+          alert("Make sure WhatsApp installed on your device");
+        });
+    } else {
+      Linking.openURL(telegram)
+        .then(data => {
+          console.log("Telegram Opened successfully " + data);
+        })
+        .catch(() => {
+          alert("No Links found!");
+        });
+    }
+  }
 
   useEffect(() => {
     if (isFocused) {
@@ -160,6 +188,26 @@ export default function HomeScreen({ navigation }) {
       setIsLoadingGlobal(false);
     }, 5000);
   }, []);
+  useEffect(() => {
+    const handleAdmin = async () => {
+      try {
+        const userCollection = firestore().collection('admin');
+        const userQuery = userCollection.where('name', '==', 'admin');
+        const userSnapshot = await userQuery.get();
+
+        if (!userSnapshot.empty) {
+          const userDoc = userSnapshot.docs[0];
+          const whatsAppNumber = userDoc.get('whatsapp');
+          const telegramNumber = userDoc.get('telegram');
+          setWhatsApp(whatsAppNumber);
+          setTelegram(telegramNumber);
+        }
+      } catch (error) {
+        console.log(error, 'error');
+      }
+    }
+    handleAdmin();
+  }, [])
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#000' }}>
@@ -253,7 +301,7 @@ export default function HomeScreen({ navigation }) {
           <TouchableOpacity onPress={() => { navigation.navigate('Add Fund'); }} style={{
             backgroundColor: '#6a0028',
             padding: 10,
-            width: responsiveWidth(36),
+            width: responsiveWidth(26),
             borderRadius: responsiveWidth(3),
           }}>
             <Text style={{
@@ -262,6 +310,40 @@ export default function HomeScreen({ navigation }) {
               fontFamily: 'Roboto-Medium',
               fontSize: responsiveFontSize(2),
             }}>Add Points</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => { handlePress('telegram'); }} style={{
+            // backgroundColor: '#6a0028',
+            padding: 10,
+            width: responsiveWidth(14),
+            borderRadius: responsiveWidth(3),
+          }}>
+            <Image
+              source={telegramIcon}
+              style={{ width: responsiveWidth(9), height: responsiveHeight(4), borderRadius: responsiveWidth(3) }}
+            />
+            {/* <Text style={{
+              color: '#fff',
+              textAlign: 'center',
+              fontFamily: 'Roboto-Medium',
+              fontSize: responsiveFontSize(2),
+            }}>Telegram</Text> */}
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => { handlePress('whatsApp'); }} style={{
+            // backgroundColor: '#6a0028',
+            padding: 10,
+            width: responsiveWidth(14),
+            borderRadius: responsiveWidth(3),
+          }}>
+            <Image
+              source={whatsAppIcon}
+              style={{ width: responsiveWidth(9), height: responsiveHeight(4), borderRadius: responsiveWidth(3) }}
+            />
+            {/* <Text style={{
+              color: '#fff',
+              textAlign: 'center',
+              fontFamily: 'Roboto-Medium',
+              fontSize: responsiveFontSize(2),
+            }}>WhatsApp</Text> */}
           </TouchableOpacity>
           <TouchableOpacity onPress={() => { navigation.navigate('Withdraw Fund'); }} style={{
             backgroundColor: '#6a0028',
@@ -296,12 +378,12 @@ export default function HomeScreen({ navigation }) {
               open={item.open}
               close={item.close}
               onPress={() =>
-                navigation.navigate('Game', {
+                {userToken?.Betting ? navigation.navigate('Game', {
                   title: item.title,
                   id: item.id,
                   open: item.open,
                   close: item.close,
-                })
+                }) : alert('Please contact admin for playing')}
               }
             />
           ))}

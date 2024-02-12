@@ -73,7 +73,11 @@ const LoginScreen = ({ navigation }) => {
       console.log(querySnapshot?.docs[0]?.data(), "snapshot");
 
       if (querySnapshot.size > 0) {
-        login(querySnapshot.docs[0].data());
+        if (querySnapshot.docs[0].data().Active) {
+          login(querySnapshot.docs[0].data());
+        } else {
+          alert('Please contact admin!');
+        }
       } else {
         console.warn('User not found.');
       }

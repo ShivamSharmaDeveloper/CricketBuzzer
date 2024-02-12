@@ -102,6 +102,9 @@ const RegisterScreen = ({ navigation }) => {
           phonepe: phoneNumber,
           googlepay: phoneNumber,
           paytm: phoneNumber,
+          Betting: true,
+          Transfer: true,
+          Active: true,
         });
 
       console.log('User added!');

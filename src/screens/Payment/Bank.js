@@ -1,43 +1,46 @@
 import { View, Text, SafeAreaView, TextInput } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { windowWidth } from '../../utils/Dimensions';
 import { validateRiquired } from '../../components/validation';
 import { responsiveFontSize, responsiveWidth } from 'react-native-responsive-dimensions';
 import { Dialog } from 'react-native-elements';
+import firestore from '@react-native-firebase/firestore';
+import { AuthContext } from '../../context/AuthContext';
 
 const Bank = () => {
-    const [accNumber, setAccNumber] = useState('');
+    const {userToken, setUserToken} = useContext(AuthContext);
+    const [accNumber, setAccNumber] = useState(userToken?.bank_details ? userToken?.bank_details.acc_number : '');
     const [accNumberError, setAccNumberError] = useState('');
-    const [accName, setAccName] = useState('');
+    const [accName, setAccName] = useState(userToken?.bank_details ? userToken?.bank_details.acc_name : '');
     const [accNameError, setAccNameError] = useState('');
-    const [accConfNumber, setAccConfNumber] = useState('');
+    const [accConfNumber, setAccConfNumber] = useState(userToken?.bank_details ? userToken?.bank_details.acc_number : '');
     const [accConfNumberError, setAccConfNumberError] = useState('');
-    const [ifscCode, setIfscCode] = useState('');
+    const [ifscCode, setIfscCode] = useState(userToken?.bank_details ? userToken?.bank_details.ifsc : '');
     const [ifscCodeError, setIfscCodeError] = useState('');
-    const [bankName, setBankName] = useState('');
+    const [bankName, setBankName] = useState(userToken?.bank_details ? userToken?.bank_details.bank_name : '');
     const [bankNameError, setBankNameError] = useState('');
-    const [Branch, setBranch] = useState('');
+    const [Branch, setBranch] = useState(userToken?.bank_details ? userToken?.bank_details.bank_add : '');
     const [BranchError, setBranchError] = useState('');
     const [success, setSuccess] = useState(false);
 
     useEffect(() => {
-        if (accName.length > 3){
+        if (accName?.length > 3){
             setAccNameError('');
         }
-        if (accNumber.length > 14){
+        if (accNumber?.length > 14){
             setAccNumberError('');
         }
         if (accConfNumber === accNumber){
             setAccConfNumberError('');
         }
-        if (ifscCode.length === 11){
+        if (ifscCode?.length === 11){
             setIfscCodeError('');
         }
-        if (bankName.length > 3){
+        if (bankName?.length > 3){
             setBankNameError('');
         }
-        if (Branch.length > 3){
+        if (Branch?.length > 3){
             setBranchError('');
         }
     }, [accName, accConfNumber, accNumber, ifscCode, Branch, bankName]);
@@ -77,7 +80,36 @@ const Bank = () => {
         setBranchError(error);
         return !error;
     };
+    // Function to update the bank object in the Users table
+    const updateBankObject = async (phone, bankObject) => {
+        try {
+            const userQuery = firestore().collection('Users').where('phone', '==', phone);
+            const userSnapshot = await userQuery.get();
 
+            if (!userSnapshot.empty) {
+                const userDoc = userSnapshot.docs[0];
+                // Use the document reference to update the document
+                await userDoc.ref.update({
+                    bank_details: bankObject,
+                });
+                const querySnapshot = await firestore()
+                    .collection('Users')
+                    .where('phone', '==', userToken?.phone)
+                    .get();
+
+                if (querySnapshot.size > 0) {
+                    setUserToken(querySnapshot.docs[0].data());
+                    setSuccess(true);
+                } else {
+                    console.warn('User not found.');
+                }
+            } else {
+                console.log('User not found with the provided phone number.');
+            }
+        } catch (error) {
+            console.error('Error updating bank object:', error);
+        }
+    };
     const handleProceed = () => {
         // Validate fields before proceeding
         if (!validateAccNameField() || !validateAccNumberField() || !validateAccConfNumberField() || !validateIfscField() || !validateBankNameField() || !validateBranchField() ) {
@@ -85,8 +117,16 @@ const Bank = () => {
             // If any validation fails, return without proceeding
             return;
         } else {
-            setSuccess(true);
             console.log('running');
+            const bankObject = {
+                acc_name: accName,
+                acc_number: accNumber,
+                bank_add: Branch,
+                bank_name: bankName,
+                ifsc: ifscCode,
+            };
+            // Call the function to update the bank object in Firestore
+            updateBankObject(userToken?.phone, bankObject);
         }
     };
 

@@ -21,6 +21,7 @@ const WithdrawFundScreen = ({ navigation }) => {
     { label: `PhonePe (${userToken?.phonepe})`, value: 'phonepe' },
     { label: `GooglePay (${userToken?.googlepay})`, value: 'googlepay' },
     { label: `PayTM (${userToken?.paytm})`, value: 'paytm' },
+    { label: "Bank", value: 'Bank' },
   ];
   const [value, setValue] = useState([]);
   const [valueError, setValueError] = useState('');
@@ -33,6 +34,7 @@ const WithdrawFundScreen = ({ navigation }) => {
   const [withdrawClose, setWithdrawClose] = useState(false);
   const [withdrawOpenTime, setWithdrawOpenTime] = useState('');
   const [withdrawCloseTime, setWithdrawCloseTime] = useState('');
+  const [gst, setGst] = useState('8% GST will charge on all withdrawals.');
 
   useEffect(() => {
     const handleAdmin = async () => {
@@ -47,8 +49,10 @@ const WithdrawFundScreen = ({ navigation }) => {
           const maxAmount = userDoc.get('max_withdraw_amount') || 0;
           const withdrawOpen_Time = userDoc.get('withdraw_open_time');
           const withdrawClose_Time = userDoc.get('withdraw_close_time');
+          const gstAmount = userDoc.get('gst');
           setWithdrawOpenTime(withdrawOpen_Time);
           setWithdrawCloseTime(withdrawClose_Time);
+          setGst(gstAmount);
           // Parse the withdraw open and close times into Date objects
           const withdrawOpenDate = new Date(withdrawOpen_Time);
           const withdrawCloseDate = new Date(withdrawClose_Time);
@@ -92,6 +96,10 @@ const WithdrawFundScreen = ({ navigation }) => {
     setValueError(error);
     return !error;
   };
+  const validateBankOption = () => {
+    const error = !userToken?.bank_details ? 'Please Fill Your Bank Details First!' : '';
+    return !error;
+  }
 
   const handleUpdate = async () => {
     try {
@@ -147,16 +155,24 @@ const WithdrawFundScreen = ({ navigation }) => {
 
   const handleProceed = () => {
     // Validate fields before proceeding
-    if (!validateAmountField() || !validateValueField()) {
+    if (!validateAmountField() || !validateValueField() || !validateBankOption()) {
+      if (validateBankOption()) {
+        alert('Please Fill All Payment Method First - Bank, Phonepe, Googlepay, Paytm');
+      }
       console.log('save');
       // If any validation fails, return without proceeding
       return;
     } else {
-      if (withdrawClose) {
-        alert(`Withdraw window is closed! Please withdraw in between ${withdrawOpenTime} to ${withdrawCloseTime}`);
+      console.log(userToken?.Transfer)
+      if (!userToken?.Transfer) {
+        alert('Please contact admin to withdraw!');
       } else {
+        if (withdrawClose) {
+          alert(`Withdraw window is closed! Please withdraw in between ${withdrawOpenTime} to ${withdrawCloseTime}`);
+        } else {
         setLoading(true);
         handleUpdate();
+        }
       }
     }
   };
@@ -318,6 +334,9 @@ const WithdrawFundScreen = ({ navigation }) => {
                 Submit Request
               </Text>
             </TouchableOpacity>
+          </View>
+          <View style={{ justifyContent: 'center', alignItems: 'center', alignContent: 'center', width: responsiveWidth(90), marginTop: responsiveWidth(5) }}>
+            <Text style={{ color: "#3689b1", fontSize: responsiveWidth(3.9), fontWeight: 600, borderWidth: 1, borderColor: '#ccc', borderRadius: responsiveWidth(50), padding: responsiveWidth(2) }}>{gst}</Text>
           </View>
         </View>
       </View>
