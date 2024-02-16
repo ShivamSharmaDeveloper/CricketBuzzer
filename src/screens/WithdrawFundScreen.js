@@ -120,7 +120,7 @@ const WithdrawFundScreen = ({ navigation }) => {
         });
         const date = new Date();
         const currentTime = date.toString();
-
+        const currentDate = date.toDateString();
         await firestore()
           .collection('Withdraw_List')
           .add({
@@ -129,6 +129,7 @@ const WithdrawFundScreen = ({ navigation }) => {
             time: currentTime,
             name: userToken?.name,
             method: value,
+            date: currentDate,
             status: 'pending',
           });
         // console.log('Coins updated successfully');
