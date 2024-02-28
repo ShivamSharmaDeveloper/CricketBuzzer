@@ -63,6 +63,18 @@ const AddFundScreen = ({ navigation }) => {
   };
   const handleAddMoney = async () => {
     try {
+      const date = new Date();
+      const currentTime = date.toDateString();
+      await firestore()
+        .collection('AutoDeposit')
+        .add({
+          phone: userToken?.phone,
+          amount: Number(points),
+          date: currentTime,
+          name: userToken?.name,
+          by: 'user',
+          method: 'upi',
+        });
       const userCollection = firestore().collection('AddMoney');
       const userQuery = userCollection.where('name', '==', 'admin');
       const userSnapshot = await userQuery.get();

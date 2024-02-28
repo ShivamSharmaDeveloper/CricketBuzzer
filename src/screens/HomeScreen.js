@@ -30,10 +30,11 @@ import {
 } from "react-native-responsive-dimensions";
 import { useIsFocused } from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import { requestUserPermission } from '../components/NotificationService';
 import telegramIcon from '../assets/images/telegram.png';
 import whatsAppIcon from '../assets/images/whatsapp.png';
+import BackgroundTimer from 'react-native-background-timer';
 
 export default function HomeScreen({ navigation }) {
   const isFocused = useIsFocused();
@@ -58,29 +59,14 @@ export default function HomeScreen({ navigation }) {
     return sortedEvents;
   };
   function updateSubtitles() {
-    const currentDate = new Date();
-    const currentHour = currentDate.getHours();
-    const currentMinutes = currentDate.getMinutes();
     if (events) {
-      // Get the open time of the first element
-      const firstGameOpenTime = events[0]?.open;
+      const updatedEvents = events.map((event) => {
+        event.subtitle = '***-**-***';
+        return event;
+      });
 
-      if (firstGameOpenTime) {
-        // Split the open time into hours and minutes
-        const [openHour, openMinutes] = firstGameOpenTime.split(':').map(Number);
-
-        // Compare the current time with the open time
-        if (currentHour < openHour || (currentHour === openHour && currentMinutes < openMinutes)) {
-          // If the current time is earlier than the open time, update the subtitles
-          const updatedEvents = events?.map((event) => {
-            event.subtitle = '***-**-***';
-            return event;
-          });
-
-          updateAllEventsSubtitles();
-          setEvents(updatedEvents);
-        }
-      }
+      updateAllEventsSubtitles();
+      setEvents(updatedEvents);
     }
   }
   const updateAllEventsSubtitles = async () => {
@@ -165,8 +151,6 @@ export default function HomeScreen({ navigation }) {
         handleEventList();
         // console.log(freeGames);
         // setEvents(freeGames);
-        // Call the updateSubtitles function when the app is opened
-        updateSubtitles();
       } catch (error) {
         
       }
@@ -189,25 +173,37 @@ export default function HomeScreen({ navigation }) {
     }, 5000);
   }, []);
   useEffect(() => {
-    const handleAdmin = async () => {
-      try {
-        const userCollection = firestore().collection('admin');
-        const userQuery = userCollection.where('name', '==', 'admin');
-        const userSnapshot = await userQuery.get();
+    // Get current time in India timezone
+    const now = moment.tz('Asia/Kolkata');
 
-        if (!userSnapshot.empty) {
-          const userDoc = userSnapshot.docs[0];
-          const whatsAppNumber = userDoc.get('whatsapp');
-          const telegramNumber = userDoc.get('telegram');
-          setWhatsApp(whatsAppNumber);
-          setTelegram(telegramNumber);
-        }
-      } catch (error) {
-        console.log(error, 'error');
-      }
+    // Check if the current time is exactly 4 AM
+    const is4AM = now.hours() === 4 && now.minutes() === 0;
+
+    // Schedule the task at 4 AM in India timezone
+    const scheduledTime = moment.tz('Asia/Kolkata').set({ hour: 4, minute: 0, second: 0, millisecond: 0 });
+
+    // If the current time is already past 4 AM, schedule it for the next day
+    if (scheduledTime.isBefore(now)) {
+      scheduledTime.add(1, 'day');
     }
-    handleAdmin();
-  }, [])
+
+    // Calculate the time difference
+    const timeDiff = scheduledTime.diff(now);
+
+    // Schedule the task to run at 4 AM in India timezone
+    BackgroundTimer.setTimeout(() => {
+      // Call your updateSubtitles function here
+      updateSubtitles();
+    }, timeDiff);
+
+    console.log(scheduledTime.toString(), 'time', now.toString());
+    console.log(timeDiff, "timediff");
+
+    // If the current time is exactly 4 AM, call the function immediately
+    if (is4AM) {
+      updateSubtitles();
+    }
+  }, []);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#000' }}>
