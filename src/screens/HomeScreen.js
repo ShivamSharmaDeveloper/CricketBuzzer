@@ -42,6 +42,7 @@ export default function HomeScreen({ navigation }) {
   const [events, setEvents] = useState(null);
   const [whatsApp, setWhatsApp] = useState('');
   const [telegram, setTelegram] = useState('');
+  const [slider, setSlider] = useState(sliderData);
   const carouselRef = useRef(null);
 
   const updateIsPlayStatus = (events) => {
@@ -204,6 +205,40 @@ export default function HomeScreen({ navigation }) {
       updateSubtitles();
     }
   }, []);
+  useEffect(() => {
+    const handleAdmin = async () => {
+      try {
+        const userCollection = firestore().collection('admin');
+        const userQuery = userCollection.where('name', '==', 'admin');
+        const userSnapshot = await userQuery.get();
+        if (!userSnapshot.empty) {
+          const userDoc = userSnapshot.docs[0];
+          const data = userDoc.data();
+          const sliderDetails = [];
+          console.log(data)
+          // Iterate over the sliderData objects in the admin document
+          for (let i = 1; i <= 3; i++) {
+            const sliderItem = {
+              title: data[`sliderData${i}`].title,
+              image: data[`sliderData${i}`].image,
+            };
+            sliderDetails.push(sliderItem);
+          }
+
+          // Now sliderData array contains the formatted slider data
+          console.log(sliderDetails);
+          setSlider(sliderDetails);
+          const whatsAppNumber = userDoc.get('whatsapp');
+          const telegramNumber = userDoc.get('telegram');
+          setWhatsApp(whatsAppNumber);
+          setTelegram(telegramNumber);
+        }
+      } catch (error) {
+        console.log(error, 'error');
+      }
+    }
+    handleAdmin();
+  }, [])
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#000' }}>
@@ -279,7 +314,7 @@ export default function HomeScreen({ navigation }) {
         <View style={{ paddingHorizontal: responsiveWidth(5.5), marginTop: responsiveHeight(2) }}>
           <Carousel
             ref={carouselRef}
-            data={sliderData}
+            data={slider}
             renderItem={renderBanner}
             sliderWidth={responsiveWidth(90)}
             itemWidth={responsiveWidth(85)}
