@@ -42,7 +42,7 @@ export default function HomeScreen({ navigation }) {
   const [events, setEvents] = useState(null);
   const [whatsApp, setWhatsApp] = useState('');
   const [telegram, setTelegram] = useState('');
-  const [slider, setSlider] = useState(sliderData);
+  const [slider, setSlider] = useState(null);
   const carouselRef = useRef(null);
 
   const updateIsPlayStatus = (events) => {
@@ -215,7 +215,6 @@ export default function HomeScreen({ navigation }) {
           const userDoc = userSnapshot.docs[0];
           const data = userDoc.data();
           const sliderDetails = [];
-          console.log(data)
           // Iterate over the sliderData objects in the admin document
           for (let i = 1; i <= 3; i++) {
             const sliderItem = {
