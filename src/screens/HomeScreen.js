@@ -153,7 +153,7 @@ export default function HomeScreen({ navigation }) {
         // console.log(freeGames);
         // setEvents(freeGames);
       } catch (error) {
-        
+
       }
     }
   }, [isFocused]);
@@ -216,12 +216,14 @@ export default function HomeScreen({ navigation }) {
           const data = userDoc.data();
           const sliderDetails = [];
           // Iterate over the sliderData objects in the admin document
-          for (let i = 1; i <= 3; i++) {
-            const sliderItem = {
-              title: data[`sliderData${i}`].title,
-              image: data[`sliderData${i}`].image,
-            };
-            sliderDetails.push(sliderItem);
+          for (let i = 1; i <= 10; i++) {
+            if (data[`sliderData${i}`]?.status) {
+              const sliderItem = {
+                title: data[`sliderData${i}`].title,
+                image: data[`sliderData${i}`].image,
+              };
+              sliderDetails.push(sliderItem);
+            }
           }
 
           // Now sliderData array contains the formatted slider data
@@ -407,13 +409,14 @@ export default function HomeScreen({ navigation }) {
               isPlay={item.isPlay}
               open={item.open}
               close={item.close}
-              onPress={() =>
-                {userToken?.Betting ? navigation.navigate('Game', {
+              onPress={() => {
+                userToken?.Betting ? navigation.navigate('Game', {
                   title: item.title,
                   id: item.id,
                   open: item.open,
                   close: item.close,
-                }) : alert('Please contact admin for playing')}
+                }) : alert('Please contact admin for playing')
+              }
               }
             />
           ))}
